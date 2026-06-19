@@ -151,26 +151,30 @@ input,select,textarea{font-family:var(--ff)}
 .flip-sep{font-weight:900;font-size:.5em;color:var(--clk1);align-self:center;animation:piscaSep 1s steps(1) infinite;padding:0 1px}
 @keyframes piscaSep{50%{opacity:.35}}
 
-/* unidade flip */
-.fu{position:relative;display:inline-block;border-radius:.14em;perspective:300px;font-family:var(--ff-disp);font-weight:900;
+/* unidade flip — queda vertical */
+.fu{position:relative;display:inline-block;border-radius:.14em;overflow:hidden;font-family:var(--ff-disp);font-weight:900;
   background:linear-gradient(180deg,var(--clk1),var(--clk2));
   box-shadow:0 .08em .18em rgba(0,0,0,.45),inset 0 0 0 1.5px rgba(255,255,255,.25);}
-.fu .meta,.fu .dobra{position:absolute;left:0;width:100%;height:50%;overflow:hidden;text-align:center;color:#1a1205;text-shadow:0 1px 1px rgba(255,255,255,.25);backface-visibility:hidden;background:linear-gradient(180deg,var(--clk1),var(--clk2))}
-.fu .meta span,.fu .dobra span{display:block;height:1em;line-height:1em;width:100%}
-.fu .topo{top:0;border-radius:.14em .14em 0 0;border-bottom:1.5px solid rgba(0,0,0,.22)}
-.fu .base{bottom:0;border-radius:0 0 .14em .14em}
-.fu .base span,.fu .dobra.d-base span{transform:translateY(-.5em)}
-.fu .dobra.d-topo{top:0;border-radius:.14em .14em 0 0;transform-origin:bottom;border-bottom:1.5px solid rgba(0,0,0,.22)}
-.fu .dobra.d-base{bottom:0;border-radius:0 0 .14em .14em;transform-origin:top;transform:rotateX(90deg)}
-.fu.flipping .dobra.d-topo{animation:cairTopo .3s ease-in forwards}
-.fu.flipping .dobra.d-base{animation:subirBase .3s ease-out .28s forwards}
-@keyframes cairTopo{to{transform:rotateX(-90deg)}}
-@keyframes subirBase{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+.fu .dig{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#1a1205;text-shadow:0 1px 1px rgba(255,255,255,.3);transition:transform .42s cubic-bezier(.34,1.05,.4,1),opacity .42s ease}
+.fu .dig.acima{transform:translateY(-115%);opacity:0}
+.fu .dig.abaixo{transform:translateY(115%);opacity:0}
+.fu::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;margin-top:-.5px;background:rgba(0,0,0,.18);z-index:6;pointer-events:none}
 
 .proxima-medalha{text-align:center;color:var(--txt-2);font-size:13px;margin-top:-6px;position:relative;z-index:1}
 /* modelo neon */
-.neon-num{font-family:var(--ff-disp);font-weight:900;font-size:86px;line-height:.95;color:var(--clk1);text-shadow:0 0 10px var(--clk1),0 0 26px var(--clk2)}
-.neon-rel{font-family:var(--ff-disp);font-weight:900;font-size:46px;letter-spacing:3px;color:var(--clk1);text-shadow:0 0 8px var(--clk1),0 0 18px var(--clk2);font-variant-numeric:tabular-nums;margin-top:2px}
+.neon-num{font-family:var(--ff-disp);font-weight:900;font-size:88px;line-height:.95;color:var(--clk1);text-shadow:0 0 7px var(--clk2)}
+.neon-rel{font-family:var(--ff-disp);font-weight:900;font-size:46px;letter-spacing:3px;color:var(--clk1);text-shadow:0 0 6px var(--clk2);font-variant-numeric:tabular-nums;margin-top:2px}
+/* modelo minimal */
+.min-dias{font-family:var(--ff-disp);font-weight:900;font-size:100px;line-height:.86;background:linear-gradient(135deg,var(--clk1),var(--clk2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.min-rel{font-family:var(--ff-disp);font-weight:700;font-size:44px;letter-spacing:3px;color:var(--txt);font-variant-numeric:tabular-nums}
+/* modelo pílulas */
+.pil-dias{background:linear-gradient(135deg,var(--clk1),var(--clk2));border-radius:22px;padding:18px 34px;text-align:center;color:#1a1205;box-shadow:0 10px 24px -10px var(--clk1),inset 0 0 0 1.5px rgba(255,255,255,.25)}
+.pil-dias b{font-family:var(--ff-disp);font-weight:900;font-size:66px;line-height:1;display:block}
+.pil-dias span{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;opacity:.85}
+.pil-row{display:flex;gap:10px;margin-top:12px;width:100%}
+.pil{flex:1;background:var(--surface);border:1.5px solid var(--linha);border-radius:16px;padding:13px 6px;text-align:center}
+.pil b{font-family:var(--ff-disp);font-weight:900;font-size:32px;color:var(--clk1);display:block;font-variant-numeric:tabular-nums;line-height:1}
+.pil span{font-size:11px;color:var(--txt-2);font-weight:600;margin-top:3px;display:block}
 /* modelo anel */
 .anel-wrap{position:relative;width:230px;height:230px;display:grid;place-items:center}
 .anel-wrap svg{width:100%;height:100%}
@@ -354,9 +358,9 @@ input,select,textarea{font-family:var(--ff)}
   background:color-mix(in srgb,var(--surface) 86%,transparent);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--linha);
 }
-.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;color:var(--txt-3);transition:.2s}
-.nav button .ic{font-size:20px;transition:.2s}
-.nav button span{font-size:9.5px;font-weight:700}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 1px;color:var(--txt-3);transition:.2s}
+.nav button .ic{font-size:19px;transition:.2s}
+.nav button span{font-size:8.5px;font-weight:700}
 .nav button.on{color:var(--verde)}
 .nav button.on .ic{transform:translateY(-2px)}
 
@@ -393,6 +397,53 @@ input,select,textarea{font-family:var(--ff)}
 .credito b{color:var(--verde)}
 
 .vazio{text-align:center;padding:40px 20px;color:var(--txt-2)}
+/* ====================== ESTANTE ====================== */
+.estante-overlay,.leitor-overlay{position:fixed;inset:0;z-index:120;display:none;overflow-y:auto}
+.estante-overlay.on,.leitor-overlay.on{display:block;animation:fade .35s}
+.estante-overlay{
+  background:
+    repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0 2px,transparent 2px 7px),
+    linear-gradient(180deg,#6B4226,#4A2C18);
+}
+.estante-topo{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:14px;padding:calc(16px + env(safe-area-inset-top)) 18px 14px;background:linear-gradient(180deg,#5A3620,#4A2C18)}
+.madeira-btn{display:flex;align-items:center;gap:7px;padding:11px 16px;border-radius:12px;font-weight:800;font-size:14px;color:#FCEAD0;
+  background:linear-gradient(180deg,#7A4A28,#5A3318);box-shadow:0 4px 10px -3px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18);border:1px solid rgba(0,0,0,.25)}
+.madeira-btn:active{transform:scale(.96)}
+.estante-titulo{flex:1;text-align:center}
+.estante-titulo b{font-family:var(--ff-disp);font-weight:900;font-size:22px;color:#F3D9B5;display:block;letter-spacing:.5px;text-shadow:0 2px 1px rgba(0,0,0,.4),0 -1px 0 rgba(255,255,255,.12)}
+.estante-titulo small{color:#C79A6E;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.prateleira{padding:0 20px 8px}
+.prateleira-piso{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px 16px 16px;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),transparent);
+  border-bottom:14px solid #3A2212;border-radius:4px;
+  box-shadow:0 14px 16px -10px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08)}
+.livro-capa{position:relative;aspect-ratio:2/3;border-radius:4px 7px 7px 4px;cursor:pointer;overflow:hidden;
+  background:linear-gradient(135deg,var(--lc1),var(--lc2));
+  box-shadow:-4px 4px 10px -3px rgba(0,0,0,.6),inset 6px 0 8px -4px rgba(0,0,0,.45),inset -2px 0 0 rgba(255,255,255,.15);
+  display:flex;flex-direction:column;justify-content:space-between;padding:12px 11px;transition:transform .25s}
+.livro-capa::before{content:'';position:absolute;left:5px;top:0;bottom:0;width:2px;background:rgba(255,255,255,.18)}
+.livro-capa:active{transform:translateY(-4px) scale(1.02)}
+.livro-capa .emoji{font-size:26px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
+.livro-capa .tit{font-family:var(--ff-disp);font-weight:900;font-size:14px;color:#fff;line-height:1.1;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.livro-capa .sub{font-size:9px;color:rgba(255,255,255,.8);font-weight:600;margin-top:3px}
+/* leitor */
+.leitor-overlay{background:linear-gradient(180deg,#2A1C10,#1A1109)}
+.leitor-topo{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 16px 12px;background:linear-gradient(180deg,#3A2614,#2A1C10)}
+.leitor-topo .lt-tit{flex:1;text-align:center;font-family:var(--ff-disp);font-weight:700;font-size:15px;color:#F3D9B5}
+.leitor-palco{perspective:1600px;padding:18px 16px 30px;min-height:60vh}
+.pagina{background:linear-gradient(180deg,#FBF3E2,#F3E6CC);border-radius:6px;padding:30px 24px;
+  box-shadow:0 20px 40px -16px rgba(0,0,0,.6);min-height:62vh;transform-origin:left center;
+  transition:transform .4s ease,opacity .4s ease;color:#3A2A18}
+.pagina.sai-esq{transform:translateX(-26%) rotateY(-30deg);opacity:0}
+.pagina.sai-dir{transform:translateX(26%) rotateY(30deg);opacity:0}
+.pagina .cap-num{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#B0894E}
+.pagina h2{font-family:var(--ff-disp);font-weight:900;font-size:24px;margin:8px 0 18px;color:#2A1C0E;line-height:1.15}
+.pagina p{font-family:var(--ff-disp);font-size:17px;line-height:1.7;margin-bottom:14px;color:#463524}
+.leitor-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 18px calc(24px + env(safe-area-inset-bottom))}
+.leitor-nav button{width:54px;height:54px;border-radius:50%;background:linear-gradient(180deg,#7A4A28,#5A3318);color:#FCEAD0;font-size:22px;box-shadow:0 5px 12px -4px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.18);transition:.2s}
+.leitor-nav button:active{transform:scale(.9)}
+.leitor-nav button:disabled{opacity:.3}
+.leitor-nav .pag-ind{color:#C79A6E;font-size:13px;font-weight:700}
 .vazio .e{font-size:42px;margin-bottom:10px}
 .vazio b{display:block;font-weight:700;margin-bottom:4px;color:var(--txt)}
 .vazio small{font-size:13px}
@@ -557,6 +608,7 @@ input,select,textarea{font-family:var(--ff)}
     <button data-tela="tPassos" onclick="App.aba('tPassos',this)"><span class="ic">🪜</span><span>Jornada</span></button>
     <button data-tela="tMedalhas" onclick="App.aba('tMedalhas',this)"><span class="ic">🏅</span><span>Medalhas</span></button>
     <button data-tela="tComunidade" onclick="App.aba('tComunidade',this)"><span class="ic">💬</span><span>Grupo</span></button>
+    <button onclick="App.abrirEstante()"><span class="ic">📚</span><span>Estante</span></button>
     <button data-tela="tMais" onclick="App.aba('tMais',this)"><span class="ic">⚡</span><span>Mais</span></button>
   </nav>
 </div>
@@ -565,6 +617,8 @@ input,select,textarea{font-family:var(--ff)}
 
 <!-- modais -->
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)App.fecharModal()"><div class="modal" id="modal"></div></div>
+<div class="estante-overlay" id="estanteOverlay"></div>
+<div class="leitor-overlay" id="leitorOverlay"></div>
 <div class="cel" id="cel"></div>
 <div class="toast" id="toast"></div>
 
@@ -721,6 +775,38 @@ const INVENTARIO_PERGUNTAS = [
   {id:'reparar',q:'Magoei alguém ou a mim mesmo? Preciso reparar algo?',ph:'Seja honesto, sem se julgar...'},
   {id:'amanha',q:'O que eu quero pro meu amanhã?',ph:'Uma intenção simples...'}
 ];
+const LIVROS = [
+  {id:'calma',titulo:'Calma de Imperador',sub:'No espírito de Marco Aurélio',cor:'#C0703A',cor2:'#7E4420',emoji:'🏛️',caps:[
+    {t:'O que está nas suas mãos',p:['Há coisas que dependem de você e coisas que não dependem. A vontade dos outros, o passado, o que já aconteceu — nada disso está sob seu controle. Sofrer por isso é carregar um peso que não é seu.','Mas a sua escolha de agora, esta sim é sua. Você não controla a vontade que aparece, mas controla o que faz com ela. E é aí, nesse pequeno espaço, que mora toda a sua liberdade.']},
+    {t:'A dor que você imagina',p:['Boa parte do nosso sofrimento não vem do que acontece, mas do que pensamos sobre o que acontece. A fissura diz que você não vai aguentar. É só um pensamento — não uma ordem, não uma verdade.','Observe o pensamento como quem vê uma nuvem passar. Você não é a nuvem. Você é o céu, que permanece quando ela já se foi.']},
+    {t:'Um dia é uma vida inteira',p:['Não tente vencer o vício para sempre hoje. É peso demais. Tente apenas vencer hoje — e amanhã você faz de novo.','Cada manhã é um pequeno renascimento. O que passou, passou. O imperador acordava todo dia e lembrava a si mesmo do essencial. Faça igual: hoje, só hoje, você escolhe quem quer ser.']},
+    {t:'Você é maior que o impulso',p:['O impulso é forte, mas é breve. Ele grita, exige, promete alívio — e some. Quem você é dura muito mais do que qualquer onda de vontade.','Quando a tempestade vier, lembre: você já atravessou outras. Respire. Espere. A calma sempre volta, e você continua de pé.']}
+  ]},
+  {id:'sohoje',titulo:'Só por Hoje',sub:'Uma reflexão para cada dia',cor:'#2E9E6B',cor2:'#176844',emoji:'🌅',caps:[
+    {t:'Só por hoje',p:['Não preciso resolver o resto da minha vida agora. Só preciso passar por hoje. E hoje, eu consigo.','Amanhã cuido do amanhã. Ontem já não me pertence. O que tenho é este dia, e neste dia eu escolho viver limpo.']},
+    {t:'Só por hoje, eu cuido de mim',p:['Vou beber água, comer algo, dormir um pouco. Coisas simples que o vício me fez esquecer. Cuidar do corpo é um jeito de dizer a mim mesmo que eu importo.','Mereço gentileza — principalmente a minha própria. Hoje eu me trato como trataria alguém que amo.']},
+    {t:'Só por hoje, eu peço ajuda',p:['Não preciso carregar isso sozinho. Pedir ajuda não me diminui; me fortalece. Uma mensagem, uma ligação, uma reunião — qualquer ponte serve.','A solidão alimenta o vício. A conexão o enfraquece. Hoje eu escolho estar perto de quem me quer bem.']},
+    {t:'Só por hoje, eu me perdoo',p:['Se errei, errei. Culpa não me cura — só me afunda. Hoje eu troco a culpa por responsabilidade: reconheço, aprendo e sigo.','Sou um ser humano em recuperação, não um santo. E está tudo bem. O perdão é o solo onde o recomeço cresce.']}
+  ]},
+  {id:'onda',titulo:'A Onda Sempre Passa',sub:'Atravessando a fissura',cor:'#3B7DD8',cor2:'#1E4E9E',emoji:'🌊',caps:[
+    {t:'A anatomia de uma vontade',p:['A fissura não é uma linha reta que só cresce. Ela é uma onda: sobe, atinge o pico e desce. Quase sempre em 15 a 20 minutos, ela perde a força sozinha.','Saber disso muda tudo. Você não precisa vencer a vontade pra sempre — só precisa durar mais que a onda. E você dura.']},
+    {t:'Surfar a onda',p:['Em vez de lutar contra a vontade (o que a deixa mais forte), observe-a com curiosidade. Onde você sente no corpo? Ela aperta, queima, formiga? Respire fundo e acompanhe.','Como um surfista, você não briga com a onda — você fica em cima dela até ela quebrar. Cada vez que faz isso, fica mais fácil na próxima.']},
+    {t:'Os gatilhos',p:['Lugares, pessoas, horários, emoções. Certas coisas acendem a vontade. Conhecer os seus gatilhos é meio caminho andado: o que você prevê, você consegue planejar.','Faça sua lista. Para cada gatilho, tenha um plano simples: o que fazer, pra quem ligar, pra onde ir. Estar preparado tira o poder da surpresa.']},
+    {t:'O kit de emergência',p:['Quando a onda vier forte, tenha um plano pronto: beber água gelada, sair pra caminhar, ligar pra alguém, fazer a respiração, abrir o app e usar o botão de SOS.','Aja antes de pensar demais. O segredo não é ter força de vontade infinita — é ter um plano que você segue no automático até a onda passar.']}
+  ]},
+  {id:'recomeco',titulo:'Recomeçar é Coragem',sub:'Sobre recaídas e levantar de novo',cor:'#B5546E',cor2:'#7A3046',emoji:'🌱',caps:[
+    {t:'Recair não é voltar à estaca zero',p:['Uma recaída não apaga tudo que você aprendeu e se tornou. Você não voltou ao começo — você está num ponto mais à frente, com mais experiência e mais consciência.','A estrada da recuperação raramente é uma linha reta. Tropeçar faz parte de aprender a andar. O que define você não é a queda, é o levantar.']},
+    {t:'O dia seguinte',p:['Depois de uma recaída, a culpa grita. Mas a culpa é uma armadilha: ela te faz sentir tão mal que você busca alívio justamente onde não devia.','Troque o "eu falhei" pelo "eu aprendi algo". Seja gentil. Tome água, descanse, e recomece a contagem sem drama. Amanhã é uma página em branco.']},
+    {t:'O que a recaída ensina',p:['Toda recaída carrega uma informação valiosa: o que te derrubou? Um lugar, uma emoção, uma companhia, um descuido? Isso é ouro pra sua próxima caminhada.','Em vez de se punir, vire detetive da sua própria história. Cada queda mapeada é uma armadilha a menos no caminho que ainda falta.']},
+    {t:'Levantar mais forte',p:['Quem recomeça depois de cair tem algo que ninguém pode tirar: a prova de que é capaz de levantar. Isso é resiliência, e ela só cresce com o uso.','Recomeçar não é fraqueza. É o ato mais corajoso que existe. Levante a cabeça: você ainda está na luta, e isso já é uma vitória.']}
+  ]},
+  {id:'cartas',titulo:'Cartas a Mim Mesmo',sub:'No espírito de Sêneca',cor:'#8B6BB1',cor2:'#574080',emoji:'✉️',caps:[
+    {t:'Carta sobre o tempo',p:['De todos os bens, o tempo é o único que, uma vez perdido, não volta. O vício rouba tempo — horas, dias, anos — e promete devolvê-los em alívio que nunca dura.','Cada dia limpo é um dia que você reconquista pra si. Não é pouco. É a sua vida voltando pras suas mãos, hora a hora.']},
+    {t:'Carta sobre o que basta',p:['A ânsia por mais é um poço sem fundo. O vício sempre pede mais uma dose, mais uma vez, e nunca está satisfeito. A paz não está em ter mais, mas em precisar de menos.','Descubra o suficiente. Um dia tranquilo, um sono bom, uma refeição, uma conversa honesta. Quem aprende a se contentar é livre — e ninguém o domina.']},
+    {t:'Carta sobre os amigos',p:['Escolha bem com quem caminha. Há quem te puxe pra baixo e há quem te levante. Na recuperação, as companhias certas valem mais que qualquer remédio.','E seja, você também, essa companhia pra alguém. Ao estender a mão a quem ainda sofre, você fortalece a sua própria caminhada.']},
+    {t:'Carta sobre a liberdade',p:['Ninguém é livre sendo escravo de um hábito que o controla. A verdadeira liberdade começa no dia em que você decide não ser mais arrastado.','Você está construindo essa liberdade, tijolo por tijolo, dia após dia. Não é fácil, mas é seu. E não há nada mais digno do que se pertencer.']}
+  ]}
+];
 const LOJA = [
   {id:'aurora',e:'🌈',nome:'Selo Aurora',preco:200,desc:'Distintivo especial no perfil'},
   {id:'diamante',e:'💎',nome:'Avatar Diamante',preco:150,desc:'Moldura brilhante'},
@@ -744,8 +830,9 @@ const PALETAS_RELOGIO = [
   {id:'tabaco',nome:'Tabaco',emoji:'🍂',cor:'#EBBE7A',cor2:'#9A6B30',folha:'tabaco'}
 ];
 const MODELOS_RELOGIO = [
-  {id:'flipDias',nome:'Torre Flip',emoji:'🎰',desc:'Dias gigantes em cima'},
-  {id:'flipHoras',nome:'Relógio Flip',emoji:'⏱️',desc:'Horas gigantes em cima'},
+  {id:'flip',nome:'Flip',emoji:'🎰',desc:'Números caindo'},
+  {id:'minimal',nome:'Minimal',emoji:'✨',desc:'Tipografia limpa'},
+  {id:'pilulas',nome:'Pílulas',emoji:'💊',desc:'Cartões separados'},
   {id:'neon',nome:'Neon',emoji:'💡',desc:'Brilho moderno'},
   {id:'anel',nome:'Anel',emoji:'⭕',desc:'Círculo de progresso'}
 ];
@@ -1005,6 +1092,65 @@ const App={
     $('#main').style.display='none'; $('#onb').style.display='flex';
     App.toast('Sua conta existe! Faltou salvar o perfil — vamos completar.');
     Onb.ir(2);
+  },
+  abrirEstante(){
+    const ov=$('#estanteOverlay');
+    const fileiras=[];for(let i=0;i<LIVROS.length;i+=3)fileiras.push(LIVROS.slice(i,i+3));
+    ov.innerHTML=`
+      <div class="estante-topo">
+        <button class="madeira-btn" onclick="App.fecharEstante()">‹ Voltar</button>
+        <div class="estante-titulo"><b>Estante</b><small>Vida Nova</small></div>
+        <div style="width:74px"></div>
+      </div>
+      <div class="prateleira">
+        ${fileiras.map(f=>`<div class="prateleira-piso">
+          ${f.map(l=>`<div class="livro-capa" style="--lc1:${l.cor};--lc2:${l.cor2}" onclick="App.abrirLivro('${l.id}')">
+            <div class="emoji">${l.emoji}</div>
+            <div><div class="tit">${l.titulo}</div><div class="sub">${l.sub}</div></div>
+          </div>`).join('')}
+        </div>`).join('')}
+      </div>
+      <p style="text-align:center;color:#C79A6E;font-size:11.5px;padding:14px 24px 30px;line-height:1.5">Livros escritos para o Vida Nova, livres para ler. Toque numa capa para abrir. 📖</p>`;
+    ov.classList.add('on'); ov.scrollTop=0;
+  },
+  fecharEstante(){$('#estanteOverlay').classList.remove('on')},
+  abrirLivro(id){App.livroAtual=id;App.capAtual=0;App.renderLeitor();$('#leitorOverlay').classList.add('on');$('#leitorOverlay').scrollTop=0},
+  fecharLivro(){$('#leitorOverlay').classList.remove('on')},
+  renderLeitor(){
+    const l=LIVROS.find(x=>x.id===App.livroAtual); if(!l)return;
+    const cap=l.caps[App.capAtual];
+    $('#leitorOverlay').innerHTML=`
+      <div class="leitor-topo">
+        <button class="madeira-btn" onclick="App.fecharLivro()">‹ Estante</button>
+        <div class="lt-tit">${esc(l.titulo)}</div>
+        <div style="width:84px"></div>
+      </div>
+      <div class="leitor-palco">
+        <div class="pagina" id="paginaLivro">
+          <div class="cap-num">Capítulo ${App.capAtual+1} de ${l.caps.length}</div>
+          <h2>${esc(cap.t)}</h2>
+          ${cap.p.map(par=>`<p>${esc(par)}</p>`).join('')}
+        </div>
+      </div>
+      <div class="leitor-nav">
+        <button onclick="App.virarPagina(-1)" ${App.capAtual===0?'disabled':''}>‹</button>
+        <span class="pag-ind">${App.capAtual+1} / ${l.caps.length}</span>
+        <button onclick="App.virarPagina(1)" ${App.capAtual===l.caps.length-1?'disabled':''}>›</button>
+      </div>`;
+  },
+  virarPagina(dir){
+    const l=LIVROS.find(x=>x.id===App.livroAtual); if(!l)return;
+    const novo=App.capAtual+dir;
+    if(novo<0||novo>=l.caps.length)return;
+    const pag=$('#paginaLivro');
+    if(!pag){App.capAtual=novo;App.renderLeitor();return}
+    pag.classList.add(dir>0?'sai-esq':'sai-dir');
+    setTimeout(()=>{
+      App.capAtual=novo; App.renderLeitor();
+      const nova=$('#paginaLivro');
+      if(nova){nova.classList.add(dir>0?'sai-dir':'sai-esq');void nova.offsetWidth;nova.classList.remove('sai-dir','sai-esq')}
+      $('#leitorOverlay').scrollTop=0;
+    },340);
   },
 
   async addMoedas(n,motivo){
@@ -1635,9 +1781,9 @@ function formatarMarco(d){
 }
 function padTempo(h,m,s){return String(h).padStart(2,'0')+String(m).padStart(2,'0')+String(s).padStart(2,'0')}
 function estiloRelogio(){
-  const mid=localStorage.getItem('vn_relogio_modelo')||'flipDias';
+  const mid=localStorage.getItem('vn_relogio_modelo')||'flip';
   const cid=localStorage.getItem('vn_relogio_cor')||'ouro';
-  const modelo=MODELOS_RELOGIO.find(m=>m.id===mid)?mid:'flipDias';
+  const modelo=MODELOS_RELOGIO.find(m=>m.id===mid)?mid:'flip';
   const cor=PALETAS_RELOGIO.find(c=>c.id===cid)||PALETAS_RELOGIO[0];
   return {modelo,cor};
 }
@@ -1647,8 +1793,7 @@ const FlipClock={
   _unidade(v){
     const u=document.createElement('div');u.className='fu';
     u.style.width='.66em';u.style.height='1em';u.dataset.v=v;
-    u.innerHTML=`<div class="meta topo"><span>${v}</span></div><div class="meta base"><span>${v}</span></div>`+
-                `<div class="dobra d-topo"><span>${v}</span></div><div class="dobra d-base"><span>${v}</span></div>`;
+    u.innerHTML=`<span class="dig cur">${v}</span>`;
     return u;
   },
   montar(cont,str,tempo){
@@ -1668,59 +1813,65 @@ const FlipClock={
   _set(u,novo){
     novo=String(novo);
     if(!u||u.dataset.v===novo)return;
-    const antigo=u.dataset.v;u.dataset.v=novo;
-    u.querySelector('.dobra.d-topo span').textContent=antigo;
-    u.querySelector('.dobra.d-base span').textContent=novo;
-    u.querySelector('.meta.topo span').textContent=novo;
-    u.querySelector('.meta.base span').textContent=antigo;
-    u.classList.remove('flipping');void u.offsetWidth;u.classList.add('flipping');
-    clearTimeout(u._t);
-    u._t=setTimeout(()=>{
-      u.classList.remove('flipping');
-      u.querySelector('.meta.base span').textContent=novo;
-      u.querySelector('.dobra.d-topo span').textContent=novo;
-    },600);
+    u.dataset.v=novo;
+    const atual=u.querySelector('.dig.cur');
+    const novoEl=document.createElement('span');
+    novoEl.className='dig acima'; novoEl.textContent=novo;  // entra de cima
+    u.appendChild(novoEl);
+    void u.offsetWidth;                                      // reflow
+    novoEl.classList.remove('acima'); novoEl.classList.add('cur'); // cai pro centro
+    if(atual){
+      atual.classList.remove('cur'); atual.classList.add('abaixo'); // sai por baixo
+      const velho=atual; setTimeout(()=>{try{velho.remove()}catch(e){}},480);
+    }
   }
 };
 
 /* -------------------- MODELOS DE RELÓGIO -------------------- */
 const Relogio={
   html(modelo,dias,h,m,s){
-    const t=padTempo(h,m,s);
-    if(modelo==='flipHoras') return `
-      <div class="contador-bloco"><div class="flip-row" id="flipRelogio" style="font-size:58px"></div><div class="lbl">horas · minutos · segundos</div></div>
-      <div class="contador-bloco"><div class="flip-row" id="flipDias" style="font-size:46px"></div><div class="lbl">${dias===1?'dia limpo':'dias limpos'}</div></div>`;
+    const t=padTempo(h,m,s), hms=t.slice(0,2)+':'+t.slice(2,4)+':'+t.slice(4,6);
+    if(modelo==='minimal') return `
+      <div class="contador-bloco"><div class="titulo">Dias de vida nova</div><div class="min-dias" id="minDias">${dias}</div></div>
+      <div class="contador-bloco"><div class="min-rel" id="minRel">${hms}</div><div class="lbl">horas · min · seg</div></div>`;
+    if(modelo==='pilulas') return `
+      <div class="pil-dias"><b id="pilDias">${dias}</b><span>${dias===1?'dia limpo':'dias limpos'}</span></div>
+      <div class="pil-row">
+        <div class="pil"><b id="pilH">${t.slice(0,2)}</b><span>horas</span></div>
+        <div class="pil"><b id="pilM">${t.slice(2,4)}</b><span>min</span></div>
+        <div class="pil"><b id="pilS">${t.slice(4,6)}</b><span>seg</span></div>
+      </div>`;
     if(modelo==='neon') return `
       <div class="contador-bloco"><div class="titulo">Dias de vida nova</div><div class="neon-num" id="neonDias">${dias}</div></div>
-      <div class="contador-bloco"><div class="neon-rel" id="neonRel">${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}</div><div class="lbl">horas · min · seg</div></div>`;
+      <div class="contador-bloco"><div class="neon-rel" id="neonRel">${hms}</div><div class="lbl">horas · min · seg</div></div>`;
     if(modelo==='anel'){
       const circ=2*Math.PI*108;
       return `<div class="anel-wrap">
         <svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="108" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
-        <circle id="anelProg" cx="120" cy="120" r="108" fill="none" stroke="var(--clk1)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ}" style="filter:drop-shadow(0 0 6px var(--clk1))"/></svg>
+        <circle id="anelProg" cx="120" cy="120" r="108" fill="none" stroke="var(--clk1)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ}" transform="rotate(-90 120 120)" style="filter:drop-shadow(0 0 6px var(--clk1));transition:stroke-dashoffset 1s"/></svg>
         <div class="centro"><div class="d" id="anelDias">${dias}</div><div class="l">${dias===1?'dia limpo':'dias limpos'}</div></div>
       </div>
-      <div class="contador-bloco"><div class="anel-rel" id="anelRel">${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}</div></div>`;
+      <div class="contador-bloco"><div class="anel-rel" id="anelRel">${hms}</div></div>`;
     }
-    // padrão: flipDias
+    // padrão: flip (números caindo)
     return `
       <div class="contador-bloco"><div class="titulo">Dias de vida nova</div><div class="flip-row" id="flipDias" style="font-size:74px"></div><div class="lbl">${dias===1?'dia limpo':'dias limpos'}</div></div>
       <div class="contador-bloco"><div class="flip-row" id="flipRelogio" style="font-size:50px"></div><div class="lbl">horas · minutos · segundos</div></div>`;
   },
   iniciar(modelo,dias,h,m,s){
-    if(modelo==='flipDias'||modelo==='flipHoras'){
+    if(modelo==='flip'){
       FlipClock.montar($('#flipDias'),String(dias));
       FlipClock.montar($('#flipRelogio'),padTempo(h,m,s),true);
     }else if(modelo==='anel'){
       const meds=medalhasDoTipo(),d=diasLimpos();
       const prox=meds.find(x=>x.d>d),ant=[...meds].reverse().find(x=>x.d<=d);
       const base=ant?ant.d:0,pct=prox?Math.min(100,((d-base)/(prox.d-base))*100):100;
-      const el=$('#anelProg'); if(el){const circ=2*Math.PI*108;el.style.strokeDashoffset=circ-circ*pct/100}
+      const el=$('#anelProg'); if(el){const circ=2*Math.PI*108;setTimeout(()=>el.style.strokeDashoffset=circ-circ*pct/100,60)}
     }
   },
   tick(modelo,dias,h,m,s){
     const t=padTempo(h,m,s),hms=t.slice(0,2)+':'+t.slice(2,4)+':'+t.slice(4,6);
-    if(modelo==='flipDias'||modelo==='flipHoras'){
+    if(modelo==='flip'){
       const fr=$('#flipRelogio'); if(!fr)return;
       FlipClock.atualizar(fr,t,true);
       FlipClock.atualizar($('#flipDias'),String(dias));
@@ -1730,6 +1881,12 @@ const Relogio={
     }else if(modelo==='anel'){
       const r=$('#anelRel'); if(r)r.textContent=hms;
       const dd=$('#anelDias'); if(dd)dd.textContent=dias;
+    }else if(modelo==='minimal'){
+      const r=$('#minRel'); if(r)r.textContent=hms;
+      const dd=$('#minDias'); if(dd)dd.textContent=dias;
+    }else if(modelo==='pilulas'){
+      const H=$('#pilH'),M=$('#pilM'),S=$('#pilS'),D=$('#pilDias');
+      if(H)H.textContent=t.slice(0,2);if(M)M.textContent=t.slice(2,4);if(S)S.textContent=t.slice(4,6);if(D)D.textContent=dias;
     }
   }
 };
