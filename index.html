@@ -137,18 +137,63 @@ input,select,textarea{font-family:var(--ff)}
 .card-tit h3{font-family:var(--ff-disp);font-weight:600;font-size:18px}
 .card-tit .mais{font-size:13px;color:var(--verde);font-weight:700}
 
-/* ====================== CONTADOR (signature) ====================== */
-.contador-wrap{position:relative;display:grid;place-items:center;margin:6px 0 18px;padding:8px}
-.contador-svg{width:266px;height:266px;transform:rotate(-90deg)}
-.contador-svg circle{fill:none;stroke-linecap:round}
-.contador-bg{stroke:var(--surface-2)}
-.contador-prog{stroke:url(#gradAnel);transition:stroke-dashoffset 1s cubic-bezier(.3,.9,.3,1);filter:drop-shadow(0 0 6px var(--glow))}
-.contador-centro{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
-.contador-centro .dias{font-family:var(--ff-disp);font-weight:900;font-size:64px;line-height:1;background:linear-gradient(135deg,var(--verde),var(--jade));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.contador-centro .lbl{color:var(--txt-2);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-.contador-centro .relogio{margin-top:8px;font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;color:var(--txt-3);letter-spacing:1px}
-.proxima-medalha{text-align:center;color:var(--txt-2);font-size:13px;margin-top:-6px}
+/* ====================== CONTADOR FLIP 3D (signature) ====================== */
+.contador-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;margin:10px 0 18px;padding:18px 8px;border-radius:26px;overflow:hidden}
+/* folha temática de fundo */
+.folha-bg{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:.12;z-index:0}
+.folha-bg svg{width:78%;height:78%;filter:drop-shadow(0 0 20px var(--clk1))}
+.contador-bloco{position:relative;z-index:1;text-align:center}
+.contador-bloco .titulo{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--txt-2);margin-bottom:8px}
+.contador-bloco .lbl{color:var(--txt-2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+
+/* fileira de dígitos */
+.flip-row{display:flex;align-items:center;justify-content:center;gap:5px}
+.flip-sep{font-weight:900;font-size:.5em;color:var(--clk1);align-self:center;animation:piscaSep 1s steps(1) infinite;padding:0 1px}
+@keyframes piscaSep{50%{opacity:.35}}
+
+/* unidade flip */
+.fu{position:relative;display:inline-block;border-radius:.14em;perspective:300px;font-family:var(--ff-disp);font-weight:900;
+  background:linear-gradient(180deg,var(--clk1),var(--clk2));
+  box-shadow:0 .08em .18em rgba(0,0,0,.45),inset 0 0 0 1.5px rgba(255,255,255,.25);}
+.fu .meta,.fu .dobra{position:absolute;left:0;width:100%;height:50%;overflow:hidden;text-align:center;color:#1a1205;text-shadow:0 1px 1px rgba(255,255,255,.25);backface-visibility:hidden;background:linear-gradient(180deg,var(--clk1),var(--clk2))}
+.fu .meta span,.fu .dobra span{display:block;height:1em;line-height:1em;width:100%}
+.fu .topo{top:0;border-radius:.14em .14em 0 0;border-bottom:1.5px solid rgba(0,0,0,.22)}
+.fu .base{bottom:0;border-radius:0 0 .14em .14em}
+.fu .base span,.fu .dobra.d-base span{transform:translateY(-.5em)}
+.fu .dobra.d-topo{top:0;border-radius:.14em .14em 0 0;transform-origin:bottom;border-bottom:1.5px solid rgba(0,0,0,.22)}
+.fu .dobra.d-base{bottom:0;border-radius:0 0 .14em .14em;transform-origin:top;transform:rotateX(90deg)}
+.fu.flipping .dobra.d-topo{animation:cairTopo .3s ease-in forwards}
+.fu.flipping .dobra.d-base{animation:subirBase .3s ease-out .28s forwards}
+@keyframes cairTopo{to{transform:rotateX(-90deg)}}
+@keyframes subirBase{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+
+.proxima-medalha{text-align:center;color:var(--txt-2);font-size:13px;margin-top:-6px;position:relative;z-index:1}
+/* modelo neon */
+.neon-num{font-family:var(--ff-disp);font-weight:900;font-size:86px;line-height:.95;color:var(--clk1);text-shadow:0 0 10px var(--clk1),0 0 26px var(--clk2)}
+.neon-rel{font-family:var(--ff-disp);font-weight:900;font-size:46px;letter-spacing:3px;color:var(--clk1);text-shadow:0 0 8px var(--clk1),0 0 18px var(--clk2);font-variant-numeric:tabular-nums;margin-top:2px}
+/* modelo anel */
+.anel-wrap{position:relative;width:230px;height:230px;display:grid;place-items:center}
+.anel-wrap svg{width:100%;height:100%}
+.anel-wrap .centro{position:absolute;text-align:center}
+.anel-wrap .centro .d{font-family:var(--ff-disp);font-weight:900;font-size:72px;line-height:1;color:var(--clk1)}
+.anel-wrap .centro .l{font-size:12px;color:var(--txt-2);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.anel-rel{font-family:var(--ff-disp);font-weight:900;font-size:40px;letter-spacing:2px;color:var(--txt);font-variant-numeric:tabular-nums}
 .proxima-medalha b{color:var(--verde)}
+/* seletor de estilo de relógio */
+.relogio-estilos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rel-opt{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 10px;border-radius:var(--radius-sm);background:var(--surface-2);border:1.5px solid var(--linha);transition:.2s}
+.rel-opt:active{transform:scale(.97)}
+.rel-opt.sel{border-color:var(--clk1);box-shadow:0 0 0 3px color-mix(in srgb,var(--clk1) 32%,transparent)}
+.rel-amostra{position:relative;width:50px;height:50px;border-radius:12px;display:grid;place-items:center;font-size:26px;background:linear-gradient(135deg,var(--clk1),var(--clk2));box-shadow:0 4px 10px -4px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.25)}
+.rel-opt b{font-size:12.5px;font-weight:700;text-align:center;line-height:1.2;color:var(--txt)}
+.rel-check{position:absolute;top:8px;right:9px;color:var(--clk1);font-weight:900;font-size:15px}
+/* grid de cores */
+.cores-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cor-opt{display:flex;flex-direction:column;align-items:center;gap:6px;background:none}
+.cor-opt:active{transform:scale(.94)}
+.cor-bola{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:17px;box-shadow:0 4px 10px -3px rgba(0,0,0,.4);border:3px solid transparent;transition:.2s}
+.cor-opt.sel .cor-bola{border-color:var(--txt);transform:scale(1.09)}
+.cor-opt small{font-size:10px;color:var(--txt-2);font-weight:600}
 
 /* stats grid */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
@@ -189,6 +234,17 @@ input,select,textarea{font-family:var(--ff)}
 .mini-barra.bloq i{background:var(--txt-3)}
 .orgao.locked{opacity:.55}
 .orgao .marco{font-size:11px;color:var(--txt-3);font-weight:600;margin-top:5px}
+/* 12 passos */
+.passo{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid var(--linha)}
+.passo:last-child{border-bottom:none}
+.passo-check{width:40px;height:40px;border-radius:50%;flex-shrink:0;border:2px solid var(--linha);background:var(--surface-2);font-family:var(--ff-disp);font-weight:900;font-size:16px;color:var(--txt-2);display:grid;place-items:center;transition:.2s}
+.passo-check:active{transform:scale(.9)}
+.passo.feito .passo-check{background:linear-gradient(135deg,var(--verde),var(--verde-2));border-color:transparent;color:#04130B}
+.passo-corpo{flex:1;min-width:0}
+.passo-corpo b{font-weight:700;font-size:15px;display:block}
+.passo-corpo small{color:var(--txt-2);font-size:13px;line-height:1.45;display:block;margin:3px 0}
+.passo-nota{background:var(--surface-2);border-radius:10px;padding:9px 12px;font-size:13px;font-style:italic;color:var(--txt);margin:8px 0 4px;border-left:3px solid var(--verde)}
+.passo-anotar{font-size:12.5px;font-weight:700;color:var(--verde);margin-top:4px}
 
 /* ====================== MEDALHAS ====================== */
 .medalhas-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
@@ -298,9 +354,9 @@ input,select,textarea{font-family:var(--ff)}
   background:color-mix(in srgb,var(--surface) 86%,transparent);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--linha);
 }
-.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;color:var(--txt-3);transition:.2s}
-.nav button .ic{font-size:21px;transition:.2s}
-.nav button span{font-size:10px;font-weight:700}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;color:var(--txt-3);transition:.2s}
+.nav button .ic{font-size:20px;transition:.2s}
+.nav button span{font-size:9.5px;font-weight:700}
 .nav button.on{color:var(--verde)}
 .nav button.on .ic{transform:translateY(-2px)}
 
@@ -444,13 +500,13 @@ input,select,textarea{font-family:var(--ff)}
   <!-- Passo 6: conta -->
   <div class="onb-passo" data-passo="6">
     <span style="font-size:30px">🔐</span>
-    <h1 class="onb-titulo">Crie sua conta</h1>
-    <p class="onb-sub">Pra salvar seu progresso e participar da comunidade.</p>
+    <h1 class="onb-titulo" id="p6tit">Crie sua conta</h1>
+    <p class="onb-sub" id="p6sub">Pra salvar seu progresso e participar da comunidade.</p>
     <div class="campo"><label>Como quer ser chamado(a)</label><input class="inp" id="inpNome" placeholder="Seu nome ou apelido"></div>
-    <div class="campo"><label>E-mail</label><input class="inp" id="inpEmail" type="email" inputmode="email" placeholder="voce@email.com"></div>
-    <div class="campo"><label>Senha</label><input class="inp" id="inpSenha" type="password" placeholder="Mínimo 6 caracteres"></div>
-    <button class="btn" id="btnCriar" onclick="Auth.criar()">Criar conta e começar</button>
-    <button class="btn txt" onclick="Onb.entrar()">Já tenho conta — entrar</button>
+    <div class="campo" id="campoEmail"><label>E-mail</label><input class="inp" id="inpEmail" type="email" inputmode="email" placeholder="voce@email.com"></div>
+    <div class="campo" id="campoSenha"><label>Senha</label><input class="inp" id="inpSenha" type="password" placeholder="Mínimo 6 caracteres"></div>
+    <button class="btn" id="btnCriar" onclick="Auth.finalizarCadastro()">Criar conta e começar</button>
+    <button class="btn txt" id="btnJaTenho" onclick="Onb.entrar()">Já tenho conta — entrar</button>
   </div>
 
   <!-- Passo login -->
@@ -461,6 +517,7 @@ input,select,textarea{font-family:var(--ff)}
     <div class="campo"><label>E-mail</label><input class="inp" id="inEmail" type="email" inputmode="email" placeholder="voce@email.com"></div>
     <div class="campo"><label>Senha</label><input class="inp" id="inSenha" type="password" placeholder="Sua senha"></div>
     <button class="btn" id="btnEntrar" onclick="Auth.entrar()">Entrar</button>
+    <button class="btn txt" onclick="Auth.recuperar()">Esqueci minha senha</button>
     <button class="btn txt" onclick="Onb.ir(0)">Voltar</button>
   </div>
 
@@ -485,6 +542,8 @@ input,select,textarea{font-family:var(--ff)}
     <div class="tela" id="tSaude"></div>
     <!-- MEDALHAS -->
     <div class="tela" id="tMedalhas"></div>
+    <!-- JORNADA (12 passos) -->
+    <div class="tela" id="tPassos"></div>
     <!-- COMUNIDADE -->
     <div class="tela" id="tComunidade"></div>
     <!-- MAIS -->
@@ -495,8 +554,9 @@ input,select,textarea{font-family:var(--ff)}
   <nav class="nav">
     <button class="on" data-tela="tInicio" onclick="App.aba('tInicio',this)"><span class="ic">🏠</span><span>Início</span></button>
     <button data-tela="tSaude" onclick="App.aba('tSaude',this)"><span class="ic">❤️‍🩹</span><span>Saúde</span></button>
+    <button data-tela="tPassos" onclick="App.aba('tPassos',this)"><span class="ic">🪜</span><span>Jornada</span></button>
     <button data-tela="tMedalhas" onclick="App.aba('tMedalhas',this)"><span class="ic">🏅</span><span>Medalhas</span></button>
-    <button data-tela="tComunidade" onclick="App.aba('tComunidade',this)"><span class="ic">💬</span><span>Comunidade</span></button>
+    <button data-tela="tComunidade" onclick="App.aba('tComunidade',this)"><span class="ic">💬</span><span>Grupo</span></button>
     <button data-tela="tMais" onclick="App.aba('tMais',this)"><span class="ic">⚡</span><span>Mais</span></button>
   </nav>
 </div>
@@ -613,7 +673,53 @@ const FRASES = [
   'Seu corpo está se curando enquanto você lê isso.',
   'A pessoa que você quer ser começa na decisão de hoje.',
   'Pedir ajuda é coragem, não fraqueza.',
-  'Olhe o quanto você já caminhou.'
+  'Olhe o quanto você já caminhou.',
+  'Você não está sozinho nessa. Nunca esteve.',
+  'A vontade é uma onda: sobe, quebra e sempre passa.',
+  'Hoje você escolheu você mesmo. Isso é tudo.',
+  'O passado não define o seu amanhã.',
+  'Respira. Esse momento difícil também vai passar.',
+  'Cada "não" pra recaída é um "sim" pra sua vida.',
+  'Você já provou que consegue. Continue provando.',
+  'Recomeçar não é fracassar. É ter coragem de novo.',
+  'Seu eu do futuro está orgulhoso desse momento.',
+  'Pequenos passos todos os dias viram uma vida nova.',
+  'A liberdade começa quando você decide não fugir mais.',
+  'Você merece a paz que está construindo.',
+  'Force-se a esperar 10 minutos. A vontade afrouxa.',
+  'Orgulhe-se: hoje é mais um dia que você dominou.',
+  'Cada dia limpo é um presente que você dá a quem te ama.',
+  'Não desista de um dia ruim. Desista da ideia de desistir.',
+  'Sua coragem é maior do que qualquer recaída.',
+  'O caminho é longo, mas você não precisa correr.',
+  'Você está se reconstruindo, tijolo por tijolo.',
+  'Tem alguém torcendo por você hoje. Inclusive você.',
+  'A dor de resistir é temporária. O orgulho é pra sempre.',
+  'Comemore cada vitória, por menor que pareça.',
+  'Você é a prova viva de que dá pra mudar.',
+  'Seja gentil com você. A jornada já é difícil o bastante.',
+  'Um dia de cada vez — e hoje já é uma vitória.'
+];
+const PASSOS = [
+  {n:1,t:'Reconhecer',d:'Admito que perdi o controle e que, sozinho do jeito que tentei, não dei conta.'},
+  {n:2,t:'Esperança',d:'Acredito que posso me reerguer com apoio: de pessoas, da minha fé ou força interior.'},
+  {n:3,t:'Decidir',d:'Entrego minha recuperação a esse apoio e à minha vontade de mudar, um dia de cada vez.'},
+  {n:4,t:'Inventário',d:'Olho pra dentro com honestidade: meus gatilhos, medos e feridas.'},
+  {n:5,t:'Partilhar',d:'Conto a verdade sobre mim a alguém de confiança e tiro o peso do segredo.'},
+  {n:6,t:'Prontidão',d:'Fico disposto a largar os hábitos que me prendem.'},
+  {n:7,t:'Transformar',d:'Peço ajuda pra mudar o que sozinho não consigo.'},
+  {n:8,t:'Lista',d:'Reconheço quem eu feri e me disponho a consertar.'},
+  {n:9,t:'Reparar',d:'Conserto o que for possível, sem causar mais dano a ninguém.'},
+  {n:10,t:'Vigilância',d:'Me observo todo dia e, quando erro, admito na hora.'},
+  {n:11,t:'Conexão',d:'Cultivo minha calma todo dia: oração, meditação, respiração — o que funcionar pra mim.'},
+  {n:12,t:'Doação',d:'Tendo uma vida nova, estendo a mão a quem ainda sofre.'}
+];
+const INVENTARIO_PERGUNTAS = [
+  {id:'gratidao',q:'Pelo que você é grato hoje?',ph:'Uma coisa boa, por menor que seja...'},
+  {id:'vitoria',q:'Qual foi sua vitória de hoje?',ph:'Resistir, pedir ajuda, cuidar de si...'},
+  {id:'dificuldade',q:'O que foi difícil hoje?',ph:'Um gatilho, uma vontade, um momento...'},
+  {id:'reparar',q:'Magoei alguém ou a mim mesmo? Preciso reparar algo?',ph:'Seja honesto, sem se julgar...'},
+  {id:'amanha',q:'O que eu quero pro meu amanhã?',ph:'Uma intenção simples...'}
 ];
 const LOJA = [
   {id:'aurora',e:'🌈',nome:'Selo Aurora',preco:200,desc:'Distintivo especial no perfil'},
@@ -628,8 +734,32 @@ const RECURSOS = [
   {ic:'🟩',nome:'Narcóticos Anônimos',desc:'Grupos de apoio NA Brasil',link:'https://www.na.org.br'},
   {ic:'🏥',nome:'CAPS AD',desc:'Tratamento gratuito pelo SUS',link:'https://www.gov.br/saude'}
 ];
-
-/* -------------------- ESTADO -------------------- */
+const PALETAS_RELOGIO = [
+  {id:'ouro',nome:'Ouro',emoji:'🥇',cor:'#F5D76E',cor2:'#E0A227',folha:null},
+  {id:'esmeralda',nome:'Esmeralda',emoji:'💚',cor:'#62E7A4',cor2:'#1FA862',folha:null},
+  {id:'roxo',nome:'Roxo',emoji:'💜',cor:'#BBA0F7',cor2:'#7B5BD0',folha:null},
+  {id:'rubi',nome:'Rubi',emoji:'❤️',cor:'#FF9A9A',cor2:'#D14545',folha:null},
+  {id:'oceano',nome:'Oceano',emoji:'💙',cor:'#7CC5FF',cor2:'#3B82F6',folha:null},
+  {id:'maconha',nome:'Folha Verde',emoji:'🌿',cor:'#7BE8A6',cor2:'#1FA862',folha:'maconha'},
+  {id:'tabaco',nome:'Tabaco',emoji:'🍂',cor:'#EBBE7A',cor2:'#9A6B30',folha:'tabaco'}
+];
+const MODELOS_RELOGIO = [
+  {id:'flipDias',nome:'Torre Flip',emoji:'🎰',desc:'Dias gigantes em cima'},
+  {id:'flipHoras',nome:'Relógio Flip',emoji:'⏱️',desc:'Horas gigantes em cima'},
+  {id:'neon',nome:'Neon',emoji:'💡',desc:'Brilho moderno'},
+  {id:'anel',nome:'Anel',emoji:'⭕',desc:'Círculo de progresso'}
+];
+const FOLHAS_SVG = {
+  maconha:`<svg viewBox="0 0 100 100" fill="currentColor" style="color:var(--clk1)"><g>
+    <path d="M50 92 Q47 60 50 14 Q53 60 50 92Z"/>
+    <path d="M50 90 Q44 62 30 30 Q42 56 50 88Z"/><path d="M50 90 Q56 62 70 30 Q58 56 50 88Z"/>
+    <path d="M50 88 Q40 68 14 52 Q36 64 50 86Z"/><path d="M50 88 Q60 68 86 52 Q64 64 50 86Z"/>
+    <path d="M50 86 Q42 76 20 76 Q40 78 50 85Z"/><path d="M50 86 Q58 76 80 76 Q60 78 50 85Z"/>
+    <rect x="49" y="86" width="2" height="10"/></g></svg>`,
+  tabaco:`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--clk1)">
+    <path d="M50 8 C26 22 24 74 50 94 C76 74 74 22 50 8Z" fill="currentColor" fill-opacity=".5"/>
+    <path d="M50 12 L50 90 M50 34 L32 26 M50 34 L68 26 M50 52 L28 46 M50 52 L72 46 M50 70 L34 66 M50 70 L66 66" stroke-opacity=".7"/></svg>`
+};
 let UID=null, PERFIL=null, unsubPerfil=null, unsubFeed=null, unsubChat=null;
 const $=(s)=>document.querySelector(s);
 const fmtR$=(v)=>'R$ '+(v||0).toLocaleString('pt-BR',{maximumFractionDigits:0});
@@ -646,25 +776,53 @@ function saudeDoTipo(){return SAUDE[PERFIL?.tipo||'alcool']}
 
 /* -------------------- AUTH -------------------- */
 const Auth={
+  async finalizarCadastro(){
+    if(App.modoCompletar) return this.salvarPerfilLogado();
+    return this.criar();
+  },
+  perfilDados(nome,email){
+    return {
+      nome, email:email||'',
+      tipo:Onb.dados.tipo||'alcool',
+      substancia:Onb.dados.substancia||'',
+      qtdDia:parseFloat($('#inpQtd')?.value)||0,
+      gastoDia:parseFloat($('#inpGasto')?.value)||0,
+      dataInicio:Onb.dados.dataInicio||Date.now(),
+      moedas:0, streak:0, ultimoCheckin:null, posts:0,
+      criadoEm:Date.now()
+    };
+  },
   async criar(){
     const nome=$('#inpNome').value.trim(), email=$('#inpEmail').value.trim(), senha=$('#inpSenha').value;
     if(!nome||!email||senha.length<6)return App.toast('Preencha nome, e-mail e senha (6+ caracteres).');
     const b=$('#btnCriar'); b.disabled=true; b.textContent='Criando...';
+    App.criandoConta=true;
     try{
       const cred=await auth.createUserWithEmailAndPassword(email,senha);
-      await db.collection(COL.usuarios).doc(cred.user.uid).set({
-        nome, email,
-        tipo:Onb.dados.tipo||'alcool',
-        substancia:Onb.dados.substancia||'',
-        qtdDia:parseFloat($('#inpQtd')?.value)||0,
-        gastoDia:parseFloat($('#inpGasto')?.value)||0,
-        dataInicio:Onb.dados.dataInicio||Date.now(),
-        moedas:0, streak:0, ultimoCheckin:null, posts:0,
-        criadoEm:Date.now()
-      });
+      await db.collection(COL.usuarios).doc(cred.user.uid).set(this.perfilDados(nome,email));
     }catch(e){
       b.disabled=false; b.textContent='Criar conta e começar';
-      App.toast(traduzErro(e.code));
+      App.criandoConta=false;
+      if(e.code==='permission-denied'||(e.message||'').includes('permission'))
+        App.erroLogin('O banco está bloqueando o salvamento (regras do Firestore). Precisamos liberar as coleções vidanova_.');
+      else App.toast(traduzErro(e.code));
+    }
+  },
+  /* conta já existe no login, mas faltou o perfil: salva no usuário logado */
+  async salvarPerfilLogado(){
+    const nome=$('#inpNome').value.trim();
+    if(!nome)return App.toast('Como quer ser chamado(a)?');
+    if(!UID)return App.toast('Sessão perdida. Entre de novo.');
+    const b=$('#btnCriar'); b.disabled=true; b.textContent='Salvando...';
+    try{
+      await db.collection(COL.usuarios).doc(UID).set(this.perfilDados(nome,auth.currentUser?.email),{merge:true});
+      App.modoCompletar=false;
+      // o onSnapshot detecta o perfil e entra automaticamente
+    }catch(e){
+      b.disabled=false; b.textContent='Salvar e entrar';
+      if(e.code==='permission-denied'||(e.message||'').includes('permission'))
+        App.erroLogin('O banco está bloqueando o salvamento (regras do Firestore). Precisamos liberar as coleções vidanova_.');
+      else App.toast(traduzErro(e.code));
     }
   },
   async entrar(){
@@ -674,6 +832,14 @@ const Auth={
     const b=$('#btnEntrar'); if(b){b.disabled=true;b.textContent='Entrando...'}
     try{await auth.signInWithEmailAndPassword(email,senha)}
     catch(e){if(b){b.disabled=false;b.textContent='Entrar'} App.toast(traduzErro(e.code))}
+  },
+  async recuperar(){
+    const email=($('#inEmail')?.value||$('#inpEmail')?.value||'').trim();
+    if(!email)return App.toast('Digite seu e-mail no campo acima primeiro.');
+    try{
+      await auth.sendPasswordResetEmail(email);
+      App.toast('📧 Enviamos um link de redefinição pro seu e-mail.');
+    }catch(e){App.toast(traduzErro(e.code))}
   },
   sair(){ if(confirm('Deseja sair da sua conta?')) auth.signOut(); }
 };
@@ -691,18 +857,40 @@ function traduzErro(c){
   return m[c]||('Algo deu errado ('+(c||'desconhecido')+'). Anote esse código e me mostre.');
 }
 
-/* onAuthStateChanged — restauração de sessão DENTRO do snapshot (evita race condition) */
+/* onAuthStateChanged — trata perfil ausente, erro de permissão e evita travar girando */
+let perfilTimer=null;
 auth.onAuthStateChanged(u=>{
   if(unsubPerfil){unsubPerfil();unsubPerfil=null}
-  if(!u){UID=null;PERFIL=null;mostrarOnboarding();return}
+  clearTimeout(perfilTimer);
+  if(!u){UID=null;PERFIL=null;App.modoCompletar=false;App.criandoConta=false;mostrarOnboarding();return}
   UID=u.uid;
+  // se nada carregar (rede travada), assume perfil ausente e deixa completar — sem erro feio
+  perfilTimer=setTimeout(()=>{
+    if(!PERFIL && !App.modoCompletar && !App.criandoConta) App.completarPerfil();
+  },10000);
   unsubPerfil=db.collection(COL.usuarios).doc(u.uid).onSnapshot(snap=>{
-    if(!snap.exists)return; // perfil ainda sendo criado
+    if(!snap.exists){
+      if(App.criandoConta) return;            // criando conta agora: aguarda o set
+      clearTimeout(perfilTimer);
+      if(!PERFIL && !App.modoCompletar) App.completarPerfil(); // conta órfã: completa e recupera
+      return;
+    }
+    clearTimeout(perfilTimer);
+    App.criandoConta=false;
     const primeiraVez=!PERFIL;
     PERFIL={uid:u.uid,...snap.data()};
+    App.modoCompletar=false;
     if(primeiraVez) App.iniciar();
     else App.refresh();
-  },err=>console.warn('perfil',err));
+  },err=>{
+    clearTimeout(perfilTimer);
+    console.warn('perfil',err);
+    if(err && err.code==='permission-denied'){
+      App.erroLogin('O banco (Firestore) está bloqueando o acesso às coleções vidanova_. Precisamos liberar isso nas regras.');
+    } else if(!PERFIL && !App.modoCompletar){
+      App.completarPerfil(); // erro transitório: não trava, deixa completar
+    }
+  });
 });
 
 /* -------------------- ONBOARDING -------------------- */
@@ -721,6 +909,17 @@ const Onb={
     }
     if(p===4)Onb.ajustarUnidade();
     if(p===5&&!$('#inpData').value)Onb.agora();
+    if(p===6){
+      const c=App.modoCompletar;
+      $('#campoEmail').style.display=c?'none':'';
+      $('#campoSenha').style.display=c?'none':'';
+      $('#p6tit').textContent=c?'Complete seu perfil':'Crie sua conta';
+      $('#p6sub').textContent=c?'Só faltam seus dados pra entrar.':'Pra salvar seu progresso e participar da comunidade.';
+      $('#btnCriar').textContent=c?'Salvar e entrar':'Criar conta e começar';
+      const bj=$('#btnJaTenho');
+      if(c){bj.textContent='Sair e usar outra conta';bj.onclick=()=>{App.modoCompletar=false;auth.signOut()}}
+      else{bj.textContent='Já tenho conta — entrar';bj.onclick=()=>Onb.entrar()}
+    }
     window.scrollTo(0,0);
   },
   entrar(){this.ir('login')},
@@ -787,6 +986,7 @@ const App={
   renderTela(id){
     if(id==='tInicio')Render.inicio();
     else if(id==='tSaude')Render.saude();
+    else if(id==='tPassos')Render.passos();
     else if(id==='tMedalhas')Render.medalhas();
     else if(id==='tComunidade')Render.comunidade();
     else if(id==='tMais')Render.mais();
@@ -794,6 +994,18 @@ const App={
   toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(this._tt);this._tt=setTimeout(()=>t.classList.remove('on'),2600)},
   modal(html){$('#modal').innerHTML='<div class="pega"></div>'+html;$('#modalBg').classList.add('on')},
   fecharModal(){$('#modalBg').classList.remove('on')},
+  erroLogin(msg){
+    const b=$('#btnEntrar'); if(b){b.disabled=false;b.textContent='Entrar'}
+    const b2=$('#btnCriar'); if(b2){b2.disabled=false;b2.textContent=App.modoCompletar?'Salvar e entrar':'Criar conta e começar'}
+    this.modal(`<h2>Ops, algo travou 🛠️</h2><p>${msg}</p><button class="btn" onclick="App.fecharModal()">Entendi</button><button class="btn txt" onclick="auth.signOut();App.fecharModal()">Sair e usar outro e-mail</button>`);
+  },
+  completarPerfil(){
+    // conta logada, mas sem perfil salvo: completa o cadastro reaproveitando a conta
+    App.modoCompletar=true;
+    $('#main').style.display='none'; $('#onb').style.display='flex';
+    App.toast('Sua conta existe! Faltou salvar o perfil — vamos completar.');
+    Onb.ir(2);
+  },
 
   async addMoedas(n,motivo){
     if(!UID)return;
@@ -833,7 +1045,14 @@ const App={
     cel.classList.add('on'); soltarConfete();
     App.addMoedas(50,'medalha '+m.nome);
   },
-  fecharCel(){$('#cel').classList.remove('on')}
+  fecharCel(){$('#cel').classList.remove('on')},
+  celebrarRecomeco(diasAnteriores,recorde){
+    const cel=$('#cel');
+    cel.innerHTML=`<div class="big">🌱</div><h2>Um novo recomeço</h2>
+      <p>Recair não é fracasso — é coragem de levantar de novo. Seus ${diasAnteriores} ${diasAnteriores===1?'dia':'dias'} não foram perdidos: eles te ensinaram e te deixaram mais forte. Seu recorde é <b>${recorde} ${recorde===1?'dia':'dias'}</b>, e você vai chegar lá de novo. Um dia de cada vez. 💚</p>
+      <button class="btn" onclick="App.fecharCel();App.aba('tInicio',document.querySelector('.nav button'))">Recomeçar com força 💪</button>`;
+    cel.classList.add('on');
+  }
 };
 App.setTema(localStorage.getItem('vn_tema')||'escuro');
 
@@ -862,18 +1081,12 @@ const Render={
     const circ=2*Math.PI*120;
     const frase=FRASES[diaInt%FRASES.length];
     const horas=Math.floor((d*24)%24), mins=Math.floor((d*1440)%60), segs=Math.floor((d*86400)%60);
+    const est=estiloRelogio();
+    App.relogioModelo=est.modelo;
     $('#tInicio').innerHTML=`
-      <div class="contador-wrap">
-        <svg class="contador-svg" viewBox="0 0 266 266">
-          <circle class="contador-bg" cx="133" cy="133" r="120" stroke-width="14"/>
-          <circle class="contador-prog" cx="133" cy="133" r="120" stroke-width="14"
-            stroke-dasharray="${circ}" stroke-dashoffset="${circ-circ*pct/100}"/>
-        </svg>
-        <div class="contador-centro">
-          <div class="dias">${diaInt}</div>
-          <div class="lbl">${diaInt===1?'dia':'dias'} de vida nova</div>
-          <div class="relogio" id="relogio">${String(horas).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(segs).padStart(2,'0')}</div>
-        </div>
+      <div class="contador-wrap" style="--clk1:${est.cor.cor};--clk2:${est.cor.cor2}">
+        ${est.cor.folha?`<div class="folha-bg">${FOLHAS_SVG[est.cor.folha]}</div>`:''}
+        ${Relogio.html(est.modelo,diaInt,horas,mins,segs,pct)}
       </div>
       ${prox?`<p class="proxima-medalha">Faltam <b>${formatarFalta(prox.d-d)}</b> para a medalha <b>${prox.nome}</b> 🏅</p>`:`<p class="proxima-medalha">Você desbloqueou <b>todas as medalhas</b>! 👑</p>`}
 
@@ -899,11 +1112,13 @@ const Render={
         <p style="font-family:var(--ff-disp);font-size:17px;line-height:1.45;font-style:italic">"${frase}"</p>
       </div>`;
     this.checkinBox();
+    Relogio.iniciar(est.modelo,diaInt,horas,mins,segs);
     clearInterval(App.relogioInt);
     App.relogioInt=setInterval(()=>{
-      const r=$('#relogio'); if(!r||App.telaAtual!=='tInicio'){clearInterval(App.relogioInt);return}
-      const dd=diasLimpos();const h=Math.floor((dd*24)%24),m=Math.floor((dd*1440)%60),s=Math.floor((dd*86400)%60);
-      r.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if(App.telaAtual!=='tInicio'){clearInterval(App.relogioInt);return}
+      const dd=diasLimpos();const di=Math.floor(dd);
+      const h=Math.floor((dd*24)%24),m=Math.floor((dd*1440)%60),s=Math.floor((dd*86400)%60);
+      Relogio.tick(App.relogioModelo,di,h,m,s);
     },1000);
   },
   checkinBox(){
@@ -992,19 +1207,88 @@ const Render={
   badgesGrid(){
     const d=diasLimpos(), eco=economia(), streak=PERFIL.streak||0, posts=PERFIL.posts||0;
     const jn=lsGet('journal',[]).length;
+    const passosFeitos=Object.values(lsGet('passos',{})).filter(p=>p&&p.feito).length;
+    const invs=lsGet('inventarios',[]).length;
+    const recorde=PERFIL.recorde||Math.floor(d);
+    const recaidas=PERFIL.recaidas||0;
+    const curtidas=lsGet('curtidas',[]).length;
+    const comprados=lsGet('comprados',[]).length;
     const badges=[
       {e:'🌅',nome:'Primeiro Dia',desc:'24h limpo',ok:d>=1},
-      {e:'🔥',nome:'Constante',desc:'7 dias de check-in',ok:streak>=7},
-      {e:'💬',nome:'Voz Ativa',desc:'1º post na comunidade',ok:posts>=1},
-      {e:'💰',nome:'Economista',desc:'R$ 500 guardados',ok:eco>=500},
+      {e:'🌤️',nome:'Três Dias',desc:'72h de força',ok:d>=3},
+      {e:'⭐',nome:'Uma Semana',desc:'7 dias limpos',ok:d>=7},
+      {e:'🌙',nome:'Duas Semanas',desc:'15 dias firme',ok:d>=15},
+      {e:'🏵️',nome:'Um Mês',desc:'30 dias de vitória',ok:d>=30},
       {e:'🦅',nome:'90 Dias',desc:'Trimestre limpo',ok:d>=90},
+      {e:'🌟',nome:'Meio Ano',desc:'180 dias',ok:d>=180},
+      {e:'👑',nome:'Um Ano',desc:'365 dias',ok:d>=365},
+      {e:'💎',nome:'Veterano',desc:'2 anos firme',ok:d>=730},
+      {e:'🏆',nome:'Lenda',desc:'5 anos de vida nova',ok:d>=1825},
+      {e:'🔥',nome:'Constante',desc:'7 dias de check-in',ok:streak>=7},
+      {e:'🔥',nome:'Imparável',desc:'30 check-ins seguidos',ok:streak>=30},
+      {e:'💬',nome:'Voz Ativa',desc:'1º post no mural',ok:posts>=1},
+      {e:'🗣️',nome:'Inspirador',desc:'10 posts no mural',ok:posts>=10},
+      {e:'🤝',nome:'Apoiador',desc:'Curtiu 10 vezes',ok:curtidas>=10},
+      {e:'💰',nome:'Economista',desc:'R$ 500 guardados',ok:eco>=500},
+      {e:'🤑',nome:'Poupador',desc:'R$ 2.000 guardados',ok:eco>=2000},
       {e:'📔',nome:'Reflexivo',desc:'5 anotações no diário',ok:jn>=5},
-      {e:'👑',nome:'Um Ano',desc:'365 dias de vitória',ok:d>=365},
-      {e:'💎',nome:'Veterano',desc:'2 anos firme',ok:d>=730}
+      {e:'🪜',nome:'Caminhante',desc:'1º passo trabalhado',ok:passosFeitos>=1},
+      {e:'🧗',nome:'Os 12 Passos',desc:'Todos os passos',ok:passosFeitos>=12},
+      {e:'🔍',nome:'Autoconhecimento',desc:'5 inventários diários',ok:invs>=5},
+      {e:'🛍️',nome:'Colecionador',desc:'Resgatou na loja',ok:comprados>=1},
+      {e:'💪',nome:'Resiliente',desc:'Recomeçou e seguiu',ok:recaidas>=1},
+      {e:'🥇',nome:'Recordista',desc:'Recorde de 30+ dias',ok:recorde>=30}
     ];
     $('#medConteudo').innerHTML=`<div class="badges-grid">
       ${badges.map(b=>`<div class="badge ${b.ok?'':'locked'}"><span class="e">${b.ok?b.e:'🔒'}</span><div><b>${b.nome}</b><small>${b.desc}</small></div></div>`).join('')}
-    </div>`;
+    </div>
+    <p style="text-align:center;color:var(--txt-3);font-size:12px;padding:12px">${badges.filter(b=>b.ok).length} de ${badges.length} conquistas desbloqueadas 🌱</p>`;
+  },
+
+  passos(){
+    const fb=lsGet('passos',{});
+    const feitos=PASSOS.filter(p=>fb[p.n]&&fb[p.n].feito).length;
+    const pct=Math.round(feitos/12*100);
+    const circ=2*Math.PI*26;
+    const hoje=new Date().toDateString();
+    const invHoje=lsGet('inventarioData',null)===hoje;
+    $('#tPassos').innerHTML=`
+      <div class="card">
+        <div class="saude-resumo">
+          <div class="saude-anel">
+            <svg width="64" height="64" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="url(#gradAnel)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ-circ*pct/100}" transform="rotate(-90 32 32)"/>
+            </svg>
+            <div class="pc">${feitos}</div>
+          </div>
+          <div>
+            <h3 style="font-family:var(--ff-disp);font-size:18px">Os 12 Passos</h3>
+            <small style="color:var(--txt-2);font-size:13px;line-height:1.4">Sua jornada de recuperação, um passo de cada vez. Sem pressa.</small>
+          </div>
+        </div>
+      </div>
+
+      <button class="sos" style="background:linear-gradient(135deg,var(--glow),transparent);border-color:var(--verde)" onclick="Acoes.inventario()">
+        <span class="ic" style="background:var(--verde);animation:none">📝</span>
+        <div class="tx"><b style="color:var(--verde)">${invHoje?'Inventário de hoje ✓':'Fazer inventário de hoje'}</b><small>${invHoje?'Você já refletiu hoje. Pode rever quando quiser.':'Uma reflexão guiada de 5 perguntas (+15 🪙)'}</small></div>
+      </button>
+
+      <div class="card" style="margin-top:14px">
+        ${PASSOS.map(p=>{
+          const e=fb[p.n]||{};
+          return `<div class="passo ${e.feito?'feito':''}">
+            <button class="passo-check" onclick="Acoes.togglePasso(${p.n})">${e.feito?'✓':p.n}</button>
+            <div class="passo-corpo">
+              <b>${p.t}</b>
+              <small>${p.d}</small>
+              ${e.nota?`<div class="passo-nota">"${esc(e.nota)}"</div>`:''}
+              <button class="passo-anotar" onclick="Acoes.anotarPasso(${p.n})">${e.nota?'✏️ Editar anotação':'+ Anotar reflexão'}</button>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <p style="text-align:center;color:var(--txt-3);font-size:11.5px;padding:8px 16px;line-height:1.5">Os 12 Passos do Vida Nova são inspirados na jornada de recuperação, escritos com nossas palavras. Não substituem um grupo de apoio nem acompanhamento profissional.</p>`;
   },
 
   comunidade(){
@@ -1084,7 +1368,30 @@ const Render={
 
   mais(){
     const d=Math.floor(diasLimpos());
+    const est=estiloRelogio();
     $('#tMais').innerHTML=`
+      <div class="card">
+        <div class="card-tit"><h3>Modelo do relógio</h3><span style="font-size:18px">⏱️</span></div>
+        <p style="color:var(--txt-2);font-size:13px;margin-bottom:14px">Escolha o tipo de contador da tela inicial.</p>
+        <div class="relogio-estilos">
+          ${MODELOS_RELOGIO.map(m=>`
+            <button class="rel-opt ${m.id===est.modelo?'sel':''}" onclick="Acoes.setModeloRelogio('${m.id}')" style="--clk1:${est.cor.cor};--clk2:${est.cor.cor2}">
+              <div class="rel-amostra rel-${m.id}"><span>${m.emoji}</span></div>
+              <b>${m.nome}</b><small style="font-size:10.5px;color:var(--txt-2)">${m.desc}</small>
+              ${m.id===est.modelo?'<span class="rel-check">✓</span>':''}
+            </button>`).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-tit"><h3>Cor do relógio</h3><span style="font-size:18px">🎨</span></div>
+        <div class="cores-grid">
+          ${PALETAS_RELOGIO.map(c=>`
+            <button class="cor-opt ${c.id===est.cor.id?'sel':''}" onclick="Acoes.setCorRelogio('${c.id}')" title="${c.nome}">
+              <span class="cor-bola" style="background:linear-gradient(135deg,${c.cor},${c.cor2})">${c.folha?'🌿':''}</span>
+              <small>${c.nome}</small>
+            </button>`).join('')}
+        </div>
+      </div>
       <div class="card">
         <div class="card-tit"><h3>Diário privado</h3><span class="mais" onclick="Acoes.novoJournal()">+ escrever</span></div>
         <div id="journalLista"></div>
@@ -1115,7 +1422,9 @@ const Render={
       <div class="card">
         <div class="card-tit"><h3>Conta</h3></div>
         <div class="lista-item"><div class="ic">${PERFIL.tipo==='cigarro'?'🚬':PERFIL.tipo==='alcool'?'🍺':'💊'}</div><div class="corpo"><b>${PERFIL.tipo==='cigarro'?'Parar de fumar':PERFIL.tipo==='alcool'?'Parar de beber':'Parar de usar '+(PERFIL.substancia||'drogas')}</b><small>Desde ${new Date(PERFIL.dataInicio).toLocaleDateString('pt-BR')}</small></div></div>
+        <div class="lista-item"><div class="ic">🥇</div><div class="corpo"><b>Seu recorde</b><small>Maior tempo limpo até hoje</small></div><span class="preco ok">${Math.max(PERFIL.recorde||0,Math.floor(diasLimpos()))} dias</span></div>
         <div class="lista-item"><div class="ic">📅</div><div class="corpo"><b>Ajustar data de recomeço</b><small>Caso precise corrigir</small></div><button class="btn-mini" onclick="Acoes.editarData()">Editar</button></div>
+        <div class="lista-item"><div class="ic">🔄</div><div class="corpo"><b>Recaí — recomeçar</b><small>Reinicia o contador, sem julgamento</small></div><button class="btn-mini" onclick="Acoes.recair()">Recomeçar</button></div>
         <div class="lista-item"><div class="ic">🚪</div><div class="corpo"><b>Sair</b><small>${esc(PERFIL.email||'')}</small></div><button class="btn-mini" onclick="Auth.sair()">Sair</button></div>
       </div>`;
     this.journalLista();
@@ -1145,6 +1454,80 @@ const Render={
 const Acoes={
   _humor:null,
   selHumor(btn){document.querySelectorAll('.humor').forEach(e=>e.classList.remove('sel'));btn.classList.add('sel');this._humor=+btn.dataset.h},
+  setModeloRelogio(id){
+    localStorage.setItem('vn_relogio_modelo',id);
+    App.toast('⏱️ Modelo atualizado!');
+    Render.mais();
+  },
+  setCorRelogio(id){
+    localStorage.setItem('vn_relogio_cor',id);
+    App.toast('🎨 Cor atualizada!');
+    Render.mais();
+  },
+  togglePasso(n){
+    const fb=lsGet('passos',{}); const e=fb[n]||{};
+    const premiados=lsGet('passosPremiados',[]);
+    e.feito=!e.feito; fb[n]=e; lsSet('passos',fb);
+    if(e.feito && !premiados.includes(n)){
+      premiados.push(n); lsSet('passosPremiados',premiados);
+      App.addMoedas(15,'passo '+n); App.toast('🪜 Passo '+n+' trabalhado! +15 🪙');
+    }
+    Render.passos();
+  },
+  anotarPasso(n){
+    const fb=lsGet('passos',{}); const e=fb[n]||{};
+    const p=PASSOS.find(x=>x.n===n);
+    App.modal(`<h2>Passo ${n}: ${p.t}</h2><p>${p.d}</p>
+      <textarea class="inp" id="notaPasso" rows="5" placeholder="O que esse passo significa pra você? Como vai aplicá-lo?">${esc(e.nota||'')}</textarea>
+      <button class="btn" style="margin-top:12px" onclick="Acoes.salvarNotaPasso(${n})">Salvar reflexão</button>`);
+  },
+  salvarNotaPasso(n){
+    const t=$('#notaPasso').value.trim();
+    const fb=lsGet('passos',{}); const e=fb[n]||{};
+    e.nota=t; fb[n]=e; lsSet('passos',fb);
+    App.fecharModal(); App.toast('Reflexão salva 🌱'); Render.passos();
+  },
+  inventario(){
+    const prev=lsGet('inventarioRascunho',{});
+    App.modal(`<h2>Inventário de hoje 📝</h2><p>Um momento honesto com você. Responda o que quiser — fica só no seu aparelho.</p>
+      ${INVENTARIO_PERGUNTAS.map(q=>`<div class="campo"><label>${q.q}</label><textarea class="inp" data-inv="${q.id}" rows="2" placeholder="${q.ph}">${esc(prev[q.id]||'')}</textarea></div>`).join('')}
+      <button class="btn" onclick="Acoes.salvarInventario()">Salvar inventário (+15 🪙)</button>`);
+  },
+  salvarInventario(){
+    const resp={};
+    document.querySelectorAll('[data-inv]').forEach(t=>resp[t.dataset.inv]=t.value.trim());
+    const algumPreenchido=Object.values(resp).some(v=>v);
+    if(!algumPreenchido)return App.toast('Responda ao menos uma pergunta.');
+    const hoje=new Date().toDateString();
+    const jaFezHoje=lsGet('inventarioData',null)===hoje;
+    const invs=lsGet('inventarios',[]); invs.push({ts:Date.now(),resp}); lsSet('inventarios',invs);
+    lsSet('inventarioData',hoje); lsSet('inventarioRascunho',{});
+    App.fecharModal();
+    if(!jaFezHoje){App.addMoedas(15,'inventário');App.toast('📝 Inventário salvo! +15 🪙')}
+    else App.toast('📝 Inventário salvo.');
+    Render.passos();
+  },
+  recair(){
+    const dias=Math.floor(diasLimpos());
+    App.modal(`<h2>Tudo bem recomeçar 💚</h2>
+      <p>Antes de qualquer coisa: <b>recair não apaga quem você se tornou</b>. Acontece, faz parte, e o que importa é você estar aqui agora, escolhendo de novo.</p>
+      <p>Se você quiser, posso reiniciar seu contador pra começar uma nova contagem — sem julgamento. Seus ${dias} ${dias===1?'dia':'dias'} viram seu recorde, e suas conquistas e moedas continuam com você.</p>
+      <button class="btn" onclick="Acoes.confirmarRecaida()">Reiniciar meu contador</button>
+      <button class="btn txt" onclick="App.fecharModal()">Na verdade, vou continuar firme 💪</button>`);
+  },
+  async confirmarRecaida(){
+    const dias=Math.floor(diasLimpos());
+    const novoRecorde=Math.max(PERFIL.recorde||0,dias);
+    lsSet('medComemoradas',[]);
+    try{
+      await db.collection(COL.usuarios).doc(UID).update({
+        dataInicio:Date.now(), recorde:novoRecorde,
+        recaidas:firebase.firestore.FieldValue.increment(1)
+      });
+      App.fecharModal();
+      App.celebrarRecomeco(dias,novoRecorde);
+    }catch(e){App.toast('Não consegui salvar agora. Tente de novo.')}
+  },
   async checkin(){
     const hoje=new Date().toDateString();
     if(lsGet('checkinData',null)===hoje)return App.toast('Você já fez check-in hoje.');
@@ -1250,6 +1633,106 @@ function formatarMarco(d){
   if(d<365)return Math.round(d/30)+(d/30<2?' mês':' meses');
   return Math.round(d/365)+(d/365<2?' ano':' anos');
 }
+function padTempo(h,m,s){return String(h).padStart(2,'0')+String(m).padStart(2,'0')+String(s).padStart(2,'0')}
+function estiloRelogio(){
+  const mid=localStorage.getItem('vn_relogio_modelo')||'flipDias';
+  const cid=localStorage.getItem('vn_relogio_cor')||'ouro';
+  const modelo=MODELOS_RELOGIO.find(m=>m.id===mid)?mid:'flipDias';
+  const cor=PALETAS_RELOGIO.find(c=>c.id===cid)||PALETAS_RELOGIO[0];
+  return {modelo,cor};
+}
+
+/* -------------------- FLIP CLOCK 3D -------------------- */
+const FlipClock={
+  _unidade(v){
+    const u=document.createElement('div');u.className='fu';
+    u.style.width='.66em';u.style.height='1em';u.dataset.v=v;
+    u.innerHTML=`<div class="meta topo"><span>${v}</span></div><div class="meta base"><span>${v}</span></div>`+
+                `<div class="dobra d-topo"><span>${v}</span></div><div class="dobra d-base"><span>${v}</span></div>`;
+    return u;
+  },
+  montar(cont,str,tempo){
+    if(!cont)return;
+    cont.innerHTML='';
+    str.split('').forEach((c,i)=>{
+      cont.appendChild(this._unidade(c));
+      if(tempo&&(i===1||i===3)){const sp=document.createElement('div');sp.className='flip-sep';sp.textContent=':';cont.appendChild(sp)}
+    });
+  },
+  atualizar(cont,str,tempo){
+    if(!cont)return;
+    const us=cont.querySelectorAll('.fu');
+    if(us.length!==str.length){this.montar(cont,str,tempo);return}
+    str.split('').forEach((c,i)=>this._set(us[i],c));
+  },
+  _set(u,novo){
+    novo=String(novo);
+    if(!u||u.dataset.v===novo)return;
+    const antigo=u.dataset.v;u.dataset.v=novo;
+    u.querySelector('.dobra.d-topo span').textContent=antigo;
+    u.querySelector('.dobra.d-base span').textContent=novo;
+    u.querySelector('.meta.topo span').textContent=novo;
+    u.querySelector('.meta.base span').textContent=antigo;
+    u.classList.remove('flipping');void u.offsetWidth;u.classList.add('flipping');
+    clearTimeout(u._t);
+    u._t=setTimeout(()=>{
+      u.classList.remove('flipping');
+      u.querySelector('.meta.base span').textContent=novo;
+      u.querySelector('.dobra.d-topo span').textContent=novo;
+    },600);
+  }
+};
+
+/* -------------------- MODELOS DE RELÓGIO -------------------- */
+const Relogio={
+  html(modelo,dias,h,m,s){
+    const t=padTempo(h,m,s);
+    if(modelo==='flipHoras') return `
+      <div class="contador-bloco"><div class="flip-row" id="flipRelogio" style="font-size:58px"></div><div class="lbl">horas · minutos · segundos</div></div>
+      <div class="contador-bloco"><div class="flip-row" id="flipDias" style="font-size:46px"></div><div class="lbl">${dias===1?'dia limpo':'dias limpos'}</div></div>`;
+    if(modelo==='neon') return `
+      <div class="contador-bloco"><div class="titulo">Dias de vida nova</div><div class="neon-num" id="neonDias">${dias}</div></div>
+      <div class="contador-bloco"><div class="neon-rel" id="neonRel">${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}</div><div class="lbl">horas · min · seg</div></div>`;
+    if(modelo==='anel'){
+      const circ=2*Math.PI*108;
+      return `<div class="anel-wrap">
+        <svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="108" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+        <circle id="anelProg" cx="120" cy="120" r="108" fill="none" stroke="var(--clk1)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ}" style="filter:drop-shadow(0 0 6px var(--clk1))"/></svg>
+        <div class="centro"><div class="d" id="anelDias">${dias}</div><div class="l">${dias===1?'dia limpo':'dias limpos'}</div></div>
+      </div>
+      <div class="contador-bloco"><div class="anel-rel" id="anelRel">${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}</div></div>`;
+    }
+    // padrão: flipDias
+    return `
+      <div class="contador-bloco"><div class="titulo">Dias de vida nova</div><div class="flip-row" id="flipDias" style="font-size:74px"></div><div class="lbl">${dias===1?'dia limpo':'dias limpos'}</div></div>
+      <div class="contador-bloco"><div class="flip-row" id="flipRelogio" style="font-size:50px"></div><div class="lbl">horas · minutos · segundos</div></div>`;
+  },
+  iniciar(modelo,dias,h,m,s){
+    if(modelo==='flipDias'||modelo==='flipHoras'){
+      FlipClock.montar($('#flipDias'),String(dias));
+      FlipClock.montar($('#flipRelogio'),padTempo(h,m,s),true);
+    }else if(modelo==='anel'){
+      const meds=medalhasDoTipo(),d=diasLimpos();
+      const prox=meds.find(x=>x.d>d),ant=[...meds].reverse().find(x=>x.d<=d);
+      const base=ant?ant.d:0,pct=prox?Math.min(100,((d-base)/(prox.d-base))*100):100;
+      const el=$('#anelProg'); if(el){const circ=2*Math.PI*108;el.style.strokeDashoffset=circ-circ*pct/100}
+    }
+  },
+  tick(modelo,dias,h,m,s){
+    const t=padTempo(h,m,s),hms=t.slice(0,2)+':'+t.slice(2,4)+':'+t.slice(4,6);
+    if(modelo==='flipDias'||modelo==='flipHoras'){
+      const fr=$('#flipRelogio'); if(!fr)return;
+      FlipClock.atualizar(fr,t,true);
+      FlipClock.atualizar($('#flipDias'),String(dias));
+    }else if(modelo==='neon'){
+      const r=$('#neonRel'); if(r)r.textContent=hms;
+      const dd=$('#neonDias'); if(dd)dd.textContent=dias;
+    }else if(modelo==='anel'){
+      const r=$('#anelRel'); if(r)r.textContent=hms;
+      const dd=$('#anelDias'); if(dd)dd.textContent=dias;
+    }
+  }
+};
 </script>
 </body>
 </html>
