@@ -459,6 +459,28 @@ input,select,textarea{font-family:var(--ff)}
 .apoio-acesso .aat span{font-size:12px;color:var(--txt-2)}
 .apoio-acesso .aaseta{color:var(--txt-3);font-size:20px}
 .apoio-acesso:active{transform:scale(.98)}
+/* salas de vídeo Vida Nova (Jitsi embutido) */
+.jitsi-overlay{position:fixed;inset:0;z-index:130;display:none;background:#0b0f0d}
+.jitsi-overlay.on{display:flex;flex-direction:column}
+.jitsi-topo{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 12px;background:#11211a;flex-shrink:0}
+.jitsi-topo .voltar{display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:11px;font-weight:800;font-size:14px;color:#fff;background:#E74C3C}
+.jitsi-topo .voltar:active{transform:scale(.95)}
+.jitsi-topo b{font-family:var(--ff-disp);font-size:16px;color:#F3D9B5}
+.jitsi-area{flex:1;position:relative;min-height:0}
+.jitsi-area iframe{width:100%!important;height:100%!important;border:0}
+.jitsi-load{position:absolute;inset:0;display:grid;place-items:center;color:#9DB3A6;text-align:center;padding:30px;font-size:14px;line-height:1.5}
+/* badges dentro/fora do app */
+.badge-app,.badge-fora{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;vertical-align:middle;margin-left:7px}
+.badge-app{background:rgba(46,158,107,.18);color:var(--verde)}
+.badge-fora{background:var(--surface-2);color:var(--txt-3)}
+.apoio-nota{background:linear-gradient(135deg,rgba(46,158,107,.12),rgba(59,125,216,.1));border:1px solid var(--linha);border-radius:14px;padding:13px 15px;margin-bottom:20px;font-size:12.5px;color:var(--txt-2);line-height:1.5}
+.sala-card{display:flex;align-items:center;gap:13px;background:var(--surface);border:1px solid var(--linha);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
+.sala-card:active{transform:scale(.98)}
+.sala-card .sico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;flex-shrink:0;background:linear-gradient(135deg,rgba(46,158,107,.25),rgba(59,125,216,.18))}
+.sala-card .sinfo{flex:1;min-width:0}
+.sala-card .sinfo b{display:block;font-size:14.5px;color:var(--txt);font-weight:800}
+.sala-card .sinfo span{display:block;font-size:12px;color:var(--txt-2);margin-top:2px;line-height:1.4}
+.sala-card .sentrar{flex-shrink:0;padding:9px 15px;border-radius:11px;font-weight:800;font-size:13px;color:#fff;background:var(--verde);white-space:nowrap}
 /* ====================== ESTANTE ====================== */
 .estante-overlay,.leitor-overlay{position:fixed;inset:0;z-index:120;display:none;overflow-y:auto}
 .estante-overlay.on,.leitor-overlay.on{display:block;animation:fade .35s}
@@ -684,6 +706,7 @@ input,select,textarea{font-family:var(--ff)}
 <div class="estante-overlay" id="estanteOverlay"></div>
 <div class="leitor-overlay" id="leitorOverlay"></div>
 <div class="apoio-overlay" id="apoioOverlay"></div>
+<div class="jitsi-overlay" id="jitsiOverlay"></div>
 <div class="cel" id="cel"></div>
 <div class="toast" id="toast"></div>
 
@@ -714,6 +737,12 @@ const COL = {
   chat:'vidanova_chat',
   padrinhos:'vidanova_padrinhos'
 };
+const SALAS_VN = [
+  {id:'acolhimento',nome:'Sala Acolhimento',emoji:'🤗',desc:'Um espaço pra desabafar e ser ouvido, a qualquer hora.'},
+  {id:'sohoje',nome:'Sala Só por Hoje',emoji:'🌅',desc:'Partilha do dia e força pra seguir limpo hoje.'},
+  {id:'madrugada',nome:'Sala da Madrugada',emoji:'🌙',desc:'Pra quem não consegue dormir e precisa de companhia.'},
+  {id:'fissura',nome:'Sala da Fissura',emoji:'🌊',desc:'Quando a vontade aperta, entre e não fique sozinho.'}
+];
 </script>
 <script>
 /* ============================================================
@@ -1288,6 +1317,43 @@ const App={
   flipPrev(){ if(App.pageFlip){App.pageFlip.flipPrev()} else if(App._fbPaginas&&App.capAtual>0){App._fbShow(App.capAtual-1)} },
   flipNext(){ if(App.pageFlip){App.pageFlip.flipNext()} else if(App._fbPaginas&&App.capAtual<App._fbPaginas.length-1){App._fbShow(App.capAtual+1)} },
 
+  /* ===== SALAS DE VÍDEO VIDA NOVA (Jitsi embutido) ===== */
+  _carregarJitsi(cb){
+    if(window.JitsiMeetExternalAPI){cb(true);return;}
+    if(App._jitsiLoading){App._jitsiCbs.push(cb);return;}
+    App._jitsiLoading=true; App._jitsiCbs=[cb];
+    const s=document.createElement('script');
+    s.src='https://meet.jit.si/external_api.js';
+    s.onload=function(){App._jitsiLoading=false;App._jitsiCbs.forEach(f=>f(true));App._jitsiCbs=[];};
+    s.onerror=function(){App._jitsiLoading=false;App._jitsiCbs.forEach(f=>f(false));App._jitsiCbs=[];};
+    document.head.appendChild(s);
+  },
+  entrarSala(id,nome){
+    const ov=$('#jitsiOverlay');
+    ov.classList.add('on');
+    ov.innerHTML=`<div class="jitsi-topo"><button class="voltar" onclick="App.sairSala()">‹ Sair da sala</button><b>${esc(nome)}</b></div><div class="jitsi-area" id="jitsiArea"><div class="jitsi-load">Conectando à sala de vídeo... 🌱</div></div>`;
+    App._carregarJitsi(function(ok){
+      const area=$('#jitsiArea'); if(!area)return;
+      if(!ok){ area.innerHTML='<div class="jitsi-load">Não consegui abrir a sala de vídeo agora.<br>Verifique sua internet e tente de novo.</div>'; return; }
+      try{
+        area.innerHTML='';
+        App._jitsi=new JitsiMeetExternalAPI('meet.jit.si',{
+          roomName:'VidaNovaComunidade_'+id,
+          parentNode:area,
+          width:'100%',height:'100%',
+          userInfo:{displayName:(primeiroNome(PERFIL.nome)||'Anônimo')},
+          configOverwrite:{prejoinPageEnabled:true,startWithAudioMuted:true,disableDeepLinking:true,disableInviteFunctions:true},
+          interfaceConfigOverwrite:{MOBILE_APP_PROMO:false,SHOW_JITSI_WATERMARK:false,SHOW_CHROME_EXTENSION_BANNER:false}
+        });
+        App._jitsi.addEventListener('readyToClose',function(){App.sairSala();});
+      }catch(e){ area.innerHTML='<div class="jitsi-load">Não consegui abrir a sala. Tente de novo mais tarde.</div>'; }
+    });
+  },
+  sairSala(){
+    try{ if(App._jitsi){App._jitsi.dispose();App._jitsi=null;} }catch(e){}
+    const ov=$('#jitsiOverlay'); ov.classList.remove('on'); ov.innerHTML='';
+  },
+
   /* ===== INSTALAR APP (tela inicial) ===== */
   instalarApp(){
     const jaInstalado = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
@@ -1320,29 +1386,42 @@ const App={
       </div>
       <div class="apoio-corpo">
 
+        <p class="apoio-nota">💚 Algumas opções acontecem <b>aqui no app</b>; outras <b>abrem fora</b> (sites e reuniões parceiras). Sair do app pra buscar ajuda é ótimo — o que importa é você nunca ficar sozinho. Nossa intenção é te ajudar, não te prender aqui.</p>
+
         <div class="apoio-sec">
           <h3>🆘 Preciso conversar agora</h3>
           <p class="desc">Se a vontade está forte ou você está num momento difícil, não passe por isso sozinho. Fale com alguém agora.</p>
           <div class="reuniao-card urgente">
             <div class="rico">💬</div>
-            <div class="rinfo"><b>CVV — apoio emocional</b><span>24h, gratuito e sigiloso. Para qualquer momento difícil.</span></div>
+            <div class="rinfo"><b>CVV — apoio emocional <span class="badge-fora">↗ abre fora</span></b><span>24h, gratuito e sigiloso. Para qualquer momento difícil.</span></div>
             <a class="rbtn lig" href="tel:188">Ligar 188</a>
           </div>
           <div class="reuniao-card">
             <div class="rico">⌨️</div>
-            <div class="rinfo"><b>CVV por chat</b><span>Conversar por mensagem, sem precisar falar.</span></div>
+            <div class="rinfo"><b>CVV por chat <span class="badge-fora">↗ abre fora</span></b><span>Conversar por mensagem, sem precisar falar.</span></div>
             <a class="rbtn" href="https://www.cvv.org.br/chat/" target="_blank" rel="noopener">Abrir chat</a>
           </div>
           <div class="reuniao-card">
             <div class="rico">🤝</div>
-            <div class="rinfo"><b>Comunidade Vida Nova</b><span>Desabafe com quem está na mesma caminhada.</span></div>
+            <div class="rinfo"><b>Comunidade Vida Nova <span class="badge-app">✓ no app</span></b><span>Desabafe com quem está na mesma caminhada.</span></div>
             <button class="rbtn" onclick="App.irComunidadeApoio()">Abrir grupo</button>
           </div>
         </div>
 
         <div class="apoio-sec">
-          <h3>🎥 Reuniões online agora</h3>
-          <p class="desc">Reuniões ao vivo por vídeo, anônimas e gratuitas. Você pode só entrar e ouvir.</p>
+          <h3>🟢 Reuniões Vida Nova <span class="badge-app">✓ no app</span></h3>
+          <p class="desc">Salas de vídeo ao vivo da nossa comunidade, aqui dentro do app. Entre, ligue ou não a câmera, e partilhe com quem entende você.</p>
+          ${SALAS_VN.map(s=>`<div class="sala-card" onclick="App.entrarSala('${s.id}','${esc(s.nome)}')">
+            <div class="sico">${s.emoji}</div>
+            <div class="sinfo"><b>${s.nome}</b><span>${s.desc}</span></div>
+            <span class="sentrar">Entrar</span>
+          </div>`).join('')}
+          <p class="apoio-aviso">A sala abre quando alguém entra. Se estiver vazia, você pode ser o primeiro e esperar — ou avisar no grupo pra mais gente chegar. 🌱</p>
+        </div>
+
+        <div class="apoio-sec">
+          <h3>🎥 Reuniões parceiras online <span class="badge-fora">↗ abre fora</span></h3>
+          <p class="desc">Reuniões oficiais de A.A. e N.A. por vídeo, anônimas e gratuitas. Abrem no Zoom, fora do app.</p>
           ${tipo!=='cigarro'?`<div class="reuniao-card">
             <div class="rico">🍷</div>
             <div class="rinfo"><b>A.A. Online — diária</b><span>Alcoólicos Anônimos, todo dia das 20h às 21h30 (Zoom).</span></div>
@@ -1366,7 +1445,7 @@ const App={
         </div>
 
         <div class="apoio-sec">
-          <h3>📍 Reuniões perto de você</h3>
+          <h3>📍 Reuniões perto de você <span class="badge-fora">↗ abre fora</span></h3>
           <p class="desc">Encontros presenciais na sua região. Abre o mapa com as reuniões próximas.</p>
           <div class="apoio-mapbtns">
             ${tipo!=='cigarro'?`<a href="https://www.google.com/maps/search/Alcoólicos+Anônimos+perto+de+mim" target="_blank" rel="noopener"><span class="me">🍷</span>A.A. perto</a>`:''}
@@ -1375,7 +1454,7 @@ const App={
         </div>
 
         <div class="apoio-sec">
-          <h3>👥 Padrinho / Madrinha</h3>
+          <h3>👥 Padrinho / Madrinha <span class="badge-app">✓ no app</span></h3>
           <p class="desc">Quem tem mais tempo de caminhada pode amparar quem está começando. Ofereça-se ou encontre alguém pra te apoiar.</p>
           <div id="padrMeu"></div>
           <div id="padrLista"><p class="vazio" style="padding:18px">Carregando padrinhos disponíveis...</p></div>
