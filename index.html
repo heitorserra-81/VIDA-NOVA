@@ -239,6 +239,51 @@ input,select,textarea{font-family:var(--ff)}
 .sos .tx b{display:block;font-weight:800;font-size:15px;color:var(--coral)}
 .sos .tx small{color:var(--txt-2);font-size:12.5px}
 @keyframes pulso{0%,100%{box-shadow:0 0 0 0 rgba(255,107,107,.4)}70%{box-shadow:0 0 0 12px rgba(255,107,107,0)}}
+/* variante fissura (onda) */
+.sos.fissura{background:linear-gradient(135deg,rgba(59,125,216,.18),rgba(59,125,216,.04));border-color:rgba(59,125,216,.4)}
+.sos.fissura .ic{background:#3B7DD8}
+.sos.fissura .tx b{color:#5b9bef}
+/* card proativo de dificuldade / horário de risco */
+.proativo{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border-radius:var(--radius);padding:15px 16px;margin-top:14px;background:linear-gradient(135deg,rgba(245,158,66,.16),rgba(245,158,66,.04));border:1.5px solid rgba(245,158,66,.4)}
+.proativo .pe{font-size:26px;flex-shrink:0}
+.proativo .pt b{display:block;font-weight:800;font-size:14.5px;color:var(--txt);margin-bottom:2px}
+.proativo .pt span{font-size:12.5px;color:var(--txt-2);line-height:1.45}
+.proativo .pt .pacoes{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.proativo .pt .pacoes button{padding:8px 13px;border-radius:10px;font-weight:800;font-size:12.5px;background:#F59E42;color:#1a1205;border:0}
+.proativo .pt .pacoes button.alt{background:var(--surface-2);color:var(--txt)}
+/* overlay da fissura (respiração) */
+.fissura-overlay{position:fixed;inset:0;z-index:130;display:none;background:linear-gradient(180deg,#0d2240,#081526);overflow-y:auto}
+.fissura-overlay.on{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 24px;animation:fade .3s}
+.fissura-overlay .fclose{position:absolute;top:calc(16px + env(safe-area-inset-top));right:18px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:18px}
+.fissura-overlay h2{font-family:var(--ff-disp);color:#fff;font-size:25px;margin:0 0 12px;line-height:1.2}
+.fissura-overlay p{color:#bcd3ee;font-size:15.5px;line-height:1.6;max-width:340px;margin:0 auto 8px}
+.resp-circulo{width:200px;height:200px;border-radius:50%;margin:26px auto;display:grid;place-items:center;
+  background:radial-gradient(circle,rgba(91,155,239,.45),rgba(59,125,216,.15));border:2px solid rgba(135,180,255,.5);
+  color:#fff;font-family:var(--ff-disp);font-size:22px;font-weight:700;transition:transform 4s ease-in-out}
+.resp-circulo.inspira{transform:scale(1.32)}
+.resp-circulo.expira{transform:scale(.85)}
+.fissura-overlay .fbtns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;margin-top:24px}
+.fissura-overlay .fbtns button{padding:15px;border-radius:14px;font-weight:800;font-size:15px;border:0}
+.fissura-overlay .fbtns .bvenci{background:var(--verde);color:#fff}
+.fissura-overlay .fbtns .bdificil{background:rgba(255,255,255,.14);color:#fff}
+.fissura-overlay .fbtns .bmais{background:rgba(255,255,255,.08);color:#bcd3ee;font-size:13.5px;padding:12px}
+.fvitorias{color:#87b4ff;font-size:13px;font-weight:700;margin-top:18px}
+.fissura-overlay .fonda{font-size:46px;margin-bottom:6px}
+/* prevenção — cards e formulários */
+.prev-stat{background:linear-gradient(135deg,var(--verde),#1f7a4e);border-radius:18px;padding:18px;text-align:center;color:#fff;margin-bottom:18px}
+.prev-stat .pn{font-family:var(--ff-disp);font-weight:900;font-size:42px;line-height:1}
+.prev-stat .pl{font-size:13px;opacity:.9;margin-top:2px}
+.gat-item,.carta-box,.hr-item{background:var(--surface);border:1px solid var(--linha);border-radius:14px;padding:13px;margin-bottom:10px}
+.gat-item b{font-size:14px;color:var(--txt);display:block;margin-bottom:3px}
+.gat-item .gplano{font-size:12.5px;color:var(--txt-2);line-height:1.45}
+.gat-item .gx,.hr-item .gx{float:right;color:var(--txt-3);font-size:18px;padding:0 4px;cursor:pointer}
+.prev-input,.prev-area{width:100%;border:1px solid var(--linha);border-radius:11px;background:var(--bg);color:var(--txt);padding:11px;font-size:14px;font-family:inherit;margin-bottom:8px}
+.prev-area{resize:vertical;min-height:120px;line-height:1.5}
+.hr-row{display:flex;gap:8px;align-items:center}
+.hr-row input[type=time]{flex:1}
+.hr-item{display:flex;align-items:center;justify-content:space-between}
+.hr-item b{font-family:var(--ff-disp);font-size:18px;color:var(--txt)}
+.carta-papel{background:linear-gradient(170deg,#FBF3E2,#F0E0C2);border-radius:12px;padding:22px;color:#463524;font-family:var(--ff-disp);font-size:15.5px;line-height:1.7;white-space:pre-wrap;box-shadow:inset 0 0 30px rgba(120,80,30,.1)}
 
 /* ====================== SAÚDE ====================== */
 .saude-resumo{display:flex;gap:14px;align-items:center;margin-bottom:4px}
@@ -707,6 +752,8 @@ input,select,textarea{font-family:var(--ff)}
 <div class="leitor-overlay" id="leitorOverlay"></div>
 <div class="apoio-overlay" id="apoioOverlay"></div>
 <div class="jitsi-overlay" id="jitsiOverlay"></div>
+<div class="fissura-overlay" id="fissuraOverlay"></div>
+<div class="apoio-overlay" id="prevencaoOverlay"></div>
 <div class="cel" id="cel"></div>
 <div class="toast" id="toast"></div>
 
@@ -1177,6 +1224,7 @@ const App={
     this.refresh();
     this.aba('tInicio',document.querySelector('.nav button'));
     this.iniciarFeed(); this.iniciarChat();
+    this.agendarLembretes();
   },
   refresh(){
     if(!PERFIL)return;
@@ -1316,6 +1364,150 @@ const App={
   },
   flipPrev(){ if(App.pageFlip){App.pageFlip.flipPrev()} else if(App._fbPaginas&&App.capAtual>0){App._fbShow(App.capAtual-1)} },
   flipNext(){ if(App.pageFlip){App.pageFlip.flipNext()} else if(App._fbPaginas&&App.capAtual<App._fbPaginas.length-1){App._fbShow(App.capAtual+1)} },
+
+  /* ===== FASE 5 — PREVENÇÃO DE RECAÍDA ===== */
+  // card proativo na tela inicial (horário de risco / dificuldade)
+  cardProativo(){
+    try{
+      const horarios=lsGet('horarios_risco',[]);
+      const now=new Date(), mins=now.getHours()*60+now.getMinutes();
+      const emRisco=horarios.some(h=>{const a=h.split(':');const hm=(+a[0])*60+(+a[1]);return Math.abs(hm-mins)<=30;});
+      if(emRisco){
+        return `<div class="proativo"><span class="pe">⏰</span><div class="pt"><b>Esse costuma ser um horário difícil pra você</b><span>Você marcou este momento como de risco. Como está se sentindo? Não precisa enfrentar sozinho.</span><div class="pacoes"><button onclick="App.abrirFissura()">Bateu a vontade</button><button class="alt" onclick="App.abrirApoio()">Falar com alguém</button></div></div></div>`;
+      }
+      const hist=lsGet('fissura_hist',[]);
+      const recente=hist.filter(x=>Date.now()-x.ts < 48*3600*1000);
+      if(recente.length>=3){
+        return `<div class="proativo"><span class="pe">💙</span><div class="pt"><b>Os últimos dias têm sido puxados, né?</b><span>Você enfrentou várias ondas de vontade. Talvez seja hora de um reforço — pedir ajuda é sinal de força.</span><div class="pacoes"><button onclick="App.abrirApoio()">Ver apoio ao vivo</button><button class="alt" onclick="App.abrirPrevencao()">Meus gatilhos</button></div></div></div>`;
+      }
+    }catch(e){}
+    return '';
+  },
+  // botão da fissura — exercício guiado + contagem de vitórias
+  abrirFissura(){
+    const ov=$('#fissuraOverlay'); ov.classList.add('on');
+    ov.innerHTML=`
+      <button class="fclose" onclick="App.fecharFissura()">✕</button>
+      <div class="fonda">🌊</div>
+      <h2>A onda já está passando</h2>
+      <p>Toda vontade é como uma onda: sobe, chega no topo e desce. Em poucos minutos ela perde a força sozinha. Vamos respirar juntos até ela quebrar.</p>
+      <div class="resp-circulo" id="respCirc">Prepare-se</div>
+      <p id="respTexto">Siga o círculo com a sua respiração</p>
+      <div class="fbtns">
+        <button class="bvenci" onclick="App.fissuraResultado(true)">Resisti! Venci a onda 💪</button>
+        <button class="bdificil" onclick="App.fissuraResultado(false)">Tô tentando, foi difícil</button>
+        <button class="bmais" onclick="App.fecharFissura();App.abrirApoio()">Preciso de mais ajuda agora</button>
+      </div>
+      <p class="fvitorias">Você já venceu a fissura ${lsGet('fissura_vitorias',0)} vez(es) 🌱</p>`;
+    setTimeout(()=>App._respCiclo(),600);
+  },
+  _respCiclo(){
+    const c=$('#respCirc'),t=$('#respTexto'); if(!c)return;
+    const fases=[{cls:'inspira',txt:'Inspire fundo pelo nariz...',lbl:'Inspire',t:4000},{cls:'',txt:'Segure o ar...',lbl:'Segure',t:4000},{cls:'expira',txt:'Solte devagar pela boca...',lbl:'Solte',t:6000}];
+    let i=0;
+    const passo=()=>{
+      if(!$('#respCirc'))return;
+      const f=fases[i%3];
+      c.classList.remove('inspira','expira'); if(f.cls)c.classList.add(f.cls);
+      c.textContent=f.lbl; if($('#respTexto'))$('#respTexto').textContent=f.txt;
+      i++; App._respTimer=setTimeout(passo,f.t);
+    };
+    passo();
+  },
+  fissuraResultado(venceu){
+    clearTimeout(App._respTimer);
+    const hist=lsGet('fissura_hist',[]); hist.push({ts:Date.now(),venceu:venceu}); lsSet('fissura_hist',hist.slice(-100));
+    const ov=$('#fissuraOverlay');
+    if(venceu){
+      let v=lsGet('fissura_vitorias',0)+1; lsSet('fissura_vitorias',v);
+      try{App.addMoedas(5,'Venceu a fissura')}catch(e){}
+      ov.innerHTML=`<button class="fclose" onclick="App.fecharFissura()">✕</button>
+        <div class="fonda">🎉</div>
+        <h2>Você venceu a onda!</h2>
+        <p>Isso é enorme. Cada vez que você resiste, o vício enfraquece e você fica mais forte. Seu cérebro acabou de aprender que dá pra passar por isso sem ceder.</p>
+        <p class="fvitorias">${v}ª vitória sobre a fissura 💪🌱</p>
+        <div class="fbtns"><button class="bvenci" onclick="App.fecharFissura()">Continuar firme</button></div>`;
+    }else{
+      ov.innerHTML=`<button class="fclose" onclick="App.fecharFissura()">✕</button>
+        <div class="fonda">💙</div>
+        <h2>Você está aqui, e isso importa</h2>
+        <p>Tentar já é resistir. Não precisa ser perfeito. Se a vontade ainda está forte, não enfrente sozinho — fale com alguém agora mesmo.</p>
+        <div class="fbtns">
+          <button class="bvenci" onclick="App.fecharFissura();App.abrirApoio()">Falar com alguém agora</button>
+          <button class="bdificil" onclick="App.fecharFissura()">Vou seguir tentando</button>
+        </div>`;
+    }
+  },
+  fecharFissura(){ clearTimeout(App._respTimer); const ov=$('#fissuraOverlay'); ov.classList.remove('on'); ov.innerHTML=''; if(App.telaAtual==='tInicio')Render.inicio(); },
+
+  // tela de prevenção
+  abrirPrevencao(){ App._editandoCarta=false; App.renderPrevencao(); $('#prevencaoOverlay').classList.add('on'); $('#prevencaoOverlay').scrollTop=0; },
+  fecharPrevencao(){ $('#prevencaoOverlay').classList.remove('on'); },
+  renderPrevencao(){
+    const vit=lsGet('fissura_vitorias',0), gatilhos=lsGet('gatilhos',[]), carta=lsGet('carta_futuro',''), horarios=lsGet('horarios_risco',[]);
+    const editando=App._editandoCarta || !carta;
+    $('#prevencaoOverlay').innerHTML=`
+      <div class="apoio-topo"><button class="voltar" onclick="App.fecharPrevencao()">‹ Voltar</button><b>Prevenção de recaída</b></div>
+      <div class="apoio-corpo">
+        <div class="prev-stat"><div class="pn">${vit}</div><div class="pl">vitórias sobre a fissura 💪</div></div>
+
+        <div class="apoio-sec">
+          <h3>🎯 Meus gatilhos</h3>
+          <p class="desc">O que costuma acender a vontade? Conhecer cada gatilho e ter um plano tira o poder do susto.</p>
+          <div id="gatLista">${gatilhos.length?gatilhos.map((g,i)=>`<div class="gat-item"><span class="gx" onclick="App.removerGatilho(${i})">✕</span><b>${esc(g.t)}</b><div class="gplano">Plano: ${esc(g.p||'—')}</div></div>`).join(''):'<p class="vazio" style="padding:14px">Nenhum gatilho cadastrado ainda.</p>'}</div>
+          <input class="prev-input" id="gatTexto" maxlength="80" placeholder="Gatilho (ex: sair com amigos na sexta)">
+          <input class="prev-input" id="gatPlano" maxlength="120" placeholder="Meu plano (ex: levar suco, combinar de sair antes das 23h)">
+          <button class="btn" style="width:100%" onclick="App.addGatilho()">Adicionar gatilho</button>
+        </div>
+
+        <div class="apoio-sec">
+          <h3>✉️ Carta pro meu eu do futuro</h3>
+          <p class="desc">Escreva pra você mesmo: por que vale a pena continuar limpo? Releia nos dias difíceis, quando a memória da dor fica fraca.</p>
+          ${editando?`<textarea class="prev-area" id="cartaTexto" placeholder="Querido eu do futuro, se você está lendo isso num momento difícil, lembre que...">${esc(carta)}</textarea><button class="btn" style="width:100%" onclick="App.salvarCarta()">Guardar minha carta</button>${carta?'<button class="btn txt" style="width:100%;margin-top:6px" onclick="App.cancelarEditarCarta()">Cancelar</button>':''}`:`<div class="carta-papel">${esc(carta)}</div><button class="btn txt" style="width:100%;margin-top:8px" onclick="App.editarCarta()">Editar carta</button>`}
+        </div>
+
+        <div class="apoio-sec">
+          <h3>⏰ Horários de risco</h3>
+          <p class="desc">Os momentos do dia em que a vontade costuma bater mais forte. Quando você abrir o app perto desses horários, ele vai te acolher.</p>
+          <div id="hrLista">${horarios.length?horarios.map((h,i)=>`<div class="hr-item"><b>${h}</b><span class="gx" onclick="App.removerHorario(${i})">✕</span></div>`).join(''):'<p class="vazio" style="padding:14px">Nenhum horário cadastrado.</p>'}</div>
+          <div class="hr-row"><input class="prev-input" type="time" id="hrInput" style="margin-bottom:0"><button class="btn" onclick="App.addHorarioRisco()">Adicionar</button></div>
+          <button class="btn txt" style="width:100%;margin-top:10px" onclick="App.ativarLembretes()">🔔 Ativar lembretes nesses horários</button>
+          <p class="apoio-aviso">Os lembretes funcionam enquanto o app está aberto ou em segundo plano no navegador. Para alertas com o app totalmente fechado, seria preciso uma versão com servidor.</p>
+        </div>
+      </div>`;
+  },
+  addGatilho(){
+    const t=($('#gatTexto')?.value||'').trim(), p=($('#gatPlano')?.value||'').trim();
+    if(!t){App.toast('Escreva o gatilho.');return;}
+    const g=lsGet('gatilhos',[]); g.push({t:t.slice(0,80),p:p.slice(0,120)}); lsSet('gatilhos',g); App.renderPrevencao();
+  },
+  removerGatilho(i){ const g=lsGet('gatilhos',[]); g.splice(i,1); lsSet('gatilhos',g); App.renderPrevencao(); },
+  salvarCarta(){ const t=($('#cartaTexto')?.value||'').trim(); if(!t){App.toast('Escreva algo na carta primeiro.');return;} lsSet('carta_futuro',t); App._editandoCarta=false; App.toast('Carta guardada 💚'); App.renderPrevencao(); },
+  editarCarta(){ App._editandoCarta=true; App.renderPrevencao(); },
+  cancelarEditarCarta(){ App._editandoCarta=false; App.renderPrevencao(); },
+  addHorarioRisco(){ const v=$('#hrInput')?.value; if(!v){App.toast('Escolha um horário.');return;} const h=lsGet('horarios_risco',[]); if(!h.includes(v)){h.push(v);h.sort();lsSet('horarios_risco',h);} App.renderPrevencao(); },
+  removerHorario(i){ const h=lsGet('horarios_risco',[]); h.splice(i,1); lsSet('horarios_risco',h); App.renderPrevencao(); },
+  ativarLembretes(){
+    if(!('Notification' in window)){App.toast('Seu navegador não suporta notificações.');return;}
+    if(!lsGet('horarios_risco',[]).length){App.toast('Cadastre ao menos um horário primeiro.');return;}
+    Notification.requestPermission().then(p=>{
+      if(p==='granted'){ lsSet('lembretes_on',true); App.agendarLembretes(); App.toast('Lembretes ativados 🔔'); }
+      else App.toast('Permissão de notificação negada.');
+    });
+  },
+  agendarLembretes(){
+    if(!lsGet('lembretes_on',false))return;
+    if(!('Notification' in window)||Notification.permission!=='granted')return;
+    clearInterval(App._lembreteInt);
+    App._lembreteInt=setInterval(()=>{
+      const h=lsGet('horarios_risco',[]); const now=new Date();
+      const hhmm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+      if(h.includes(hhmm) && App._ultLembrete!==hhmm){
+        App._ultLembrete=hhmm;
+        try{new Notification('Vida Nova 🌱',{body:'Esse costuma ser um horário difícil. Respire fundo — você consegue. Abra o app se precisar de apoio.'});}catch(e){}
+      }
+    },30000);
+  },
 
   /* ===== SALAS DE VÍDEO VIDA NOVA (Jitsi embutido) ===== */
   _carregarJitsi(cb){
@@ -1600,6 +1792,13 @@ const Render={
         <div class="stat med"><div class="ic">🏅</div><div class="v">${meds.filter(m=>d>=m.d).length}/${meds.length}</div><div class="l">medalhas</div></div>
       </div>
 
+      ${App.cardProativo()}
+
+      <button class="sos fissura" onclick="App.abrirFissura()">
+        <span class="ic">🌊</span>
+        <div class="tx"><b>Bateu a vontade?</b><small>Atravesse a onda comigo — ela sempre passa</small></div>
+      </button>
+
       <button class="sos" onclick="Acoes.sos()">
         <span class="ic">🆘</span>
         <div class="tx"><b>Estou em risco agora</b><small>Apoio imediato e técnicas pra segurar a onda</small></div>
@@ -1608,6 +1807,12 @@ const Render={
       <button class="apoio-acesso" onclick="App.abrirApoio()">
         <span class="aae">🤝</span>
         <div class="aat"><b>Apoio ao vivo</b><span>Reuniões online, padrinhos e ajuda pra conversar</span></div>
+        <span class="aaseta">›</span>
+      </button>
+
+      <button class="apoio-acesso" onclick="App.abrirPrevencao()">
+        <span class="aae">🛡️</span>
+        <div class="aat"><b>Prevenção de recaída</b><span>Seus gatilhos, carta pro futuro e horários de risco</span></div>
         <span class="aaseta">›</span>
       </button>
 
@@ -1887,6 +2092,11 @@ const Render={
       <button class="apoio-acesso" onclick="App.instalarApp()" style="margin-top:0">
         <span class="aae">📲</span>
         <div class="aat"><b>Instalar na tela inicial</b><span>Usar o Vida Nova como aplicativo</span></div>
+        <span class="aaseta">›</span>
+      </button>
+      <button class="apoio-acesso" onclick="App.abrirPrevencao()" style="margin-top:0">
+        <span class="aae">🛡️</span>
+        <div class="aat"><b>Prevenção de recaída</b><span>Gatilhos, carta pro futuro e horários de risco</span></div>
         <span class="aaseta">›</span>
       </button>
       <div class="card">
