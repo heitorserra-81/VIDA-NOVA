@@ -579,6 +579,48 @@ input,select,textarea{font-family:var(--ff)}
 .vazio b{display:block;font-weight:700;margin-bottom:4px;color:var(--txt)}
 .vazio small{font-size:13px}
 .carregando{text-align:center;padding:30px;color:var(--txt-2);font-size:13px}
+
+/* ====================== NOTIFICAÇÃO INTERNA ====================== */
+.notif-banner{position:fixed;top:calc(env(safe-area-inset-top)+14px);left:50%;transform:translateX(-50%) translateY(calc(-100% - env(safe-area-inset-top) - 60px));z-index:200;width:calc(100% - 32px);max-width:440px;
+  background:var(--surface);border:1px solid var(--linha);border-radius:18px;padding:14px 16px;
+  box-shadow:0 18px 40px -12px rgba(0,0,0,.5);display:flex;gap:12px;align-items:flex-start;
+  transition:transform .45s cubic-bezier(.2,.9,.2,1),opacity .45s;opacity:0;pointer-events:none}
+.notif-banner.on{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+.notif-banner .nico{font-size:30px;flex-shrink:0}
+.notif-banner .ntx b{display:block;font-weight:800;font-size:14.5px;color:var(--txt);margin-bottom:2px}
+.notif-banner .ntx span{font-size:12.5px;color:var(--txt-2);line-height:1.4}
+.notif-banner .nfechar{position:absolute;top:10px;right:12px;color:var(--txt-3);font-size:16px;padding:2px 6px}
+.notif-admin{border-color:rgba(246,158,66,.4);background:linear-gradient(135deg,rgba(246,158,66,.12),var(--surface))}
+
+/* ====================== PAINEL ADMIN ====================== */
+.admin-overlay{position:fixed;inset:0;z-index:150;display:none;overflow-y:auto;background:var(--bg)}
+.admin-overlay.on{display:block;animation:fade .3s}
+.admin-topo{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 16px 12px;background:#0a1a0f;border-bottom:1px solid rgba(46,204,113,.2)}
+.admin-topo b{font-family:var(--ff-disp);font-size:17px;color:var(--verde)}
+.admin-corpo{padding:14px 16px calc(40px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto}
+.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.admin-stat{background:linear-gradient(135deg,rgba(46,204,113,.15),rgba(46,204,113,.04));border:1px solid rgba(46,204,113,.2);border-radius:16px;padding:14px;text-align:center}
+.admin-stat .an{font-family:var(--ff-disp);font-weight:900;font-size:28px;color:var(--verde);line-height:1}
+.admin-stat .al{font-size:11px;color:var(--txt-2);font-weight:700;margin-top:3px}
+.admin-sec{background:var(--surface);border:1px solid var(--linha);border-radius:18px;padding:16px;margin-bottom:14px}
+.admin-sec h3{font-family:var(--ff-disp);font-weight:800;font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.admin-user{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--linha)}
+.admin-user:last-child{border-bottom:none}
+.admin-user .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;font-size:14px;flex-shrink:0}
+.admin-user .ui{flex:1;min-width:0}
+.admin-user .ui b{font-size:13.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-user .ui small{font-size:11px;color:var(--txt-2)}
+.admin-user .uacoes{display:flex;gap:6px;flex-shrink:0}
+.admin-user .uacoes button{padding:6px 10px;border-radius:9px;font-size:11.5px;font-weight:700;background:var(--surface-2);border:1px solid var(--linha);color:var(--txt)}
+.admin-user .uacoes .bdel{background:rgba(255,107,107,.15);border-color:rgba(255,107,107,.3);color:#ff6b6b}
+.admin-user.banido{opacity:.5}
+.admin-post{font-size:13px;padding:10px;border-radius:12px;background:var(--surface-2);margin-bottom:8px;position:relative}
+.admin-post .apdel{position:absolute;top:8px;right:8px;color:#ff6b6b;font-size:13px;font-weight:700}
+.admin-post .apautor{font-weight:700;font-size:12px;color:var(--verde);margin-bottom:3px}
+.admin-msg-card{background:var(--surface-2);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
+.admin-msg-card .amtx{flex:1;font-size:13px;line-height:1.5}
+.admin-msg-card .amtx small{display:block;color:var(--txt-2);font-size:11px;margin-top:4px}
+.admin-msg-card button{color:#ff6b6b;font-size:13px;font-weight:700;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -754,6 +796,12 @@ input,select,textarea{font-family:var(--ff)}
 <div class="jitsi-overlay" id="jitsiOverlay"></div>
 <div class="fissura-overlay" id="fissuraOverlay"></div>
 <div class="apoio-overlay" id="prevencaoOverlay"></div>
+<div class="apoio-overlay" id="adminOverlay" style="background:var(--bg)"></div>
+<div class="notif-banner" id="notifBanner" style="display:none">
+  <span class="nico" id="notifIco">🏅</span>
+  <div class="ntx"><b id="notifTit"></b><span id="notifSub"></span></div>
+  <button class="nfechar" onclick="Notif.fecharNotif()">✕</button>
+</div>
 <div class="cel" id="cel"></div>
 <div class="toast" id="toast"></div>
 
@@ -761,6 +809,7 @@ input,select,textarea{font-family:var(--ff)}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <script>
 /* ============================================================
@@ -778,11 +827,14 @@ const firebaseConfig = {
   appId: "1:1055570421019:web:7b5dcc564bfe1c30189fbe"
 };
 /* Coleções deste app (prefixo vidanova_ pra NÃO conflitar com os outros) */
+const ADMIN_EMAIL = 'heitorserra@gmail.com';
+const VAPID_KEY = 'BFN3DWquumMbyHoaFlQlW29NqD2y2xnysFJfAU44IqAwBYjdCkil3mH7hqn2poU9pF9j-owNxySnVnN6dkSGTNQ';
 const COL = {
   usuarios:'vidanova_usuarios',
   feed:'vidanova_feed',
   chat:'vidanova_chat',
-  padrinhos:'vidanova_padrinhos'
+  padrinhos:'vidanova_padrinhos',
+  adminMsgs:'vidanova_admin_msgs'
 };
 const SALAS_VN = [
   {id:'acolhimento',nome:'Sala Acolhimento',emoji:'🤗',desc:'Um espaço pra desabafar e ser ouvido, a qualquer hora.'},
@@ -1138,6 +1190,12 @@ auth.onAuthStateChanged(u=>{
     App.criandoConta=false;
     const primeiraVez=!PERFIL;
     PERFIL={uid:u.uid,...snap.data()};
+    // usuário banido: fazer logout imediato
+    if(PERFIL.banido){
+      auth.signOut();
+      App.toast('Sua conta foi desativada pelo administrador.');
+      return;
+    }
     App.modoCompletar=false;
     if(primeiraVez) App.iniciar();
     else App.refresh();
@@ -1220,11 +1278,22 @@ const App={
   },
   iniciar(){
     $('#onb').style.display='none'; $('#main').style.display='block';
+    // painel admin (email especial)
+    if(PERFIL.email===ADMIN_EMAIL || auth.currentUser?.email===ADMIN_EMAIL){
+      Admin.abrir(); return;
+    }
     this.checarConquistasNovas(true);
     this.refresh();
     this.aba('tInicio',document.querySelector('.nav button'));
     this.iniciarFeed(); this.iniciarChat();
     this.agendarLembretes();
+    // iniciar push notifications
+    FCM.iniciar().then(()=>{
+      if(Notification.permission!=='granted'){
+        setTimeout(()=>App.pedirPush(),3000);
+      }
+    });
+    setTimeout(()=>Notif.checarTodas(),1400);
   },
   refresh(){
     if(!PERFIL)return;
@@ -1258,6 +1327,14 @@ const App={
     const b=$('#btnEntrar'); if(b){b.disabled=false;b.textContent='Entrar'}
     const b2=$('#btnCriar'); if(b2){b2.disabled=false;b2.textContent=App.modoCompletar?'Salvar e entrar':'Criar conta e começar'}
     this.modal(`<h2>Ops, algo travou 🛠️</h2><p>${msg}</p><button class="btn" onclick="App.fecharModal()">Entendi</button><button class="btn txt" onclick="auth.signOut();App.fecharModal()">Sair e usar outro e-mail</button>`);
+  },
+  pedirPush(){
+    if(Notification.permission==='granted'||Notification.permission==='denied')return;
+    App.modal(`<div style="text-align:center;font-size:44px">🔔</div>
+      <h2 style="text-align:center">Ativar notificações?</h2>
+      <p>Receba avisos de medalhas conquistadas, melhorias de saúde e mensagens de apoio — mesmo com o app fechado.</p>
+      <button class="btn" onclick="FCM.pedirPermissao();App.fecharModal()">Ativar notificações</button>
+      <button class="btn txt" onclick="App.fecharModal()">Agora não</button>`);
   },
   completarPerfil(){
     // conta logada, mas sem perfil salvo: completa o cadastro reaproveitando a conta
@@ -1749,6 +1826,425 @@ const App={
     cel.classList.add('on');
   }
 };
+/* ================== FCM — PUSH NOTIFICATIONS ================== */
+const FCM={
+  msg:null, reg:null,
+  async iniciar(){
+    if(!('serviceWorker' in navigator)||!('PushManager' in window))return;
+    try{
+      this.reg=await navigator.serviceWorker.register('./firebase-messaging-sw.js');
+      if(typeof firebase.messaging==='function'){
+        this.msg=firebase.messaging();
+        // mensagem em primeiro plano (app aberto)
+        this.msg.onMessage(payload=>{
+          const t=(payload.notification&&payload.notification.title)||'Vida Nova 🌱';
+          const b=(payload.notification&&payload.notification.body)||'';
+          Notif.mostrar('📢',t,b,true);
+        });
+        // se já tem permissão, registra token automaticamente
+        if(Notification.permission==='granted') await this.registrarToken();
+      }
+    }catch(e){console.log('FCM init:',e)}
+  },
+  async pedirPermissao(){
+    if(!this.msg){App.toast('Push não suportado nesse navegador.');return false;}
+    try{
+      const p=await Notification.requestPermission();
+      if(p==='granted'){
+        await this.registrarToken();
+        App.toast('🔔 Notificações ativadas!');
+        return true;
+      }else{
+        App.toast('Permissão negada. Ative nas configurações do navegador.');
+        return false;
+      }
+    }catch(e){App.toast('Erro ao pedir permissão.');return false;}
+  },
+  async registrarToken(){
+    if(!this.msg||!UID||!this.reg)return;
+    try{
+      const token=await this.msg.getToken({vapidKey:VAPID_KEY,serviceWorkerRegistration:this.reg});
+      if(token){
+        await db.collection(COL.usuarios).doc(UID).update({fcmToken:token,fcmTs:Date.now()});
+        lsSet('fcmToken',token);
+      }
+    }catch(e){console.log('FCM token:',e)}
+  }
+};
+
+/* ================== NOTIFICAÇÕES INTERNAS ================== */
+const Notif={
+  _fila:[],
+  _mostrando:false,
+  fecharNotif(){
+    const b=$('#notifBanner'); if(b){b.classList.remove('on');}
+    clearTimeout(Notif._timer);
+    Notif._mostrando=false;
+    setTimeout(()=>{
+      const b2=$('#notifBanner'); if(b2&&!b2.classList.contains('on'))b2.style.display='none';
+      Notif._proxima();
+    },460);
+  },
+  mostrar(ico,tit,sub,admin){
+    Notif._fila.push({ico,tit,sub,admin});
+    if(!Notif._mostrando) Notif._proxima();
+  },
+  _proxima(){
+    if(!Notif._fila.length){Notif._mostrando=false;return;}
+    if(!UID||!PERFIL)return; // só mostra se logado
+    Notif._mostrando=true;
+    const {ico,tit,sub,admin}=Notif._fila.shift();
+    const b=$('#notifBanner'); if(!b)return;
+    b.style.display='flex';
+    b.className='notif-banner'+(admin?' notif-admin':'');
+    $('#notifIco').textContent=ico;
+    $('#notifTit').textContent=tit;
+    $('#notifSub').textContent=sub;
+    void b.offsetWidth;
+    b.classList.add('on');
+    clearTimeout(Notif._timer);
+    Notif._timer=setTimeout(()=>Notif.fecharNotif(),6000);
+  },
+  async checarTodas(){
+    await Promise.all([this.checarMedalhas(), this.checarSaude(), this.checarBadges(), this.checarMsgAdmin()]);
+  },
+  checarMedalhas(){
+    const d=diasLimpos(), meds=medalhasDoTipo();
+    const ja=lsGet('notifMedComemoradas',[]);
+    const novas=meds.filter(m=>d>=m.d&&!ja.includes(m.un));
+    if(!novas.length)return;
+    novas.forEach(m=>{
+      Notif.mostrar('🏅','Nova medalha desbloqueada!',m.nome+' — parabéns, você chegou lá! 🌱');
+    });
+    const agora=meds.filter(m=>d>=m.d).map(m=>m.un);
+    lsSet('notifMedComemoradas',agora);
+  },
+  checarSaude(){
+    const d=diasLimpos(), lista=saudeDoTipo();
+    const ja=lsGet('notifSaudeVistas',[]);
+    const novas=lista.filter(m=>d>=m.d&&!ja.includes(m.org));
+    if(!novas.length)return;
+    novas.forEach(m=>{
+      Notif.mostrar(m.ic,'Seu corpo está melhorando!',m.org+': '+m.desc.slice(0,70)+(m.desc.length>70?'...':''));
+    });
+    const agora=lista.filter(m=>d>=m.d).map(m=>m.org);
+    lsSet('notifSaudeVistas',agora);
+  },
+  checarBadges(){
+    const d=diasLimpos(), eco=economia(), streak=PERFIL.streak||0;
+    const ja=lsGet('notifBadgesVistas',[]);
+    const checks=[
+      {id:'1d',ok:d>=1,ico:'🌅',t:'1 Dia limpo!',s:'Você deu o primeiro passo. O mais difícil já passou.'},
+      {id:'7d',ok:d>=7,ico:'⭐',t:'Uma semana limpo!',s:'7 dias de força. Continue assim.'},
+      {id:'30d',ok:d>=30,ico:'🏵️',t:'Um mês limpo!',s:'30 dias — um marco enorme. Você é incrível.'},
+      {id:'90d',ok:d>=90,ico:'🦅',t:'Três meses limpo!',s:'90 dias! Seu cérebro está se reconstituindo.'},
+      {id:'365d',ok:d>=365,ico:'👑',t:'Um ano limpo!',s:'365 dias. Você mudou sua vida de verdade.'},
+      {id:'str7',ok:streak>=7,ico:'🔥',t:'7 dias seguidos de check-in!',s:'Constância é tudo. Continue firme!'},
+      {id:'eco500',ok:eco>=500,ico:'💰',t:'R$ 500 economizados!',s:'Cada dia limpo também poupa dinheiro.'},
+    ];
+    checks.filter(c=>c.ok&&!ja.includes(c.id)).forEach(c=>{
+      Notif.mostrar(c.ico,c.t,c.s);
+      ja.push(c.id);
+    });
+    lsSet('notifBadgesVistas',ja);
+  },
+  async checarMsgAdmin(){
+    try{
+      const ultima=lsGet('ultimaMsgAdminVista',0);
+      const s=await db.collection(COL.adminMsgs).where('ts','>',ultima).orderBy('ts','asc').limit(5).get();
+      if(s.empty)return;
+      s.forEach(doc=>{
+        const d=doc.data();
+        Notif.mostrar('📢',d.titulo||'Mensagem do Vida Nova',d.texto||'',true);
+      });
+      const ultimo=s.docs[s.docs.length-1].data().ts;
+      lsSet('ultimaMsgAdminVista',ultimo);
+    }catch(e){}
+  }
+};
+
+/* ================== PAINEL ADMINISTRADOR ================== */
+const Admin={
+  _aba:'dashboard',
+  abrir(){
+    $('#onb').style.display='none'; $('#main').style.display='block';
+    const ov=$('#adminOverlay'); ov.classList.add('on'); ov.scrollTop=0;
+    Admin.render();
+  },
+  render(){
+    const ov=$('#adminOverlay'); if(!ov)return;
+    ov.innerHTML=`
+      <div class="admin-topo">
+        <span style="font-size:22px">🛡️</span>
+        <b>Painel Vida Nova — Admin</b>
+        <button class="btn-mini" style="margin-left:auto" onclick="auth.signOut();$('#adminOverlay').classList.remove('on')">Sair</button>
+      </div>
+      <div class="admin-corpo">
+        <div class="seg" style="margin-bottom:16px">
+          <button class="${Admin._aba==='dashboard'?'on':''}" onclick="Admin._aba='dashboard';Admin.render()">📊 Painel</button>
+          <button class="${Admin._aba==='msgs'?'on':''}" onclick="Admin._aba='msgs';Admin.render()">📢 Mensagens</button>
+          <button class="${Admin._aba==='usuarios'?'on':''}" onclick="Admin._aba='usuarios';Admin.render()">👥 Usuários</button>
+          <button class="${Admin._aba==='conteudo'?'on':''}" onclick="Admin._aba='conteudo';Admin.render()">🗂️ Conteúdo</button>
+        </div>
+        <div id="adminConteudo"><div class="carregando">Carregando...</div></div>
+      </div>`;
+    if(Admin._aba==='dashboard') Admin.renderDashboard();
+    else if(Admin._aba==='msgs') Admin.renderMsgs();
+    else if(Admin._aba==='usuarios') Admin.renderUsuarios();
+    else if(Admin._aba==='conteudo') Admin.renderConteudo();
+  },
+  async renderDashboard(){
+    const el=$('#adminConteudo'); if(!el)return;
+    try{
+      const [usSnap,feedSnap,chatSnap]=await Promise.all([
+        db.collection(COL.usuarios).get(),
+        db.collection(COL.feed).get(),
+        db.collection(COL.chat).get()
+      ]);
+      const usuarios=usSnap.docs.map(d=>d.data());
+      const ativos=usuarios.filter(u=>u.streak&&u.streak>0).length;
+      const total=usuarios.length;
+      const mediaD=total?Math.round(usuarios.reduce((s,u)=>s+Math.floor((Date.now()-(u.dataInicio||Date.now()))/86400000),0)/total):0;
+      el.innerHTML=`
+        <div class="admin-stats">
+          <div class="admin-stat"><div class="an">${total}</div><div class="al">Usuários</div></div>
+          <div class="admin-stat"><div class="an">${ativos}</div><div class="al">Com streak</div></div>
+          <div class="admin-stat"><div class="an">${mediaD}d</div><div class="al">Média dias</div></div>
+          <div class="admin-stat"><div class="an">${feedSnap.size}</div><div class="al">Posts</div></div>
+          <div class="admin-stat"><div class="an">${chatSnap.size}</div><div class="al">Msgs chat</div></div>
+          <div class="admin-stat"><div class="an">${usuarios.filter(u=>u.tipo==='alcool').length}</div><div class="al">Álcool</div></div>
+        </div>
+        <div class="admin-sec">
+          <h3>🏆 Top 5 por tempo</h3>
+          ${[...usuarios].sort((a,b)=>(b.dataInicio<a.dataInicio?1:-1)).slice(0,5).map(u=>{
+            const dias=Math.floor((Date.now()-(u.dataInicio||Date.now()))/86400000);
+            return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--linha)">
+              <div class="av" style="width:34px;height:34px;font-size:13px;background:${corDe(u.nome)}">${(u.nome||'?')[0]}</div>
+              <div style="flex:1"><b style="font-size:13.5px">${esc(u.nome||'—')}</b><br><small style="color:var(--txt-2)">${u.tipo||'—'}</small></div>
+              <b style="color:var(--verde)">${dias}d</b>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="admin-sec">
+          <h3>📋 Por tipo de vício</h3>
+          ${['alcool','cigarro','droga'].map(t=>{
+            const n=usuarios.filter(u=>u.tipo===t).length;
+            const pct=total?Math.round(n/total*100):0;
+            return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${t==='alcool'?'🍺 Álcool':t==='cigarro'?'🚬 Cigarro':'💊 Drogas'}</span><b>${n} (${pct}%)</b></div><div class="mini-barra"><i style="width:${pct}%"></i></div></div>`;
+          }).join('')}
+        </div>`;
+    }catch(e){el.innerHTML='<p class="vazio">Erro ao carregar dados.</p>'}
+  },
+  async renderMsgs(){
+    const el=$('#adminConteudo'); if(!el)return;
+    let msgs=[];
+    try{const s=await db.collection(COL.adminMsgs).orderBy('ts','desc').limit(20).get();msgs=s.docs.map(d=>({id:d.id,...d.data()}))}catch(e){}
+    el.innerHTML=`
+      <div class="admin-sec">
+        <h3>📢 Nova mensagem para todos</h3>
+        <p style="font-size:12.5px;color:var(--txt-2);margin-bottom:10px">Aparece como notificação no app quando o usuário abre. Para chegar no celular com app FECHADO, use o Firebase Console abaixo.</p>
+        <input class="prev-input" id="msgTit" maxlength="60" placeholder="Título (ex: Força, galera! 💚)">
+        <textarea class="prev-area" id="msgTxt" placeholder="Texto da mensagem..." style="min-height:80px"></textarea>
+        <button class="btn" style="width:100%" onclick="Admin.enviarMsg()">💬 Enviar mensagem no app</button>
+      </div>
+      <div class="admin-sec">
+        <h3>📲 Enviar push (app fechado)</h3>
+        <p style="font-size:12.5px;color:var(--txt-2);margin-bottom:12px">Para notificação que chega no celular mesmo com o app fechado, use o Firebase Cloud Messaging:</p>
+        <a href="https://console.firebase.google.com/project/staffcheck-d6f20/messaging" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,152,0,.05));border:1px solid rgba(255,152,0,.3);text-decoration:none;margin-bottom:10px">
+          <span style="font-size:26px">🔥</span>
+          <div><b style="color:var(--txt);font-size:14px;display:block">Abrir Firebase Messaging</b><small style="color:var(--txt-2)">Crie uma campanha → todos os usuários → enviar agora</small></div>
+          <span style="color:var(--txt-3);margin-left:auto">›</span>
+        </a>
+        <div style="background:var(--surface-2);border-radius:12px;padding:12px;font-size:12px;color:var(--txt-2);line-height:1.7">
+          <b style="color:var(--txt)">Passo a passo:</b><br>
+          1. Toque em "Crie sua primeira campanha"<br>
+          2. Selecione "Notificações do Firebase"<br>
+          3. Escreva título e texto<br>
+          4. Em "Target" → "User segment" → selecione o app web<br>
+          5. Em "Scheduling" → "Now"<br>
+          6. Toque em "Publicar"
+        </div>
+      </div>
+      <div class="admin-sec">
+        <h3>📋 Mensagens enviadas</h3>
+        ${msgs.length?msgs.map(m=>`<div class="admin-msg-card">
+          <div class="amtx"><b>${esc(m.titulo||'—')}</b> — ${esc(m.texto||'')}<small>${new Date(m.ts).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</small></div>
+          <button onclick="Admin.deletarMsg('${m.id}')">✕</button>
+        </div>`).join(''):'<p class="vazio" style="padding:14px">Nenhuma mensagem enviada ainda.</p>'}
+      </div>`;
+  },
+  async enviarMsg(){
+    const tit=($('#msgTit')?.value||'').trim(), txt=($('#msgTxt')?.value||'').trim();
+    if(!tit||!txt){App.toast('Preencha título e texto.');return;}
+    try{
+      await db.collection(COL.adminMsgs).add({titulo:tit,texto:txt,ts:Date.now(),de:'admin'});
+      App.toast('📢 Mensagem enviada!');
+      Admin.renderMsgs();
+    }catch(e){App.toast('Erro ao enviar. Tente de novo.')}
+  },
+  async deletarMsg(id){
+    if(!confirm('Apagar esta mensagem?'))return;
+    try{await db.collection(COL.adminMsgs).doc(id).delete();Admin.renderMsgs();}catch(e){App.toast('Erro ao apagar.')}
+  },
+  async renderUsuarios(){
+    const el=$('#adminConteudo'); if(!el)return;
+    el.innerHTML='<div class="carregando">Carregando usuários...</div>';
+    try{
+      const s=await db.collection(COL.usuarios).orderBy('criadoEm','desc').limit(100).get();
+      const usuarios=s.docs.map(d=>({id:d.id,...d.data()}));
+      el.innerHTML=`
+        <p style="font-size:12px;color:var(--txt-2);margin-bottom:12px">${usuarios.length} usuários cadastrados. Toque num usuário para ver detalhes.</p>
+        <div class="admin-sec">
+          <h3>👥 Usuários</h3>
+          ${usuarios.map(u=>{
+            const dias=Math.floor((Date.now()-(u.dataInicio||Date.now()))/86400000);
+            const banido=u.banido||false;
+            const tipo=u.tipo==='alcool'?'🍺':u.tipo==='cigarro'?'🚬':'💊';
+            return `<div class="admin-user ${banido?'banido':''}">
+              <div class="av" style="background:${corDe(u.nome)};cursor:pointer" onclick="Admin.verUsuario('${u.id}')">${(u.nome||'?')[0].toUpperCase()}</div>
+              <div class="ui" style="cursor:pointer" onclick="Admin.verUsuario('${u.id}')">
+                <b>${esc(u.nome||'—')} ${tipo} ${banido?'🚫':''}</b>
+                <small>${esc(u.email||'sem e-mail')} · ${dias}d · 🪙${u.moedas||0} · streak ${u.streak||0}</small>
+              </div>
+              <div class="uacoes">
+                <button onclick="Admin.toggleBanir('${u.id}',${!banido},'${esc(u.nome||'')}',${banido})">${banido?'✅':'🚫'}</button>
+                <button class="bdel" onclick="Admin.deletarUsuario('${u.id}','${esc(u.nome||'')}')">🗑️</button>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>`;
+    }catch(e){el.innerHTML='<p class="vazio">Erro ao carregar usuários.</p>'}
+  },
+  async verUsuario(uid){
+    const el=$('#adminConteudo'); if(!el)return;
+    el.innerHTML='<div class="carregando">Carregando perfil...</div>';
+    try{
+      const [perfSnap,feedSnap,chatSnap]=await Promise.all([
+        db.collection(COL.usuarios).doc(uid).get(),
+        db.collection(COL.feed).where('uid','==',uid).orderBy('ts','desc').limit(20).get(),
+        db.collection(COL.chat).where('uid','==',uid).orderBy('ts','desc').limit(20).get()
+      ]);
+      if(!perfSnap.exists){el.innerHTML='<p class="vazio">Usuário não encontrado.</p>';return;}
+      const u={id:perfSnap.id,...perfSnap.data()};
+      const dias=Math.floor((Date.now()-(u.dataInicio||Date.now()))/86400000);
+      el.innerHTML=`
+        <button class="btn txt" style="margin-bottom:10px" onclick="Admin.renderUsuarios()">‹ Voltar à lista</button>
+        <div class="admin-sec">
+          <h3>👤 Perfil de ${esc(u.nome||'—')}</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <div class="admin-stat"><div class="an">${dias}</div><div class="al">dias limpos</div></div>
+            <div class="admin-stat"><div class="an">${u.streak||0}</div><div class="al">streak</div></div>
+            <div class="admin-stat"><div class="an">${u.moedas||0}</div><div class="al">🪙 moedas</div></div>
+            <div class="admin-stat"><div class="an">${u.recaidas||0}</div><div class="al">recaídas</div></div>
+          </div>
+          <div style="font-size:13px;color:var(--txt-2);line-height:1.8">
+            <b>E-mail:</b> ${esc(u.email||'—')}<br>
+            <b>Tipo:</b> ${u.tipo==='alcool'?'🍺 Álcool':u.tipo==='cigarro'?'🚬 Cigarro':'💊 '+( u.substancia||'Droga')}<br>
+            <b>Qtd/dia:</b> ${u.qtdDia||0} · <b>Gasto/dia:</b> R$${u.gastoDia||0}<br>
+            <b>Início:</b> ${u.dataInicio?new Date(u.dataInicio).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'-'}<br>
+            <b>Recorde:</b> ${u.recorde||dias} dias · <b>Cadastro:</b> ${u.criadoEm?new Date(u.criadoEm).toLocaleDateString('pt-BR'):'-'}<br>
+            <b>Posts:</b> ${u.posts||0} · <b>Status:</b> ${u.banido?'🚫 Desativado':'✅ Ativo'}
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn txt" style="flex:1;border:1px solid var(--linha);border-radius:12px" onclick="Admin.toggleBanir('${u.id}',${!u.banido},'${esc(u.nome||'')}',${!!u.banido})">${u.banido?'✅ Reativar conta':'🚫 Desativar conta'}</button>
+            <button class="btn txt" style="flex:1;border:1px solid rgba(255,107,107,.4);border-radius:12px;color:#ff6b6b" onclick="Admin.deletarUsuario('${u.id}','${esc(u.nome||'')}')">🗑️ Excluir tudo</button>
+          </div>
+        </div>
+        <div class="admin-sec">
+          <h3>📣 Posts no mural (${feedSnap.size})</h3>
+          ${feedSnap.empty?'<p style="color:var(--txt-2);font-size:13px">Nenhum post.</p>':feedSnap.docs.map(d=>{
+            const p=d.data();
+            return `<div class="admin-post">
+              <button class="apdel" onclick="Admin.deletarPost('${d.id}','feed')">✕</button>
+              <div class="apautor">${tempoRel(p.ts)}</div>
+              ${esc((p.texto||'').slice(0,200))}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="admin-sec">
+          <h3>💬 Mensagens no grupo (${chatSnap.size})</h3>
+          ${chatSnap.empty?'<p style="color:var(--txt-2);font-size:13px">Nenhuma mensagem.</p>':chatSnap.docs.map(d=>{
+            const p=d.data();
+            return `<div class="admin-post">
+              <button class="apdel" onclick="Admin.deletarPost('${d.id}','chat')">✕</button>
+              <div class="apautor">${tempoRel(p.ts)}</div>
+              ${esc((p.texto||'').slice(0,200))}
+            </div>`;
+          }).join('')}
+        </div>
+        <p class="apoio-aviso" style="margin-top:8px">Dados pessoais como check-ins, diário e gatilhos ficam apenas no celular do usuário — não são enviados ao servidor, protegendo a privacidade deles.</p>`;
+    }catch(e){el.innerHTML='<button class="btn txt" onclick="Admin.renderUsuarios()">‹ Voltar</button><p class="vazio">Erro ao carregar detalhes.</p>'}
+  },
+  async toggleBanir(id,banir,nome,jaBanido){
+    const acao=banir?'desativar':'reativar';
+    if(!confirm((banir?'Desativar ':'Reativar ')+nome+'?'))return;
+    try{
+      await db.collection(COL.usuarios).doc(id).update({banido:banir});
+      App.toast((banir?'🚫 Desativado: ':'✅ Reativado: ')+nome);
+      Admin.renderUsuarios();
+    }catch(e){App.toast('Erro. Tente de novo.')}
+  },
+  async deletarUsuario(id,nome){
+    if(!confirm('EXCLUIR permanentemente o usuário "'+nome+'"?\nIsso remove o perfil dele do banco. Essa ação não pode ser desfeita.'))return;
+    if(!confirm('Tem certeza? Os dados de "'+nome+'" serão apagados.'))return;
+    try{
+      // apagar perfil, posts e mensagens do usuário
+      await db.collection(COL.usuarios).doc(id).delete();
+      // apagar posts do feed
+      const feedSnap=await db.collection(COL.feed).where('uid','==',id).get();
+      const batch=db.batch();
+      feedSnap.docs.forEach(d=>batch.delete(d.ref));
+      // apagar msgs do chat
+      const chatSnap=await db.collection(COL.chat).where('uid','==',id).get();
+      chatSnap.docs.forEach(d=>batch.delete(d.ref));
+      await batch.commit();
+      App.toast('🗑️ Usuário excluído: '+nome);
+      Admin.renderUsuarios();
+    }catch(e){App.toast('Erro ao excluir. Verifique as regras do Firestore.')}
+  },
+  async renderConteudo(){
+    const el=$('#adminConteudo'); if(!el)return;
+    el.innerHTML='<div class="carregando">Carregando conteúdo...</div>';
+    try{
+      const [feedSnap,chatSnap]=await Promise.all([
+        db.collection(COL.feed).orderBy('ts','desc').limit(30).get(),
+        db.collection(COL.chat).orderBy('ts','desc').limit(30).get()
+      ]);
+      el.innerHTML=`
+        <div class="admin-sec">
+          <h3>📣 Posts do mural (${feedSnap.size})</h3>
+          ${feedSnap.empty?'<p class="vazio" style="padding:12px">Nenhum post.</p>':feedSnap.docs.map(d=>{
+            const p=d.data();
+            return `<div class="admin-post">
+              <button class="apdel" onclick="Admin.deletarPost('${d.id}','feed')">✕</button>
+              <div class="apautor">${esc(p.nome||'—')} · ${tempoRel(p.ts)}</div>
+              ${esc((p.texto||'').slice(0,120))}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="admin-sec">
+          <h3>💬 Chat do grupo (${chatSnap.size})</h3>
+          ${chatSnap.empty?'<p class="vazio" style="padding:12px">Nenhuma mensagem.</p>':chatSnap.docs.map(d=>{
+            const p=d.data();
+            return `<div class="admin-post">
+              <button class="apdel" onclick="Admin.deletarPost('${d.id}','chat')">✕</button>
+              <div class="apautor">${esc(p.nome||'—')} · ${tempoRel(p.ts)}</div>
+              ${esc((p.texto||'').slice(0,120))}
+            </div>`;
+          }).join('')}
+        </div>`;
+    }catch(e){el.innerHTML='<p class="vazio">Erro ao carregar conteúdo.</p>'}
+  },
+  async deletarPost(id,colecao){
+    if(!confirm('Excluir este conteúdo?'))return;
+    try{
+      await db.collection(colecao==='feed'?COL.feed:COL.chat).doc(id).delete();
+      App.toast('🗑️ Conteúdo removido.');
+      Admin.renderConteudo();
+    }catch(e){App.toast('Erro ao remover.')}
+  }
+};
+
 App.setTema(localStorage.getItem('vn_tema')||'escuro');
 
 function soltarConfete(){
@@ -2097,6 +2593,11 @@ const Render={
       <button class="apoio-acesso" onclick="App.abrirPrevencao()" style="margin-top:0">
         <span class="aae">🛡️</span>
         <div class="aat"><b>Prevenção de recaída</b><span>Gatilhos, carta pro futuro e horários de risco</span></div>
+        <span class="aaseta">›</span>
+      </button>
+      <button class="apoio-acesso" onclick="FCM.pedirPermissao()" style="margin-top:0;${Notification.permission==='granted'?'opacity:.5':''}">
+        <span class="aae">${Notification.permission==='granted'?'🔔':'🔕'}</span>
+        <div class="aat"><b>${Notification.permission==='granted'?'Notificações ativas':'Ativar notificações push'}</b><span>${Notification.permission==='granted'?'Você receberá avisos mesmo com o app fechado':'Medalhas, conquistas e mensagens de apoio'}</span></div>
         <span class="aaseta">›</span>
       </button>
       <div class="card">
