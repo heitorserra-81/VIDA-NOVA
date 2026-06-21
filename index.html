@@ -231,7 +231,39 @@ input,select,textarea{font-family:var(--ff)}
 .stat .v{font-family:var(--ff-disp);font-weight:900;font-size:23px;line-height:1}
 .stat .l{color:var(--txt-2);font-size:12px;font-weight:600;margin-top:3px}
 
-/* ===== EFEITO DE LUZ GIRANDO ===== */
+/* ===== FOTO DE PERFIL ===== */
+.foto-avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.av-foto{position:relative;display:inline-flex;flex-shrink:0}
+.av-foto .av{overflow:hidden}
+.av-foto .av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.foto-pick-btn{display:flex;flex-direction:column;align-items:center;gap:8px;width:110px;height:110px;border-radius:50%;border:2.5px dashed var(--verde);background:var(--surface-2);justify-content:center;font-size:28px;cursor:pointer;transition:.2s;margin:0 auto 16px;position:relative;overflow:hidden}
+.foto-pick-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.foto-pick-btn small{font-size:10.5px;color:var(--txt-2);font-weight:700;margin-top:-4px}
+.foto-preview{width:110px;height:110px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:3px solid var(--verde);box-shadow:0 0 0 4px var(--glow)}
+
+/* ===== CELEBRAÇÃO RENOVADA ===== */
+.cel{position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,rgba(46,204,113,.25) 0%,rgba(0,0,0,.85) 100%);
+  backdrop-filter:blur(10px);text-align:center;flex-direction:column;padding:30px}
+.cel.on{display:flex;animation:fade .4s}
+.cel-foto{width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid var(--verde);box-shadow:0 0 0 6px var(--glow),0 0 40px var(--verde);margin:0 auto 14px;animation:pulsaCel 1.5s infinite}
+.cel-sem-foto{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--verde),var(--jade));border:4px solid rgba(255,255,255,.3);display:grid;place-items:center;margin:0 auto 14px;font-family:var(--ff-disp);font-weight:900;font-size:38px;color:#04130B;box-shadow:0 0 40px var(--verde);animation:pulsaCel 1.5s infinite}
+.cel-medalha{font-size:72px;animation:popMed .6s cubic-bezier(.2,1.4,.4,1) forwards;margin-bottom:6px}
+@keyframes popMed{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+@keyframes pulsaCel{0%,100%{box-shadow:0 0 0 6px var(--glow),0 0 40px var(--verde)}50%{box-shadow:0 0 0 10px var(--glow),0 0 60px var(--verde)}}
+.cel h2{font-family:var(--ff-disp);font-weight:900;font-size:26px;margin:6px 0 4px;color:#fff}
+.cel .cel-nome{color:var(--jade);font-size:18px;font-weight:800;margin-bottom:8px}
+.cel p{color:rgba(255,255,255,.8);font-size:14.5px;margin-bottom:22px;line-height:1.5;max-width:320px}
+.cel .btn{max-width:240px}
+
+/* ===== MEDALHA NO NOME (chat/feed) ===== */
+.med-badge{font-size:13px;margin-left:4px;vertical-align:middle}
+
+/* ===== PASSOS MELHORADOS ===== */
+.passo-historico{margin-top:10px}
+.passo-hist-item{background:var(--surface-2);border-radius:10px;padding:9px 12px;font-size:13px;font-style:italic;color:var(--txt);margin-bottom:6px;border-left:3px solid var(--verde-2)}
+.passo-hist-item .phi-data{display:block;font-size:10.5px;font-style:normal;color:var(--txt-3);font-weight:700;margin-top:4px}
+.passo-guia{font-size:12.5px;color:var(--azul);font-style:italic;line-height:1.4;margin:4px 0 8px;padding:8px 10px;background:rgba(76,125,245,.1);border-radius:8px}
 .stats-wrap{position:relative;padding:3px;border-radius:calc(var(--radius-sm) + 3px);margin-top:14px}
 .stats-wrap::before{
   content:'';position:absolute;inset:-2px;border-radius:calc(var(--radius-sm) + 5px);
@@ -990,6 +1022,83 @@ const FRASES = [
   'Seja gentil com você. A jornada já é difícil o bastante.',
   'Um dia de cada vez — e hoje já é uma vitória.'
 ];
+const PASSOS_GUIA=[
+  'O que exatamente você perdeu o controle? Em que momento isso ficou claro pra você?',
+  'O que te dá esperança de que a mudança é possível? Em que ou em quem você acredita?',
+  'O que você entrega ao cuidado de um apoio maior hoje? Como vai pedir ajuda quando precisar?',
+  'Quais são seus três maiores gatilhos? E suas três maiores forças internas?',
+  'Existe alguém com quem você pode ser completamente honesto? O que você diria?',
+  'Quais hábitos ou pensamentos você está disposto a largar hoje, mesmo que doa?',
+  'O que você pede que mude em você? O que ainda te segura mesmo querendo mudar?',
+  'Quem você machucou durante o período do vício? Escreva os nomes.',
+  'O que você pode fazer concretamente para reparar esse relacionamento, sem causar mais dano?',
+  'O que você errou hoje? Como vai fazer diferente amanhã? Seja honesto.',
+  'Qual prática vai cultivar sua paz hoje — oração, meditação, respiração?',
+  'Quem está sofrendo que você pode amparar? De que forma vai estender a mão?'
+];
+
+/* ===== OBJETO PERFIL (foto) ===== */
+const FotoPerfil={
+  async abrir(){
+    App.modal(`<h2>Minha foto de perfil</h2>
+      <p>Aparece no chat, no feed e na comemoração das medalhas.</p>
+      <div id="fotoWrap">
+        ${PERFIL.foto?`<img src="${PERFIL.foto}" class="foto-preview" id="fotoAtual">`:'<div style="text-align:center;font-size:42px;margin-bottom:14px">🧑</div>'}
+      </div>
+      <label class="foto-pick-btn">
+        <input type="file" accept="image/*" id="fotoInput" onchange="FotoPerfil.selecionarFoto(this)">
+        📷
+        <small>Câmera ou galeria</small>
+      </label>
+      <div id="fotoPreviewWrap" style="display:none">
+        <img id="fotoPreviewImg" class="foto-preview">
+        <button class="btn" onclick="FotoPerfil.salvar()">Salvar foto</button>
+      </div>
+      <button class="btn sec" style="margin-top:8px" onclick="App.fecharModal()">Cancelar</button>
+      ${PERFIL.foto?'<button class="btn txt" onclick="FotoPerfil.remover()">Remover foto atual</button>':''}`);
+  },
+  async selecionarFoto(input){
+    const file=input.files[0]; if(!file)return;
+    const base64=await this._comprimir(file,200);
+    FotoPerfil._base64temp=base64;
+    const wrap=$('#fotoPreviewWrap'), img=$('#fotoPreviewImg');
+    if(wrap&&img){img.src=base64;wrap.style.display='block';}
+  },
+  _comprimir(file,maxPx=200){
+    return new Promise(res=>{
+      const reader=new FileReader();
+      reader.onload=e=>{
+        const img=new Image();
+        img.onload=()=>{
+          const scale=Math.min(maxPx/img.width,maxPx/img.height,1);
+          const canvas=document.createElement('canvas');
+          canvas.width=Math.round(img.width*scale);
+          canvas.height=Math.round(img.height*scale);
+          canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+          res(canvas.toDataURL('image/jpeg',.75));
+        };
+        img.src=e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  },
+  async salvar(){
+    if(!FotoPerfil._base64temp)return;
+    try{
+      await db.collection(COL.usuarios).doc(UID).update({foto:FotoPerfil._base64temp});
+      App.toast('📷 Foto salva!');
+      App.fecharModal();
+    }catch(e){App.toast('Erro ao salvar a foto.')}
+  },
+  async remover(){
+    if(!confirm('Remover sua foto de perfil?'))return;
+    try{
+      await db.collection(COL.usuarios).doc(UID).update({foto:firebase.firestore.FieldValue.delete()});
+      App.toast('Foto removida.');
+      App.fecharModal();
+    }catch(e){App.toast('Erro ao remover.')}
+  }
+};
 const PASSOS = [
   {n:1,t:'Reconhecer',d:'Admito que perdi o controle e que, sozinho do jeito que tentei, não dei conta.'},
   {n:2,t:'Esperança',d:'Acredito que posso me reerguer com apoio: de pessoas, da minha fé ou força interior.'},
@@ -1877,20 +1986,20 @@ const App={
   },
   iniciarAdmin(){
     if(unsubAdmin)return;
-    // listener em tempo real: mensagens do admin aparecem na hora pra quem está com o app aberto
-    const agora=Date.now();
-    unsubAdmin=db.collection(COL.adminMsgs).orderBy('ts','desc').limit(1).onSnapshot(s=>{
-      s.docChanges().forEach(ch=>{
-        if(ch.type==='added'){
-          const d=ch.doc.data();
-          // só mostra se a mensagem veio DEPOIS que o app abriu
-          if(d.ts>agora){
-            Notif.mostrar('📢',d.titulo||'Mensagem do Vida Nova',d.texto||'',true);
-            lsSet('ultimaMsgAdminVista',d.ts);
-          }
-        }
-      });
-    });
+    const agora=Date.now()-2000; // margem de 2s
+    try{
+      unsubAdmin=db.collection(COL.adminMsgs)
+        .where('ts','>',agora)
+        .onSnapshot(s=>{
+          s.docChanges().forEach(ch=>{
+            if(ch.type==='added'){
+              const d=ch.doc.data();
+              Notif.mostrar('📢',d.titulo||'Mensagem do Vida Nova',d.texto||'',true);
+              lsSet('ultimaMsgAdminVista',d.ts||Date.now());
+            }
+          });
+        },err=>console.warn('adminListener:',err));
+    }catch(e){console.warn('iniciarAdmin:',e)}
   },
   checarConquistasNovas(silencioso){
     const d=diasLimpos();
@@ -1905,8 +2014,18 @@ const App={
   },
   celebrar(m){
     const cel=$('#cel');
-    cel.innerHTML=`<div class="big">🏅</div><h2>${m.nome} limpo!</h2><p>Você desbloqueou a medalha "${m.nome}". Continue — seu corpo agradece.</p><button class="btn" onclick="App.fecharCel()">Continuar firme 💪</button>`;
-    cel.classList.add('on'); soltarConfete();
+    const foto=PERFIL.foto?`<img src="${PERFIL.foto}" class="cel-foto">`
+      :`<div class="cel-sem-foto">${(PERFIL.nome||'?')[0].toUpperCase()}</div>`;
+    const nome=primeiroNome(PERFIL.nome)||'Você';
+    cel.innerHTML=`
+      ${foto}
+      <div class="cel-medalha" style="--mc:${m.cor}">🏅</div>
+      <div class="cel-nome">Parabéns, ${esc(nome)}!</div>
+      <h2>${esc(m.nome)} limpo!</h2>
+      <p>Você desbloqueou a medalha <b>${esc(m.nome)}</b>. Cada dia que passou foi uma escolha sua. Continue — seu corpo e sua vida agradecem. 💚</p>
+      <button class="btn" onclick="App.fecharCel()">Continuar firme 💪</button>`;
+    cel.classList.add('on');
+    soltarConfete();
     App.addMoedas(50,'medalha '+m.nome);
   },
   fecharCel(){$('#cel').classList.remove('on')},
@@ -2589,13 +2708,16 @@ const Render={
       <div class="card" style="margin-top:14px">
         ${PASSOS.map(p=>{
           const e=fb[p.n]||{};
+          const hist=e.historico||[];
+          const guia=PASSOS_GUIA[p.n-1]||'';
           return `<div class="passo ${e.feito?'feito':''}">
             <button class="passo-check" onclick="Acoes.togglePasso(${p.n})">${e.feito?'✓':p.n}</button>
             <div class="passo-corpo">
               <b>${p.t}</b>
               <small>${p.d}</small>
-              ${e.nota?`<div class="passo-nota">"${esc(e.nota)}"</div>`:''}
-              <button class="passo-anotar" onclick="Acoes.anotarPasso(${p.n})">${e.nota?'✏️ Editar anotação':'+ Anotar reflexão'}</button>
+              <div class="passo-guia">💭 ${esc(guia)}</div>
+              ${hist.length?`<div class="passo-historico">${hist.slice().reverse().slice(0,3).map(h=>`<div class="passo-hist-item">"${esc(h.txt)}"<span class="phi-data">${new Date(h.ts).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'2-digit'})}</span></div>`).join('')}</div>`:''}
+              <button class="passo-anotar" onclick="Acoes.anotarPasso(${p.n})">+ Adicionar reflexão</button>
             </div>
           </div>`;
         }).join('')}
@@ -2642,9 +2764,10 @@ const Render={
     const curtidas=lsGet('curtidas',[]);
     el.innerHTML=f.map(p=>{
       const liked=curtidas.includes(p.id);
+      const med=medalhaIconeUsuario(p.dias||0,p.tipo||'alcool');
       return `<div class="post">
-        <div class="cab"><div class="av" style="background:${corDe(p.nome)}">${(p.nome||'?')[0].toUpperCase()}</div>
-          <div class="meta"><b>${esc(p.nome)} ${p.dias!=null?'· '+p.dias+'d':''}</b><small>${tempoRel(p.ts)}</small></div></div>
+        <div class="cab">${avatarHtml(p.foto,p.nome,38)}
+          <div class="meta"><b>${esc(p.nome)}${med?` <span class="med-badge">${med}</span>`:''} ${p.dias!=null?'· '+p.dias+'d':''}</b><small>${tempoRel(p.ts)}</small></div></div>
         <div class="txt">${esc(p.texto)}</div>
         <div class="acoes">
           <button class="${liked?'liked':''}" onclick="Acoes.curtir('${p.id}',this)">${liked?'❤️':'🤍'} <span>${p.curtidas||0}</span></button>
@@ -2669,7 +2792,8 @@ const Render={
     if(!c.length){el.innerHTML=`<div class="vazio"><div class="e">💬</div><b>Sem mensagens</b><small>Diga um oi pro grupo de apoio.</small></div>`;return}
     el.innerHTML=c.map(m=>{
       const eu=m.uid===UID;
-      return `<div class="msg ${eu?'eu':'outro'}">${eu?'':`<span class="au">${esc(m.nome)}</span>`}${esc(m.texto)}</div>`;
+      const med=!eu?medalhaIconeUsuario(m.dias||0,m.tipo||'alcool'):'';
+      return `<div class="msg ${eu?'eu':'outro'}">${eu?'':`<span class="au">${esc(m.nome)}${med?' '+med:''}</span>`}${esc(m.texto)}</div>`;
     }).join('');
     el.scrollTop=el.scrollHeight;
   },
@@ -2764,6 +2888,11 @@ const Render={
       </div>
       <div class="card">
         <div class="card-tit"><h3>Conta</h3></div>
+        <div class="lista-item" onclick="FotoPerfil.abrir()" style="cursor:pointer">
+          <div class="ic" style="overflow:hidden;border-radius:50%">${PERFIL.foto?`<img src="${PERFIL.foto}" style="width:46px;height:46px;object-fit:cover;border-radius:50%">`:'📷'}</div>
+          <div class="corpo"><b>Foto de perfil</b><small>${PERFIL.foto?'Toque para trocar':'Adicione sua foto'}</small></div>
+          <span style="color:var(--txt-3)">›</span>
+        </div>
         <div class="lista-item"><div class="ic">${PERFIL.tipo==='cigarro'?'🚬':PERFIL.tipo==='alcool'?'🍺':'💊'}</div><div class="corpo"><b>${PERFIL.tipo==='cigarro'?'Parar de fumar':PERFIL.tipo==='alcool'?'Parar de beber':'Parar de usar '+(PERFIL.substancia||'drogas')}</b><small>Desde ${new Date(PERFIL.dataInicio).toLocaleDateString('pt-BR')}</small></div></div>
         <div class="lista-item"><div class="ic">🥇</div><div class="corpo"><b>Seu recorde</b><small>Maior tempo limpo até hoje</small></div><span class="preco ok">${Math.max(PERFIL.recorde||0,Math.floor(diasLimpos()))} dias</span></div>
         <div class="lista-item"><div class="ic">📅</div><div class="corpo"><b>Ajustar data de recomeço</b><small>Caso precise corrigir</small></div><button class="btn-mini" onclick="Acoes.editarData()">Editar</button></div>
@@ -2877,14 +3006,21 @@ const Acoes={
   anotarPasso(n){
     const fb=lsGet('passos',{}); const e=fb[n]||{};
     const p=PASSOS.find(x=>x.n===n);
-    App.modal(`<h2>Passo ${n}: ${p.t}</h2><p>${p.d}</p>
-      <textarea class="inp" id="notaPasso" rows="5" placeholder="O que esse passo significa pra você? Como vai aplicá-lo?">${esc(e.nota||'')}</textarea>
-      <button class="btn" style="margin-top:12px" onclick="Acoes.salvarNotaPasso(${n})">Salvar reflexão</button>`);
+    const guia=PASSOS_GUIA[n-1]||'';
+    App.modal(`<h2>Passo ${n}: ${p.t}</h2>
+      <p style="color:var(--txt-2);font-size:13.5px;line-height:1.5">${p.d}</p>
+      <div class="passo-guia" style="margin-bottom:12px">💭 ${esc(guia)}</div>
+      <textarea class="inp" id="notaPasso" rows="5" placeholder="Escreva sua reflexão sobre este passo..."></textarea>
+      <button class="btn" style="margin-top:12px" onclick="Acoes.salvarNotaPasso(${n})">Adicionar ao histórico</button>
+      ${e.historico&&e.historico.length?`<div style="margin-top:14px"><b style="font-size:13px;color:var(--txt-2)">Reflexões anteriores:</b>${e.historico.slice().reverse().map(h=>`<div class="passo-hist-item" style="margin-top:6px">"${esc(h.txt)}"<span class="phi-data">${new Date(h.ts).toLocaleDateString('pt-BR')}</span></div>`).join('')}</div>`:''}`);
   },
   salvarNotaPasso(n){
-    const t=$('#notaPasso').value.trim();
+    const t=$('#notaPasso')?.value.trim(); if(!t){App.toast('Escreva algo primeiro.');return;}
     const fb=lsGet('passos',{}); const e=fb[n]||{};
-    e.nota=t; fb[n]=e; lsSet('passos',fb);
+    if(!e.historico)e.historico=[];
+    e.historico.push({txt:t.slice(0,400),ts:Date.now()});
+    e.nota=t; // compatibilidade
+    fb[n]=e; lsSet('passos',fb);
     App.fecharModal(); App.toast('Reflexão salva 🌱'); Render.passos();
   },
   inventario(){
@@ -2969,7 +3105,7 @@ const Acoes={
   async postar(){
     const t=$('#feedTxt').value.trim(); if(!t)return;
     $('#feedTxt').value='';
-    await db.collection(COL.feed).add({uid:UID,nome:primeiroNome(PERFIL.nome),dias:Math.floor(diasLimpos()),texto:t.slice(0,500),curtidas:0,ts:Date.now()});
+    await db.collection(COL.feed).add({uid:UID,nome:primeiroNome(PERFIL.nome),dias:Math.floor(diasLimpos()),foto:PERFIL.foto||null,tipo:PERFIL.tipo||'alcool',texto:t.slice(0,500),curtidas:0,ts:Date.now()});
     await db.collection(COL.usuarios).doc(UID).update({posts:firebase.firestore.FieldValue.increment(1)});
     App.toast('📣 Compartilhado! +5 🪙'); App.addMoedas(5);
   },
@@ -2984,7 +3120,7 @@ const Acoes={
   async enviarChat(){
     const inp=$('#chatInp');const t=inp.value.trim();if(!t)return;
     inp.value='';
-    await db.collection(COL.chat).add({uid:UID,nome:primeiroNome(PERFIL.nome),texto:t.slice(0,400),ts:Date.now()});
+    await db.collection(COL.chat).add({uid:UID,nome:primeiroNome(PERFIL.nome),dias:Math.floor(diasLimpos()),tipo:PERFIL.tipo||'alcool',foto:PERFIL.foto||null,texto:t.slice(0,400),ts:Date.now()});
   },
   novoJournal(){
     App.modal(`<h2>Nova anotação</h2><p>Fica salva só no seu aparelho. Escreva livremente.</p>
@@ -3023,6 +3159,21 @@ function esc(s){return String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;'
 function primeiroNome(n){return String(n||'Anônimo').split(' ')[0]}
 function corDe(s){const c=['#2ECC71','#4C7DF5','#F5B14C','#9B7BF0','#FF6B6B','#6EE7B7'];let h=0;for(const ch of String(s||'x'))h=ch.charCodeAt(0)+h;return c[h%c.length]}
 function tempoRel(ts){const s=(Date.now()-ts)/1000;if(s<60)return 'agora';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return Math.floor(s/86400)+'d'}
+function medalhaIconeUsuario(dias,tipo){
+  const meds=MEDALHAS[tipo||'alcool'];
+  const conquistadas=[...meds].filter(m=>dias>=m.d);
+  if(!conquistadas.length)return '';
+  const ultima=conquistadas[conquistadas.length-1];
+  // emoji simples por tier
+  if(dias>=1825)return '👑';if(dias>=1095)return '💎';if(dias>=730)return '🏆';
+  if(dias>=365)return '🌟';if(dias>=180)return '🦅';if(dias>=90)return '🏵️';
+  if(dias>=30)return '⭐';if(dias>=7)return '🌱';return '🌅';
+}
+function avatarHtml(foto,nome,size,bg){
+  const s=size||38;const cor=bg||corDe(nome);
+  if(foto) return `<div style="width:${s}px;height:${s}px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="${foto}" style="width:100%;height:100%;object-fit:cover"></div>`;
+  return `<div class="av" style="width:${s}px;height:${s}px;background:${cor};font-size:${Math.round(s*.38)}px;flex-shrink:0">${(nome||'?')[0].toUpperCase()}</div>`;
+}
 function formatarFalta(dias){
   if(dias<1){const h=Math.ceil(dias*24);return h+(h===1?' hora':' horas')}
   const d=Math.ceil(dias);return d+(d===1?' dia':' dias');
