@@ -219,15 +219,56 @@ input,select,textarea{font-family:var(--ff)}
 .cor-opt.sel .cor-bola{border-color:var(--txt);transform:scale(1.09)}
 .cor-opt small{font-size:10px;color:var(--txt-2);font-weight:600}
 
-/* stats grid */
+/* stats grid — clicáveis */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.stat{background:var(--surface);border:1px solid var(--linha);border-radius:var(--radius-sm);padding:15px 16px;position:relative;overflow:hidden}
+.stat{background:var(--surface);border:1px solid var(--linha);border-radius:var(--radius-sm);padding:15px 16px;position:relative;overflow:hidden;cursor:pointer;transition:.2s;text-align:left;width:100%}
+.stat:active{transform:scale(.96)}
+.stat::after{content:'›';position:absolute;bottom:10px;right:12px;color:var(--txt-3);font-size:14px;font-weight:700}
 .stat::before{content:'';position:absolute;top:-20px;right:-20px;width:70px;height:70px;border-radius:50%;opacity:.13}
 .stat.din::before{background:var(--verde)} .stat.cig::before{background:var(--azul)}
 .stat.tmp::before{background:var(--ambar)} .stat.med::before{background:var(--roxo)}
 .stat .ic{font-size:20px;margin-bottom:8px}
 .stat .v{font-family:var(--ff-disp);font-weight:900;font-size:23px;line-height:1}
 .stat .l{color:var(--txt-2);font-size:12px;font-weight:600;margin-top:3px}
+
+/* ===== EFEITO DE LUZ GIRANDO ===== */
+.stats-wrap{position:relative;padding:3px;border-radius:calc(var(--radius-sm) + 3px);margin-top:14px}
+.stats-wrap::before{
+  content:'';position:absolute;inset:-2px;border-radius:calc(var(--radius-sm) + 5px);
+  background:conic-gradient(from var(--ang,0deg), #2ECC71, #6EE7B7, #4C7DF5, #2ECC71 50%, transparent 50%);
+  animation:girarLuz 3s linear infinite;z-index:0;opacity:.7;
+}
+.stats-wrap::after{content:'';position:absolute;inset:2px;background:var(--bg);border-radius:var(--radius-sm);z-index:1}
+.stats-wrap .stats{position:relative;z-index:2;margin-top:0}
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes girarLuz{to{--ang:360deg}}
+
+/* modal de detalhes do stat */
+.stat-detalhe-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--linha)}
+.stat-detalhe-row:last-child{border-bottom:none}
+.stat-detalhe-row .sl{font-size:13.5px;color:var(--txt-2);font-weight:600}
+.stat-detalhe-row .sv{font-family:var(--ff-disp);font-weight:900;font-size:18px;color:var(--txt)}
+.stat-total{background:linear-gradient(135deg,var(--glow),transparent);border-radius:16px;padding:16px;text-align:center;margin-bottom:16px}
+.stat-total .stn{font-family:var(--ff-disp);font-weight:900;font-size:42px;line-height:1}
+.stat-total .stl{font-size:12px;color:var(--txt-2);font-weight:700;margin-top:3px}
+
+/* dica do dia */
+.dica-dia{background:linear-gradient(135deg,rgba(76,125,245,.14),rgba(155,123,240,.1));border:1px solid rgba(76,125,245,.25);border-radius:var(--radius);padding:16px;margin-top:14px}
+.dica-dia .dnum{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#7cc5ff;margin-bottom:6px}
+.dica-dia .dtit{font-family:var(--ff-disp);font-weight:800;font-size:16px;color:var(--txt);margin-bottom:5px}
+.dica-dia .dtxt{font-size:13.5px;color:var(--txt-2);line-height:1.5}
+
+/* feed na home */
+.feed-home{margin-top:14px}
+.feed-home .fh-tit{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.feed-home .fh-tit b{font-family:var(--ff-disp);font-weight:700;font-size:16px}
+.feed-home .fh-tit span{font-size:12.5px;color:var(--verde);font-weight:700;cursor:pointer}
+.post-mini{background:var(--surface);border:1px solid var(--linha);border-radius:var(--radius-sm);padding:13px;margin-bottom:8px}
+.post-mini .pm-cab{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.post-mini .pm-av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#04130B;font-size:11px;flex-shrink:0}
+.post-mini .pm-meta b{font-size:12.5px;font-weight:700}
+.post-mini .pm-meta small{font-size:11px;color:var(--txt-2);margin-left:5px}
+.post-mini .pm-txt{font-size:13.5px;line-height:1.45;color:var(--txt)}
 
 /* botão SOS */
 .sos{
@@ -1071,7 +1112,40 @@ const FOLHAS_SVG = {
     <path d="M50 8 C26 22 24 74 50 94 C76 74 74 22 50 8Z" fill="currentColor" fill-opacity=".5"/>
     <path d="M50 12 L50 90 M50 34 L32 26 M50 34 L68 26 M50 52 L28 46 M50 52 L72 46 M50 70 L34 66 M50 70 L66 66" stroke-opacity=".7"/></svg>`
 };
-let UID=null, PERFIL=null, unsubPerfil=null, unsubFeed=null, unsubChat=null;
+let UID=null, PERFIL=null, unsubPerfil=null, unsubFeed=null, unsubChat=null, unsubAdmin=null;
+const DICAS=[
+  {t:'Só por hoje',txt:'Não tente resolver o resto da vida hoje. Só precise passar por este dia — e nisso você consegue.'},
+  {t:'A vontade passa',txt:'A fissura é uma onda: sobe, chega no pico e desce. Em 15 a 20 minutos ela perde a força. Espere.'},
+  {t:'Cuide do seu corpo',txt:'Beba água, coma algo, durma o suficiente. O corpo cuidado tem menos espaço para a vontade crescer.'},
+  {t:'Peça ajuda',txt:'Solidão é o terreno do vício. Conexão é o que o enfraquece. Fale com alguém hoje.'},
+  {t:'Respire',txt:'Quando a vontade vier, inspire 4 segundos, segure 4, solte 6. Repita. A onda já está enfraquecendo.'},
+  {t:'Comemore o pequeno',txt:'Resistir a uma vontade é uma vitória real. Não espere 30 dias para comemorar — comemore agora.'},
+  {t:'Conheça seus gatilhos',txt:'O que acende a vontade em você? Lugar, hora, emoção? O que você prevê, você consegue planejar.'},
+  {t:'Mude o automático',txt:'Troque um pequeno hábito hoje. Um caminho diferente, uma hora preenchida de outro jeito.'},
+  {t:'O passado não define',txt:'Quem você foi não é quem você vai ser. Cada dia é uma nova escolha, independente do que veio antes.'},
+  {t:'Você não precisa ser perfeito',txt:'Recuperação não é uma linha reta. Tropeços fazem parte. O que importa é continuar levantando.'},
+  {t:'Distração é ferramenta',txt:'Quando a vontade aparecer, ocupe as mãos e a mente. Lave a louça, caminhe, ligue pra alguém.'},
+  {t:'Seja gentil consigo',txt:'Você está fazendo algo difícil. Trate-se com a mesma gentileza que daria a um amigo querido.'},
+  {t:'O tempo está do seu lado',txt:'Cada dia sem usar, seu cérebro se reprograma. A liberdade vai ficando mais fácil com o tempo.'},
+  {t:'Um passo de cada vez',txt:'A jornada de mil quilômetros começa com um passo. O passo de hoje é o único que você precisa dar.'},
+  {t:'Adiar é vencer',txt:'Não precisa dizer "nunca mais". Diga apenas "não agora, daqui a 15 minutos". Quase sempre a onda já passou.'},
+  {t:'Sua história não acabou',txt:'Você está num capítulo difícil, não no fim do livro. O melhor ainda está por ser escrito.'},
+  {t:'A culpa não cura',txt:'Troque culpa por responsabilidade. Uma olha pra trás e paralisa; a outra olha pra frente e move.'},
+  {t:'Proteja sua chama',txt:'No começo, a recuperação é uma chama frágil. Afaste-se do vento. Cuide dela até ficar forte.'},
+  {t:'Você já provou que consegue',txt:'Cada hora limpa que você já viveu é a prova de que você tem o que é preciso. Continue.'},
+  {t:'Corpo e mente juntos',txt:'Exercite-se um pouco hoje. O movimento libera aquilo que o vício prometia liberar.'},
+  {t:'Gratidão é um escudo',txt:'Liste três coisas boas antes de dormir. Uma mente cheia de gratidão tem menos espaço para a fissura.'},
+  {t:'Ajudar fortalece',txt:'Ao estender a mão a quem ainda sofre, você fortalece o próprio caminho.'},
+  {t:'Confiança vem de ações',txt:'Confiança não volta com promessas. Volta com um dia limpo, depois outro, depois outro.'},
+  {t:'O impulso não é você',txt:'A vontade aparece, mas quem decide é você. O impulso pode gritar; o general escolhe não obedecer.'},
+  {t:'Recomeçar é coragem',txt:'Quem recomeça depois de cair tem algo que ninguém pode tirar: a prova de que é capaz de levantar.'},
+  {t:'Viva o presente',txt:'O futuro é uma ideia. O passado é memória. Só o presente é real — e nele você está bem agora.'},
+  {t:'Escolha suas companhias',txt:'Quem você anda muda quem você se torna. Aproxime-se de quem te lembra de quem você quer ser.'},
+  {t:'Pequenos passos',txt:'Não é o esforço heroico que transforma. É o esforço comum, repetido todo dia, que esculpe o novo você.'},
+  {t:'Seu corpo está se curando',txt:'Neste exato momento, células se regeneram, neurotransmissores se reequilibram. O processo já começou.'},
+  {t:'Liberdade é o prêmio',txt:'Não há liberdade para quem é escravo de um hábito. Você está construindo a sua, dia após dia.'},
+  {t:'Peça o que precisa',txt:'Dizer "preciso de ajuda" não é fraqueza. É o ato mais corajoso que você pode fazer hoje.'}
+];
 const $=(s)=>document.querySelector(s);
 const fmtR$=(v)=>'R$ '+(v||0).toLocaleString('pt-BR',{maximumFractionDigits:0});
 const lsGet=(k,d)=>{try{return JSON.parse(localStorage.getItem('vn_'+UID+'_'+k))??d}catch(e){return d}};
@@ -1285,7 +1359,7 @@ const App={
     this.checarConquistasNovas(true);
     this.refresh();
     this.aba('tInicio',document.querySelector('.nav button'));
-    this.iniciarFeed(); this.iniciarChat();
+    this.iniciarFeed(); this.iniciarChat(); this.iniciarAdmin();
     this.agendarLembretes();
     // iniciar push notifications
     FCM.iniciar().then(()=>{
@@ -1791,6 +1865,7 @@ const App={
     unsubFeed=db.collection(COL.feed).orderBy('ts','desc').limit(50).onSnapshot(s=>{
       App._feed=s.docs.map(d=>({id:d.id,...d.data()}));
       if(App.telaAtual==='tComunidade'&&App.comAba==='feed')Render.feedLista();
+      if(App.telaAtual==='tInicio')Render.feedHomeLista();
     });
   },
   iniciarChat(){
@@ -1798,6 +1873,23 @@ const App={
     unsubChat=db.collection(COL.chat).orderBy('ts','desc').limit(60).onSnapshot(s=>{
       App._chat=s.docs.map(d=>({id:d.id,...d.data()})).reverse();
       if(App.telaAtual==='tComunidade'&&App.comAba==='chat')Render.chatLista();
+    });
+  },
+  iniciarAdmin(){
+    if(unsubAdmin)return;
+    // listener em tempo real: mensagens do admin aparecem na hora pra quem está com o app aberto
+    const agora=Date.now();
+    unsubAdmin=db.collection(COL.adminMsgs).orderBy('ts','desc').limit(1).onSnapshot(s=>{
+      s.docChanges().forEach(ch=>{
+        if(ch.type==='added'){
+          const d=ch.doc.data();
+          // só mostra se a mensagem veio DEPOIS que o app abriu
+          if(d.ts>agora){
+            Notif.mostrar('📢',d.titulo||'Mensagem do Vida Nova',d.texto||'',true);
+            lsSet('ultimaMsgAdminVista',d.ts);
+          }
+        }
+      });
     });
   },
   checarConquistasNovas(silencioso){
@@ -2281,12 +2373,16 @@ const Render={
       </div>
       ${prox?`<p class="proxima-medalha">Faltam <b>${formatarFalta(prox.d-d)}</b> para a medalha <b>${prox.nome}</b> 🏅</p>`:`<p class="proxima-medalha">Você desbloqueou <b>todas as medalhas</b>! 👑</p>`}
 
-      <div class="stats">
-        <div class="stat din"><div class="ic">💰</div><div class="v">${fmtR$(economia())}</div><div class="l">economizado</div></div>
-        <div class="stat tmp"><div class="ic">⏱️</div><div class="v">${diaInt}d ${horas}h</div><div class="l">tempo limpo</div></div>
-        <div class="stat cig"><div class="ic">${PERFIL.tipo==='cigarro'?'🚭':PERFIL.tipo==='alcool'?'🍺':'💊'}</div><div class="v">${Math.floor(diasLimpos()*(PERFIL.qtdDia||0))}</div><div class="l">${PERFIL.tipo==='cigarro'?'cigarros evitados':PERFIL.tipo==='alcool'?'doses evitadas':'usos evitados'}</div></div>
-        <div class="stat med"><div class="ic">🏅</div><div class="v">${meds.filter(m=>d>=m.d).length}/${meds.length}</div><div class="l">medalhas</div></div>
+      <div class="stats-wrap">
+        <div class="stats">
+          <button class="stat din" onclick="Acoes.abrirStat(this.dataset.t)" data-t="eco"><div class="ic">💰</div><div class="v">${fmtR$(economia())}</div><div class="l">economizado</div></button>
+          <button class="stat tmp" onclick="Acoes.abrirStat(this.dataset.t)" data-t="tempo"><div class="ic">⏱️</div><div class="v">${diaInt}d ${horas}h</div><div class="l">tempo limpo</div></button>
+          <button class="stat cig" onclick="Acoes.abrirStat(this.dataset.t)" data-t="evitados"><div class="ic">${PERFIL.tipo==='cigarro'?'🚭':PERFIL.tipo==='alcool'?'🍺':'💊'}</div><div class="v">${Math.floor(diasLimpos()*(PERFIL.qtdDia||0))}</div><div class="l">${PERFIL.tipo==='cigarro'?'cigarros evitados':PERFIL.tipo==='alcool'?'doses evitadas':'usos evitados'}</div></button>
+          <button class="stat med" onclick="Acoes.abrirStat(this.dataset.t)" data-t="medalhas"><div class="ic">🏅</div><div class="v">${meds.filter(m=>d>=m.d).length}/${meds.length}</div><div class="l">medalhas</div></button>
+        </div>
       </div>
+
+      ${(()=>{const dc=DICAS[diaInt%DICAS.length];const dlbl=diaInt===0?'':'• Dia '+diaInt;return '<div class="dica-dia"><div class="dnum">💡 Dica do dia '+dlbl+'</div><div class="dtit">'+dc.t+'</div><div class="dtxt">'+dc.txt+'</div></div>'})()}
 
       ${App.cardProativo()}
 
@@ -2320,8 +2416,14 @@ const Render={
       <div class="card">
         <div class="card-tit"><h3>Frase de hoje</h3><span style="font-size:18px">🌿</span></div>
         <p style="font-family:var(--ff-disp);font-size:17px;line-height:1.45;font-style:italic">"${frase}"</p>
+      </div>
+
+      <div class="feed-home" id="feedHome">
+        <div class="fh-tit"><b>💬 Comunidade</b><span onclick="App.aba('tComunidade',document.querySelectorAll('.nav button')[4])">Ver tudo ›</span></div>
+        <div id="feedHomeLista"><div style="color:var(--txt-2);font-size:13px">Carregando...</div></div>
       </div>`;
     this.checkinBox();
+    Render.feedHomeLista();
     Relogio.iniciar(est.modelo,diaInt,horas,mins,segs);
     clearInterval(App.relogioInt);
     App.relogioInt=setInterval(()=>{
@@ -2513,9 +2615,20 @@ const Render={
       <div id="comConteudo"></div>`;
     if(a==='feed')this.feedView();else if(a==='chat')this.chatView();else this.rankView();
   },
+  feedHomeLista(){
+    const el=$('#feedHomeLista'); if(!el)return;
+    const f=App._feed||[];
+    if(!f.length){el.innerHTML=`<p style="color:var(--txt-2);font-size:13px;padding:4px 0">O mural está vazio. Seja o primeiro a compartilhar! 🌱</p>`;return}
+    el.innerHTML=f.slice(0,3).map(p=>`<div class="post-mini">
+      <div class="pm-cab">
+        <div class="pm-av" style="background:${corDe(p.nome)}">${(p.nome||'?')[0].toUpperCase()}</div>
+        <div class="pm-meta"><b>${esc(p.nome||'—')}</b>${p.dias!=null?`<small>${p.dias}d</small>`:''}<small style="margin-left:3px">${tempoRel(p.ts)}</small></div>
+      </div>
+      <div class="pm-txt">${esc((p.texto||'').slice(0,120))}${(p.texto||'').length>120?'…':''}</div>
+    </div>`).join('');
+  },
   feedView(){
     $('#comConteudo').innerHTML=`
-      <div class="compositor">
         <textarea id="feedTxt" rows="1" placeholder="Compartilhe uma vitória, um desabafo, uma força..."></textarea>
         <button class="env" onclick="Acoes.postar()">↑</button>
       </div>
@@ -2684,6 +2797,63 @@ const Render={
 const Acoes={
   _humor:null,
   selHumor(btn){document.querySelectorAll('.humor').forEach(e=>e.classList.remove('sel'));btn.classList.add('sel');this._humor=+btn.dataset.h},
+  abrirStat(tipo){
+    const d=diasLimpos(), di=Math.floor(d);
+    const h=Math.floor((d*24)%24), m=Math.floor((d*1440)%60), s=Math.floor((d*86400)%60);
+    const eco=economia();
+
+    if(tipo==='eco'){
+      const porDia=PERFIL.gastoDia||0;
+      App.modal(`<div class="pega"></div>
+        <h2>💰 Dinheiro economizado</h2>
+        <div class="stat-total"><div class="stn">${fmtR$(eco)}</div><div class="stl">total economizado até agora</div></div>
+        <div class="stat-detalhe-row"><span class="sl">Por hora</span><span class="sv">${fmtR$(porDia/24)}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Por dia</span><span class="sv">${fmtR$(porDia)}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Por semana</span><span class="sv">${fmtR$(porDia*7)}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Por mês</span><span class="sv">${fmtR$(porDia*30.44)}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Por ano</span><span class="sv">${fmtR$(porDia*365)}</span></div>
+        <p style="font-size:12px;color:var(--txt-2);margin-top:14px;line-height:1.5">Baseado nos R$ ${fmtR$(porDia)}/dia que você informou gastar. Continue assim! 💚</p>
+        <button class="btn" onclick="App.fecharModal()">Fechar</button>`);
+    }
+    else if(tipo==='tempo'){
+      App.modal(`<div class="pega"></div>
+        <h2>⏱️ Tempo limpo</h2>
+        <div class="stat-total"><div class="stn">${di}d ${h}h ${m}m</div><div class="stl">de vida nova</div></div>
+        <div class="stat-detalhe-row"><span class="sl">Dias completos</span><span class="sv">${di} dias</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Horas totais</span><span class="sv">${Math.floor(d*24)}h</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Minutos totais</span><span class="sv">${Math.floor(d*1440).toLocaleString('pt-BR')}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Segundos totais</span><span class="sv">${Math.floor(d*86400).toLocaleString('pt-BR')}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Seu recorde</span><span class="sv">${Math.max(PERFIL.recorde||0,di)} dias</span></div>
+        <p style="font-size:12px;color:var(--txt-2);margin-top:14px;line-height:1.5">Cada segundo que passa é mais um segundo de liberdade. 🌱</p>
+        <button class="btn" onclick="App.fecharModal()">Fechar</button>`);
+    }
+    else if(tipo==='evitados'){
+      const qtd=PERFIL.qtdDia||0;
+      const total=Math.floor(d*qtd);
+      const lab=PERFIL.tipo==='cigarro'?'cigarros':PERFIL.tipo==='alcool'?'doses':'usos';
+      App.modal(`<div class="pega"></div>
+        <h2>${PERFIL.tipo==='cigarro'?'🚭 Cigarros evitados':PERFIL.tipo==='alcool'?'🍺 Doses evitadas':'💊 Usos evitados'}</h2>
+        <div class="stat-total"><div class="stn">${total.toLocaleString('pt-BR')}</div><div class="stl">${lab} não consumidos</div></div>
+        <div class="stat-detalhe-row"><span class="sl">Por dia</span><span class="sv">${qtd} ${lab}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Por semana</span><span class="sv">${(qtd*7).toLocaleString('pt-BR')} ${lab}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Por mês</span><span class="sv">${Math.round(qtd*30.44).toLocaleString('pt-BR')} ${lab}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Por ano</span><span class="sv">${(qtd*365).toLocaleString('pt-BR')} ${lab}</span></div>
+        <div class="stat-detalhe-row"><span class="sl">Total evitado</span><span class="sv">${total.toLocaleString('pt-BR')} ${lab}</span></div>
+        <p style="font-size:12px;color:var(--txt-2);margin-top:14px;line-height:1.5">Cada um desses ${lab} que você não consumiu foi uma escolha sua. Orgulhe-se. 💪</p>
+        <button class="btn" onclick="App.fecharModal()">Fechar</button>`);
+    }
+    else if(tipo==='medalhas'){
+      const meds=medalhasDoTipo();
+      const conquistadas=meds.filter(m=>d>=m.d);
+      const prox=meds.find(m=>d<m.d);
+      App.modal(`<div class="pega"></div>
+        <h2>🏅 Suas medalhas</h2>
+        <div class="stat-total"><div class="stn">${conquistadas.length}/${meds.length}</div><div class="stl">medalhas conquistadas</div></div>
+        ${conquistadas.map(m=>`<div class="stat-detalhe-row"><span class="sl">✅ ${m.nome}</span><span class="sv" style="color:${m.cor};font-size:14px">🏅</span></div>`).join('')}
+        ${prox?`<div style="margin-top:12px;padding:12px;background:var(--surface-2);border-radius:12px;font-size:13px"><b>Próxima:</b> ${prox.nome} — faltam <b>${formatarFalta(prox.d-d)}</b></div>`:'<p style="text-align:center;font-size:14px;margin-top:12px;color:var(--verde)">👑 Você desbloqueou todas as medalhas!</p>'}
+        <button class="btn" style="margin-top:14px" onclick="App.fecharModal()">Fechar</button>`);
+    }
+  },
   setModeloRelogio(id){
     localStorage.setItem('vn_relogio_modelo',id);
     App.toast('⏱️ Modelo atualizado!');
