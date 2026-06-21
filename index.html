@@ -231,7 +231,77 @@ input,select,textarea{font-family:var(--ff)}
 .stat .v{font-family:var(--ff-disp);font-weight:900;font-size:23px;line-height:1}
 .stat .l{color:var(--txt-2);font-size:12px;font-weight:600;margin-top:3px}
 
-/* ===== FOTO DE PERFIL ===== */
+/* ===== FOTO NO TOPO ===== */
+.topo-perfil{margin-right:10px;flex-shrink:0}
+.topo-perfil .av{border-radius:50%;overflow:hidden;transition:.2s}
+.topo-perfil .av:active{transform:scale(.93)}
+.topo-perfil .av img{width:100%;height:100%;object-fit:cover}
+
+/* ===== CROPPER CIRCULAR ===== */
+.cropper-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.95);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.cropper-overlay.on{display:flex;animation:fade .3s}
+.cropper-arena{position:relative;width:280px;height:280px;border-radius:50%;overflow:hidden;border:3px solid var(--verde);box-shadow:0 0 0 2000px rgba(0,0,0,.7);cursor:grab;flex-shrink:0}
+.cropper-arena:active{cursor:grabbing}
+.cropper-arena img{position:absolute;user-select:none;pointer-events:none;transform-origin:center;transition:none}
+.cropper-ctrl{width:100%;max-width:300px;margin-top:20px}
+.cropper-ctrl label{display:block;color:#fff;font-size:13px;font-weight:700;margin-bottom:8px;text-align:center}
+.cropper-ctrl input[type=range]{width:100%;accent-color:var(--verde)}
+.cropper-btns{display:flex;gap:12px;margin-top:18px;width:100%;max-width:300px}
+.cropper-btns button{flex:1;padding:14px;border-radius:14px;font-weight:800;font-size:15px;border:none}
+.cropper-btns .cb-conf{background:var(--verde);color:#04130B}
+.cropper-btns .cb-canc{background:rgba(255,255,255,.12);color:#fff}
+
+/* ===== CHECK-IN OVERLAY ===== */
+.checkin-overlay{position:fixed;inset:0;z-index:140;display:none;background:linear-gradient(160deg,#0a1f14,#071610,#0d2640);overflow-y:auto}
+.checkin-overlay.on{display:flex;flex-direction:column;align-items:center;padding:calc(20px + env(safe-area-inset-top)) 24px calc(30px + env(safe-area-inset-bottom));animation:fade .4s}
+.checkin-foto-wrap{position:relative;width:110px;height:110px;margin:0 auto 6px}
+.checkin-foto-wrap .anel-brilho{position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(var(--verde),var(--jade),var(--azul),var(--verde));animation:girar 3s linear infinite;z-index:0}
+.checkin-foto-wrap .anel-brilho::after{content:'';position:absolute;inset:4px;background:#0a1f14;border-radius:50%}
+.checkin-foto-wrap .cf-img{position:relative;z-index:1;width:110px;height:110px;border-radius:50%;object-fit:cover;display:block}
+.checkin-foto-wrap .cf-ini{position:relative;z-index:1;width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--verde),var(--jade));display:grid;place-items:center;font-family:var(--ff-disp);font-weight:900;font-size:42px;color:#04130B}
+.checkin-saudacao{font-size:13px;color:var(--jade);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:10px 0 2px;text-align:center}
+.checkin-nome{font-family:var(--ff-disp);font-weight:900;font-size:28px;color:#fff;text-align:center;margin-bottom:8px}
+.checkin-msg{font-size:15px;color:rgba(255,255,255,.82);line-height:1.55;text-align:center;max-width:320px;margin:0 auto 16px;font-style:italic}
+.checkin-dias-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(46,204,113,.2);border:1px solid rgba(46,204,113,.4);border-radius:99px;padding:8px 18px;margin-bottom:20px;font-family:var(--ff-disp);font-weight:800;font-size:16px;color:var(--verde)}
+.checkin-med-nova{text-align:center;margin-bottom:16px;animation:pulsaCel 1.5s infinite}
+.checkin-med-nova .mn-emoji{font-size:56px;display:block;animation:popMed .6s cubic-bezier(.2,1.4,.4,1)}
+.checkin-med-nova b{display:block;color:var(--ambar);font-size:14px;margin-top:4px}
+.checkin-humor{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%;max-width:340px;margin:0 auto 14px}
+.checkin-humor button{aspect-ratio:1;border-radius:16px;background:rgba(255,255,255,.08);border:2px solid transparent;font-size:28px;transition:.2s}
+.checkin-humor button.sel{border-color:var(--verde);background:rgba(46,204,113,.2);transform:scale(1.1)}
+.checkin-nota{width:100%;max-width:340px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:14px;padding:13px;color:#fff;font-size:15px;font-family:inherit;resize:none;min-height:72px;margin-bottom:14px}
+.checkin-nota::placeholder{color:rgba(255,255,255,.35)}
+.checkin-nota:focus{outline:none;border-color:var(--verde)}
+.checkin-btn{width:100%;max-width:340px;padding:17px;border-radius:16px;background:linear-gradient(135deg,var(--verde),var(--verde-2));color:#04130B;font-weight:900;font-size:17px;border:none;box-shadow:0 12px 30px -10px var(--verde)}
+.checkin-btn.feito{background:linear-gradient(135deg,rgba(46,204,113,.3),rgba(46,204,113,.15));color:var(--verde);box-shadow:none;border:1.5px solid rgba(46,204,113,.3)}
+.checkin-pular{color:rgba(255,255,255,.4);font-size:13px;font-weight:600;margin-top:12px;padding:8px}
+
+/* ===== BOTÃO CHECK-IN CTA ===== */
+.checkin-cta{width:100%;border-radius:20px;border:none;margin:14px 0;padding:0;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#0a2e1c,#0d1f2f);border:1.5px solid rgba(46,204,113,.35);position:relative;transition:.2s}
+.checkin-cta:active{transform:scale(.98)}
+.checkin-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(46,204,113,.08),transparent);animation:brilhoCta 2.5s ease-in-out infinite}
+@keyframes brilhoCta{0%,100%{opacity:0;transform:translateX(-100%)}50%{opacity:1;transform:translateX(100%)}}
+.checkin-cta-inner{display:flex;align-items:center;gap:14px;padding:16px 18px;text-align:left}
+.checkin-cta-ico{font-size:32px;flex-shrink:0}
+.checkin-cta-inner b{display:block;font-size:15px;color:#fff;font-weight:800;margin-bottom:2px}
+.checkin-cta-inner small{font-size:12.5px;color:rgba(110,231,183,.7)}
+
+/* ===== LOUSA DO MURAL ===== */
+.lousa-wrap{border-radius:20px;background:linear-gradient(160deg,#0d2b1a,#071610,#0a1f14);border:3px solid rgba(46,204,113,.3);padding:16px;margin:14px 0;position:relative;overflow:hidden;box-shadow:inset 0 0 40px rgba(0,0,0,.5),0 8px 24px -10px rgba(0,0,0,.6)}
+.lousa-wrap::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px);pointer-events:none}
+.lousa-tit{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.lousa-tit b{font-family:var(--ff-disp);font-size:14px;color:rgba(110,231,183,.7);letter-spacing:2px;text-transform:uppercase}
+.lousa-tit span{font-size:12px;color:rgba(110,231,183,.5);cursor:pointer;font-weight:700}
+.lousa-post{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.lousa-post:last-child{border-bottom:none}
+.lousa-post .lp-cab{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.lousa-post .lp-av{width:26px;height:26px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(110,231,183,.4)}
+.lousa-post .lp-av img,.lousa-post .lp-av-ini{width:100%;height:100%;object-fit:cover}
+.lousa-post .lp-av-ini{display:grid;place-items:center;font-size:11px;font-weight:800;color:#04130B}
+.lousa-post .lp-meta{font-size:11.5px;color:rgba(110,231,183,.6);font-weight:700}
+.lousa-post .lp-meta span{color:rgba(255,255,255,.25);font-size:10px;margin-left:5px}
+.lousa-post .lp-txt{font-family:'Fraunces',Georgia,serif;font-size:15px;color:rgba(232,245,240,.88);line-height:1.5;font-style:italic}
+.lousa-post .lp-med{font-size:12px;margin-left:4px}
 .foto-avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
 .av-foto{position:relative;display:inline-flex;flex-shrink:0}
 .av-foto .av{overflow:hidden}
@@ -825,6 +895,9 @@ input,select,textarea{font-family:var(--ff)}
 <!-- ===================== APP PRINCIPAL ===================== -->
 <div id="main" style="display:none">
   <div class="topo">
+    <div class="topo-perfil" onclick="FotoPerfil.abrir()" id="topoPerfil">
+      <div class="av" id="topoAvatar" style="width:40px;height:40px;font-size:16px;cursor:pointer;border:2px solid var(--verde)">?</div>
+    </div>
     <div class="ola"><small id="saudacao">Olá</small><b id="topoNome">—</b></div>
     <div class="topo-acoes">
       <div class="moedas-pill"><span class="c">🪙</span><span id="topoMoedas">0</span></div>
@@ -870,6 +943,8 @@ input,select,textarea{font-family:var(--ff)}
 <div class="fissura-overlay" id="fissuraOverlay"></div>
 <div class="apoio-overlay" id="prevencaoOverlay"></div>
 <div class="apoio-overlay" id="adminOverlay" style="background:var(--bg)"></div>
+<div class="checkin-overlay" id="checkinOverlay"></div>
+<div class="cropper-overlay" id="cropperOverlay"></div>
 <div class="notif-banner" id="notifBanner" style="display:none">
   <span class="nico" id="notifIco">🏅</span>
   <div class="ntx"><b id="notifTit"></b><span id="notifSub"></span></div>
@@ -1059,10 +1134,13 @@ const FotoPerfil={
   },
   async selecionarFoto(input){
     const file=input.files[0]; if(!file)return;
-    const base64=await this._comprimir(file,200);
-    FotoPerfil._base64temp=base64;
-    const wrap=$('#fotoPreviewWrap'), img=$('#fotoPreviewImg');
-    if(wrap&&img){img.src=base64;wrap.style.display='block';}
+    const reader=new FileReader();
+    reader.onload=e=>Cropper.abrir(e.target.result, async(base64)=>{
+      FotoPerfil._base64temp=base64;
+      const wrap=$('#fotoPreviewWrap'), img=$('#fotoPreviewImg');
+      if(wrap&&img){img.src=base64;wrap.style.display='block';}
+    });
+    reader.readAsDataURL(file);
   },
   _comprimir(file,maxPx=200){
     return new Promise(res=>{
@@ -1463,6 +1541,7 @@ const App={
     $('#onb').style.display='none'; $('#main').style.display='block';
     // painel admin (email especial)
     if(PERFIL.email===ADMIN_EMAIL || auth.currentUser?.email===ADMIN_EMAIL){
+      this.iniciarAdmin(); // admin também recebe mensagens em tempo real
       Admin.abrir(); return;
     }
     this.checarConquistasNovas(true);
@@ -1484,6 +1563,12 @@ const App={
     $('#saudacao').textContent=hr<12?'Bom dia,':hr<18?'Boa tarde,':'Boa noite,';
     $('#topoNome').textContent=(PERFIL.nome||'').split(' ')[0]||'Você';
     $('#topoMoedas').textContent=PERFIL.moedas||0;
+    // foto no topo
+    const topoAv=$('#topoAvatar');
+    if(topoAv){
+      if(PERFIL.foto) topoAv.innerHTML='<img src="'+PERFIL.foto+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+      else topoAv.textContent=(PERFIL.nome||'?')[0].toUpperCase();
+    }
     this.renderTela(this.telaAtual);
   },
   aba(id,btn){
@@ -1518,6 +1603,36 @@ const App={
       <p>Receba avisos de medalhas conquistadas, melhorias de saúde e mensagens de apoio — mesmo com o app fechado.</p>
       <button class="btn" onclick="FCM.pedirPermissao();App.fecharModal()">Ativar notificações</button>
       <button class="btn txt" onclick="App.fecharModal()">Agora não</button>`);
+  },
+  abrirCheckin(){
+    const di=Math.floor(diasLimpos());
+    const hoje=new Date().toDateString();
+    const feito=lsGet('checkinData',null)===hoje;
+    const msg=MSGS_CHECKIN[di%MSGS_CHECKIN.length];
+    const meds=medalhasDoTipo();
+    const medNova=meds.find(m=>m.d<=di&&m.d>0&&!lsGet('medComemoradas',[]).includes(m.un));
+    const ov=$('#checkinOverlay'); ov.innerHTML='';
+    ov.innerHTML=`
+      <div class="checkin-foto-wrap">
+        <div class="anel-brilho"></div>
+        ${PERFIL.foto?'<img class="cf-img" src="'+PERFIL.foto+'">'
+          :'<div class="cf-ini">'+(PERFIL.nome||'?')[0].toUpperCase()+'</div>'}
+      </div>
+      <div class="checkin-saudacao">${new Date().getHours()<12?'Bom dia':new Date().getHours()<18?'Boa tarde':'Boa noite'}</div>
+      <div class="checkin-nome">${esc(primeiroNome(PERFIL.nome))} 🌱</div>
+      <p class="checkin-msg">"${esc(msg.tit)}<br>${esc(msg.sub)}"</p>
+      <div class="checkin-dias-badge">✨ ${di} ${di===1?'dia':'dias'} de vida nova</div>
+      ${medNova?'<div class="checkin-med-nova"><span class="mn-emoji">🏅</span><b>Nova medalha: '+esc(medNova.nome)+'!</b></div>':''}
+      ${feito
+        ?'<button class="checkin-btn feito">✅ Check-in feito hoje!</button><button class="checkin-pular" onclick="document.getElementById(\'checkinOverlay\').classList.remove(\'on\')">Fechar</button>'
+        :`<p style="color:rgba(255,255,255,.6);font-size:13.5px;margin-bottom:10px;text-align:center">Como você está hoje?</p>
+        <div class="checkin-humor">
+          ${['😣','😕','😐','🙂','😄'].map((e,i)=>'<button onclick="Acoes.selHumorCheckin(this)" data-h="'+(i+1)+'" class="checkin-humor-btn">'+e+'</button>').join('')}
+        </div>
+        <textarea class="checkin-nota" id="checkinNotaOv" placeholder="Quer anotar algo? Fica só pra você..."></textarea>
+        <button class="checkin-btn" onclick="Acoes.checkinOv()">Fazer check-in de hoje 🌱 (+10 🪙)</button>
+        <button class="checkin-pular" onclick="document.getElementById('checkinOverlay').classList.remove('on')">Agora não</button>`}`;
+    ov.classList.add('on');
   },
   completarPerfil(){
     // conta logada, mas sem perfil salvo: completa o cadastro reaproveitando a conta
@@ -1974,7 +2089,7 @@ const App={
     unsubFeed=db.collection(COL.feed).orderBy('ts','desc').limit(50).onSnapshot(s=>{
       App._feed=s.docs.map(d=>({id:d.id,...d.data()}));
       if(App.telaAtual==='tComunidade'&&App.comAba==='feed')Render.feedLista();
-      if(App.telaAtual==='tInicio')Render.feedHomeLista();
+      if(App.telaAtual==='tInicio')Render.lousaHome();
     });
   },
   iniciarChat(){
@@ -2487,10 +2602,10 @@ const Render={
     App.relogioModelo=est.modelo;
     $('#tInicio').innerHTML=`
       <div class="contador-wrap" style="--clk1:${est.cor.cor};--clk2:${est.cor.cor2}">
-        ${est.cor.folha?`<div class="folha-bg">${FOLHAS_SVG[est.cor.folha]}</div>`:''}
+        ${est.cor.folha?'<div class="folha-bg">'+FOLHAS_SVG[est.cor.folha]+'</div>':''}
         ${Relogio.html(est.modelo,diaInt,horas,mins,segs,pct)}
       </div>
-      ${prox?`<p class="proxima-medalha">Faltam <b>${formatarFalta(prox.d-d)}</b> para a medalha <b>${prox.nome}</b> 🏅</p>`:`<p class="proxima-medalha">Você desbloqueou <b>todas as medalhas</b>! 👑</p>`}
+      ${prox?'<p class="proxima-medalha">Faltam <b>'+formatarFalta(prox.d-d)+'</b> para a medalha <b>'+prox.nome+'</b> 🏅</p>':'<p class="proxima-medalha">Você desbloqueou <b>todas as medalhas</b>! 👑</p>'}
 
       <div class="stats-wrap">
         <div class="stats">
@@ -2501,7 +2616,25 @@ const Render={
         </div>
       </div>
 
+      <div class="lousa-wrap" id="lousaHome">
+        <div class="lousa-tit"><b>📣 Mural da comunidade</b><span onclick="App.aba('tComunidade',document.querySelectorAll('.nav button')[4])">ver tudo ›</span></div>
+        <div id="lousaLista"><div style="color:rgba(110,231,183,.4);font-size:13px;text-align:center;padding:10px">Carregando...</div></div>
+      </div>
+
       ${(()=>{const dc=DICAS[diaInt%DICAS.length];const dlbl=diaInt===0?'':'• Dia '+diaInt;return '<div class="dica-dia"><div class="dnum">💡 Dica do dia '+dlbl+'</div><div class="dtit">'+dc.t+'</div><div class="dtxt">'+dc.txt+'</div></div>'})()}
+
+      <div class="card">
+        <div class="card-tit"><h3>Frase de hoje</h3><span style="font-size:18px">🌿</span></div>
+        <p style="font-family:var(--ff-disp);font-size:17px;line-height:1.45;font-style:italic">"${frase}"</p>
+      </div>
+
+      <button class="checkin-cta" id="checkinCta" onclick="App.abrirCheckin()">
+        <div class="checkin-cta-inner">
+          <span class="checkin-cta-ico">${lsGet('checkinData',null)===new Date().toDateString()?'✅':'🌱'}</span>
+          <div><b>${lsGet('checkinData',null)===new Date().toDateString()?'Check-in feito hoje!':'Fazer meu check-in de hoje'}</b><small>${lsGet('checkinData',null)===new Date().toDateString()?'Você já registrou seu dia. 💚':'Toque para registrar como você está (+10 🪙)'}</small></div>
+          <span style="color:rgba(255,255,255,.5);font-size:18px">›</span>
+        </div>
+      </button>
 
       ${App.cardProativo()}
 
@@ -2509,40 +2642,18 @@ const Render={
         <span class="ic">🌊</span>
         <div class="tx"><b>Bateu a vontade?</b><small>Atravesse a onda comigo — ela sempre passa</small></div>
       </button>
-
       <button class="sos" onclick="Acoes.sos()">
         <span class="ic">🆘</span>
         <div class="tx"><b>Estou em risco agora</b><small>Apoio imediato e técnicas pra segurar a onda</small></div>
       </button>
-
       <button class="apoio-acesso" onclick="App.abrirApoio()">
-        <span class="aae">🤝</span>
-        <div class="aat"><b>Apoio ao vivo</b><span>Reuniões online, padrinhos e ajuda pra conversar</span></div>
-        <span class="aaseta">›</span>
+        <span class="aae">🤝</span><div class="aat"><b>Apoio ao vivo</b><span>Reuniões online, padrinhos e ajuda pra conversar</span></div><span class="aaseta">›</span>
       </button>
-
       <button class="apoio-acesso" onclick="App.abrirPrevencao()">
-        <span class="aae">🛡️</span>
-        <div class="aat"><b>Prevenção de recaída</b><span>Seus gatilhos, carta pro futuro e horários de risco</span></div>
-        <span class="aaseta">›</span>
-      </button>
-
-      <div class="card" style="margin-top:14px">
-        <div class="card-tit"><h3>Check-in de hoje</h3></div>
-        <div id="checkinBox"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-tit"><h3>Frase de hoje</h3><span style="font-size:18px">🌿</span></div>
-        <p style="font-family:var(--ff-disp);font-size:17px;line-height:1.45;font-style:italic">"${frase}"</p>
-      </div>
-
-      <div class="feed-home" id="feedHome">
-        <div class="fh-tit"><b>💬 Comunidade</b><span onclick="App.aba('tComunidade',document.querySelectorAll('.nav button')[4])">Ver tudo ›</span></div>
-        <div id="feedHomeLista"><div style="color:var(--txt-2);font-size:13px">Carregando...</div></div>
-      </div>`;
+        <span class="aae">🛡️</span><div class="aat"><b>Prevenção de recaída</b><span>Seus gatilhos, carta pro futuro e horários de risco</span></div><span class="aaseta">›</span>
+      </button>`;
     this.checkinBox();
-    Render.feedHomeLista();
+    Render.lousaHome();
     Relogio.iniciar(est.modelo,diaInt,horas,mins,segs);
     clearInterval(App.relogioInt);
     App.relogioInt=setInterval(()=>{
@@ -2737,18 +2848,24 @@ const Render={
       <div id="comConteudo"></div>`;
     if(a==='feed')this.feedView();else if(a==='chat')this.chatView();else this.rankView();
   },
-  feedHomeLista(){
-    const el=$('#feedHomeLista'); if(!el)return;
+  lousaHome(){
+    const el=$('#lousaLista'); if(!el)return;
     const f=App._feed||[];
-    if(!f.length){el.innerHTML=`<p style="color:var(--txt-2);font-size:13px;padding:4px 0">O mural está vazio. Seja o primeiro a compartilhar! 🌱</p>`;return}
-    el.innerHTML=f.slice(0,3).map(p=>`<div class="post-mini">
-      <div class="pm-cab">
-        <div class="pm-av" style="background:${corDe(p.nome)}">${(p.nome||'?')[0].toUpperCase()}</div>
-        <div class="pm-meta"><b>${esc(p.nome||'—')}</b>${p.dias!=null?`<small>${p.dias}d</small>`:''}<small style="margin-left:3px">${tempoRel(p.ts)}</small></div>
-      </div>
-      <div class="pm-txt">${esc((p.texto||'').slice(0,120))}${(p.texto||'').length>120?'…':''}</div>
-    </div>`).join('');
+    if(!f.length){el.innerHTML='<p style="color:rgba(110,231,183,.35);font-size:13px;text-align:center;font-style:italic">O mural está vazio. Seja o primeiro! 🌱</p>';return}
+    el.innerHTML=f.slice(0,4).map(p=>{
+      const med=medalhaIconeUsuario(p.dias||0,p.tipo||'alcool');
+      const av=p.foto
+        ?'<div class="lp-av"><img src="'+p.foto+'"></div>'
+        :'<div class="lp-av" style="background:'+corDe(p.nome)+'"><div class="lp-av-ini">'+(p.nome||'?')[0].toUpperCase()+'</div></div>';
+      return '<div class="lousa-post">'+
+        '<div class="lp-cab">'+av+
+        '<div class="lp-meta">'+esc(p.nome||'—')+(med?' <span class="lp-med">'+med+'</span>':'')+
+        '<span>'+tempoRel(p.ts)+'</span></div></div>'+
+        '<div class="lp-txt">'+esc((p.texto||'').slice(0,100))+((p.texto||'').length>100?'…':'')+'</div>'+
+        '</div>';
+    }).join('');
   },
+  feedHomeLista(){this.lousaHome()},
   feedView(){
     $('#comConteudo').innerHTML=`
         <textarea id="feedTxt" rows="1" placeholder="Compartilhe uma vitória, um desabafo, uma força..."></textarea>
@@ -2925,7 +3042,23 @@ const Render={
 /* -------------------- AÇÕES -------------------- */
 const Acoes={
   _humor:null,
-  selHumor(btn){document.querySelectorAll('.humor').forEach(e=>e.classList.remove('sel'));btn.classList.add('sel');this._humor=+btn.dataset.h},
+  selHumorCheckin(btn){document.querySelectorAll('.checkin-humor-btn').forEach(e=>e.classList.remove('sel'));btn.classList.add('sel');this._humor=+btn.dataset.h},
+  async checkinOv(){
+    const hoje=new Date().toDateString();
+    if(lsGet('checkinData',null)===hoje)return App.toast('Você já fez check-in hoje.');
+    const ontem=new Date(Date.now()-86400000).toDateString();
+    const novoStreak=(lsGet('ultimoCheckinDia',null)===ontem)?(PERFIL.streak||0)+1:1;
+    lsSet('checkinData',hoje); lsSet('ultimoCheckinDia',hoje);
+    const nota=$('#checkinNotaOv')?.value.trim();
+    if(nota||this._humor){const j=lsGet('journal',[]);j.push({ts:Date.now(),texto:nota||'Check-in do dia.',humor:this._humor});lsSet('journal',j)}
+    this._humor=null;
+    await db.collection(COL.usuarios).doc(UID).update({streak:novoStreak,ultimoCheckin:Date.now(),moedas:firebase.firestore.FieldValue.increment(10)});
+    $('#checkinOverlay').classList.remove('on');
+    // mostrar confete e mensagem
+    soltarConfete();
+    App.toast('✅ Check-in feito! +10 🪙 • 🔥 '+novoStreak+' dia'+(novoStreak===1?'':'s'));
+    if(App.telaAtual==='tInicio')Render.inicio();
+  },
   abrirStat(tipo){
     const d=diasLimpos(), di=Math.floor(d);
     const h=Math.floor((d*24)%24), m=Math.floor((d*1440)%60), s=Math.floor((d*86400)%60);
@@ -3163,16 +3296,14 @@ function medalhaIconeUsuario(dias,tipo){
   const meds=MEDALHAS[tipo||'alcool'];
   const conquistadas=[...meds].filter(m=>dias>=m.d);
   if(!conquistadas.length)return '';
-  const ultima=conquistadas[conquistadas.length-1];
-  // emoji simples por tier
   if(dias>=1825)return '👑';if(dias>=1095)return '💎';if(dias>=730)return '🏆';
   if(dias>=365)return '🌟';if(dias>=180)return '🦅';if(dias>=90)return '🏵️';
   if(dias>=30)return '⭐';if(dias>=7)return '🌱';return '🌅';
 }
 function avatarHtml(foto,nome,size,bg){
   const s=size||38;const cor=bg||corDe(nome);
-  if(foto) return `<div style="width:${s}px;height:${s}px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="${foto}" style="width:100%;height:100%;object-fit:cover"></div>`;
-  return `<div class="av" style="width:${s}px;height:${s}px;background:${cor};font-size:${Math.round(s*.38)}px;flex-shrink:0">${(nome||'?')[0].toUpperCase()}</div>`;
+  if(foto) return '<div style="width:'+s+'px;height:'+s+'px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="'+foto+'" style="width:100%;height:100%;object-fit:cover"></div>';
+  return '<div class="av" style="width:'+s+'px;height:'+s+'px;background:'+cor+';font-size:'+Math.round(s*.38)+'px;flex-shrink:0">'+(nome||'?')[0].toUpperCase()+'</div>';
 }
 function formatarFalta(dias){
   if(dias<1){const h=Math.ceil(dias*24);return h+(h===1?' hora':' horas')}
@@ -3192,6 +3323,88 @@ function estiloRelogio(){
   const cor=PALETAS_RELOGIO.find(c=>c.id===cid)||PALETAS_RELOGIO[0];
   return {modelo,cor};
 }
+
+const MSGS_CHECKIN=[
+  {tit:'Cada dia é uma escolha.',sub:'E você escolheu estar aqui hoje. Isso diz tudo sobre quem você está se tornando.'},
+  {tit:'Um dia de cada vez.',sub:'Não precisa pensar no mês, no ano. Só em hoje. E hoje você já ganhou.'},
+  {tit:'Seu corpo está se curando.',sub:'Enquanto você lê isso, células se reconstituem. Você está ficando mais forte por dentro.'},
+  {tit:'Você voltou.',sub:'Abrir esse app é um ato de coragem. Significa que você não desistiu. Nunca desista.'},
+  {tit:'A constância é tudo.',sub:'Grandes mudanças não vêm de um único esforço heroico. Vêm de dias como esse, repetidos.'},
+  {tit:'Olhe até onde você chegou.',sub:'Cada dia somado aqui foi uma batalha vencida. Orgulhe-se do caminho que você trilhou.'},
+  {tit:'Você não está sozinho.',sub:'Tem gente nessa mesma jornada, nesse mesmo momento, escolhendo o mesmo que você.'},
+  {tit:'A vontade passa.',sub:'Como uma onda: sobe, quebra e desaparece. Você só precisa durar mais que ela.'},
+  {tit:'Seja gentil consigo.',sub:'Você está fazendo algo difícil. Merece o mesmo cuidado que daria a alguém que ama.'},
+  {tit:'Um presente no futuro.',sub:'O que você faz hoje é um presente que dá ao seu eu de amanhã. Ele vai agradecer.'},
+  {tit:'A liberdade está crescendo.',sub:'A cada dia, o vício perde um pouco do controle. Você ganha um pouco mais de você mesmo.'},
+  {tit:'Respira fundo.',sub:'Este momento, este dia, este check-in — tudo conta. Cada gesto de cuidado conta.'},
+  {tit:'Você é mais forte.',sub:'Do que imagina. Do que o vício quer que acredite. A prova está aqui, nos seus dias.'},
+  {tit:'Continue.',sub:'Simples assim. Só continue. Um dia, uma hora, um minuto de cada vez.'},
+  {tit:'O caminho se faz andando.',sub:'Você não sabe ainda onde vai chegar. Mas está andando. Isso é tudo que importa agora.'},
+  {tit:'Sua história está mudando.',sub:'Cada dia limpo é uma linha nova escrita em você. Uma história diferente tomando forma.'},
+  {tit:'O primeiro passo foi o mais difícil.',sub:'Você já deu esse passo. O resto é continuar colocando um pé na frente do outro.'},
+  {tit:'Você importa.',sub:'Para as pessoas ao seu redor. Para o seu eu futuro. E você merece importar para si mesmo.'},
+  {tit:'Não existe tarde demais.',sub:'O melhor momento de recomeçar foi ontem. O segundo melhor momento é agora.'},
+  {tit:'A paz é possível.',sub:'Você está construindo um lugar dentro de si onde o vício não manda. Continue construindo.'},
+  {tit:'Hoje você escolheu você.',sub:'Em vez de escapar, você ficou. Em vez de fugir, você enfrentou. Isso é crescimento real.'},
+  {tit:'O silêncio tem valor.',sub:'Dias sem drama, sem recaída, sem crise — são vitórias silenciosas. Comemore-os.'},
+  {tit:'Cada manhã é uma nova chance.',sub:'Não importa como foi ontem. Esta manhã trouxe uma nova oportunidade de ser quem você quer ser.'},
+  {tit:'Você está reescrevendo sua vida.',sub:'Uma página por dia. Um dia de cada vez. Uma vida nova sendo escrita por suas próprias mãos.'},
+  {tit:'Fique com o que é bom.',sub:'Foque nos momentos de paz, nas pequenas alegrias, nas conexões reais. Elas existem, mesmo nos dias difíceis.'},
+  {tit:'O seu cérebro está aprendendo.',sub:'Cada dia limpo cria novas conexões neurais. Literalmente, você está reprogramando sua mente.'},
+  {tit:'Tem alguém torcendo por você.',sub:'Mesmo que não saiba quem. Mesmo longe. Tem gente vibrando com cada dia seu que passa limpo.'},
+  {tit:'A dificuldade tem um fim.',sub:'Tudo passa. A fissura passa. O dia difícil passa. A sensação ruim passa. Você fica.'},
+  {tit:'Cada dia é uma prova.',sub:'Não de que você é perfeito. Mas de que você é capaz. E você é mais capaz do que pensava.'},
+  {tit:'Você chegou até aqui.',sub:'Esse check-in de hoje é a prova. Você está vivo, presente e escolhendo uma vida nova.'},
+  {tit:'A vida nova começa agora.',sub:'Não no mês que vem. Não quando parar de ser difícil. Ela começa em cada momento como este.'}
+];
+
+/* ===== CROPPER CIRCULAR ===== */
+const Cropper={
+  _scale:1, _x:0, _y:0, _drag:false, _sx:0, _sy:0, _ox:0, _oy:0, _baseScale:1,
+  abrir(src,onConfirm){
+    Cropper._onConfirm=onConfirm; Cropper._scale=1; Cropper._x=0; Cropper._y=0;
+    const ov=$('#cropperOverlay');
+    ov.innerHTML=`<div style="text-align:center;color:#fff;margin-bottom:16px"><b style="font-size:16px">Enquadre sua foto</b><br><small style="opacity:.6">Arraste e use o zoom pra ajustar</small></div>
+      <div class="cropper-arena" id="cropArena"><img id="cropImg" src="${src}" draggable="false"></div>
+      <div class="cropper-ctrl"><label>Zoom</label><input type="range" id="cropZoom" min="50" max="300" value="100" oninput="Cropper.setZoom(this.value)"></div>
+      <div class="cropper-btns"><button class="cb-canc" onclick="Cropper.fechar()">Cancelar</button><button class="cb-conf" onclick="Cropper.confirmar()">Usar esta foto</button></div>`;
+    ov.classList.add('on');
+    const img=$('#cropImg');
+    const init=()=>{const s=Math.max(280/img.naturalWidth,280/img.naturalHeight);Cropper._baseScale=s;Cropper._applyTransform()};
+    img.onload=init; if(img.complete)init();
+    const a=$('#cropArena');
+    a.addEventListener('mousedown',Cropper._sd); a.addEventListener('touchstart',Cropper._sd,{passive:true});
+    document.addEventListener('mousemove',Cropper._md); document.addEventListener('touchmove',Cropper._md,{passive:false});
+    document.addEventListener('mouseup',Cropper._ed); document.addEventListener('touchend',Cropper._ed);
+  },
+  _applyTransform(){
+    const img=$('#cropImg'); if(!img)return;
+    const s=Cropper._baseScale*Cropper._scale;
+    const w=img.naturalWidth*s, h=img.naturalHeight*s;
+    img.style.cssText='position:absolute;user-select:none;pointer-events:none;width:'+w+'px;height:'+h+'px;left:'+(140+Cropper._x-w/2)+'px;top:'+(140+Cropper._y-h/2)+'px';
+  },
+  setZoom(v){Cropper._scale=v/100; Cropper._applyTransform()},
+  _sd(e){Cropper._drag=true; const p=e.touches?e.touches[0]:e; Cropper._sx=p.clientX; Cropper._sy=p.clientY; Cropper._ox=Cropper._x; Cropper._oy=Cropper._y},
+  _md(e){if(!Cropper._drag)return; if(e.cancelable)e.preventDefault(); const p=e.touches?e.touches[0]:e; Cropper._x=Cropper._ox+(p.clientX-Cropper._sx); Cropper._y=Cropper._oy+(p.clientY-Cropper._sy); Cropper._applyTransform()},
+  _ed(){Cropper._drag=false},
+  confirmar(){
+    const img=$('#cropImg'); if(!img)return;
+    const canvas=document.createElement('canvas'); canvas.width=300; canvas.height=300;
+    const ctx=canvas.getContext('2d');
+    ctx.beginPath(); ctx.arc(150,150,150,0,Math.PI*2); ctx.clip();
+    const s=Cropper._baseScale*Cropper._scale, r=300/280;
+    const w=img.naturalWidth*s, h=img.naturalHeight*s;
+    const ix=(140+Cropper._x-w/2)*r, iy=(140+Cropper._y-h/2)*r;
+    ctx.drawImage(img,ix,iy,w*r,h*r);
+    const b64=canvas.toDataURL('image/jpeg',.82);
+    Cropper.fechar(); if(Cropper._onConfirm)Cropper._onConfirm(b64);
+  },
+  fechar(){
+    $('#cropperOverlay').classList.remove('on');
+    document.removeEventListener('mousemove',Cropper._md); document.removeEventListener('touchmove',Cropper._md);
+    document.removeEventListener('mouseup',Cropper._ed); document.removeEventListener('touchend',Cropper._ed);
+  }
+};
 
 /* -------------------- FLIP CLOCK 3D -------------------- */
 const FlipClock={
